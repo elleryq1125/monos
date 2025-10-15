@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.monos.mapper.UserMapper">
+    <!-- 結果と結果を受け取るクラスの紐づけ -->
+    <resultMap id="userInfoResultMap" type="com.example.monos.dto.UserInfo">
+      <result property="userId" column="user_id" />
+      <result property="email" column="email"/>
+      <result property="password" column="password"/>
+      <result property="name" column="name"/>
+      <result property="roleCode" column="role_code"/>
+      <result property="roleName" column="role_name"/>
+      <result property="companyId" column="company_id"/>
+      <result property="companyName" column="company_name"/>
+      <result property="createdAt" column="created_at"/>
+    	<result property="updatedAt" column="updated_at"/>
+    </resultMap>
+    <!-- SQL -->
+    <select id="findByCompanyId" resultMap="userInfoResultMap" parameterType="int">
+			SELECT 
+				u.user_id,
+				u.email,
+				u.password,
+				u.name,
+				u.role_code,
+				r.name AS role_name,
+				u.company_id,
+				c.name AS company_name,
+				u.created_at,
+				u.updated_at 
+			FROM 
+				users u JOIN companies c ON u.company_id = c.company_id 
+				JOIN roles r ON u.role_code = r.role_code
+			WHERE 
+				u.company_id = #{companyId}
+			ORDER BY
+				u.user_id;
+		</select>
+		<select id="findByUserId" resultMap="userInfoResultMap" parameterType="int">
+      SELECT 
+				u.user_id,
+				u.email,
+				u.password,
+				u.name,
+				r.name AS role_name,
+				u.role_code,
+				u.company_id,
+				c.name AS company_name,
+				u.created_at,
+				u.updated_at 
+			FROM 
+				users u JOIN companies c ON u.company_id = c.company_id 
+				JOIN roles r ON u.role_code = r.role_code
+			WHERE 
+				u.user_id = #{userId};
+    </select>
+    <select id="findByEmail" resultMap="userInfoResultMap" parameterType="String">
+			SELECT 
+				u.user_id,
+				u.email,
+				u.password,
+				u.name,
+				u.role_code,
+				r.name AS role_name,
+				u.company_id,
+				c.name AS company_name,
+				u.created_at,
+				u.updated_at 
+			FROM 
+				users u JOIN companies c ON u.company_id = c.company_id 
+				JOIN roles r ON u.role_code = r.role_code
+			WHERE 
+				u.email = #{email};
+    </select>
+    <insert id="insert" parameterType="com.example.monos.domain.User" useGeneratedKeys="true" keyProperty="userId">
+			INSERT INTO users
+				(
+					email,
+					password,
+					name, 
+					role_code, 
+					company_id
+					) 
+			VALUES 
+				(
+					#{email}, 
+					#{password}, 
+					#{name}, 
+					#{roleCode}, 
+					#{companyId}
+				);
+		</insert>
+		<update id="update" parameterType="com.example.monos.domain.User">
+			UPDATE
+				users
+			SET
+				name = #{name},
+				role_code = #{roleCode},
+				updated_at = CURRENT_TIMESTAMP
+			WHERE
+				user_id = #{userId}				
+		</update>
+		<delete id="delete" parameterType="int">
+			DELETE FROM users WHERE user_id = #{userId}
+		</delete>
+</mapper>

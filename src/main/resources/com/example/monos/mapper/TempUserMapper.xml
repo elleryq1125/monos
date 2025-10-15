@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.monos.mapper.TempUserMapper">
+    <!-- 結果と結果を受け取るクラスの紐づけ -->
+    <resultMap id="tempUserResultMap" type="com.example.monos.domain.TempUser">
+      <result property="uuid" column="uuid"/>
+      <result property="email" column="email"/>
+      <result property="password" column="password"/>
+      <result property="name" column="name"/>
+      <result property="roleCode" column="role_code"/>
+      <result property="companyId" column="company_id"/>
+      <result property="companyName" column="company_name"/>
+      <result property="createdAt" column="created_at"/>
+    	<result property="updatedAt" column="updated_at"/>     
+    </resultMap>
+    <!-- SQL -->
+    <select id="findByUuid" resultMap="tempUserResultMap" parameterType="String">
+        SELECT * FROM temp_users WHERE uuid = #{uuid};
+    </select>
+    <insert id="insert" parameterType="com.example.monos.domain.TempUser">
+				INSERT INTO temp_users(uuid, email, password, name, role_code, company_id, company_name) VALUES (#{uuid}, #{email}, #{password}, #{name}, #{roleCode}, #{companyId}, #{companyName});
+		</insert>
+</mapper>

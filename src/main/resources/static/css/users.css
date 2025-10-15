@@ -1,0 +1,35 @@
+/* ユーザー関連画面CSS */
+
+/* 入力フィールド */
+.user-field{
+	margin:10px 0 20px 0;
+}
+.user-field label{
+	font-size:15px;
+	font-weight:bold;
+}
+.user-field input[type = text]{
+	width:250px;
+}
+.user-field input[type = password]{
+	width:250px;
+}
+.user-field input[type = email]{
+	width:250px;
+}
+.user-field select{
+	width:250px;
+}
+.user-field-error{
+	color:red;
+}
+
+/* ボタン */
+#userProccessButtons{
+	margin-top:10px;
+	display:flex;
+}
+#userProccessButtons button,
+#userProccessButtons a{
+	margin-right: 10px;
+}

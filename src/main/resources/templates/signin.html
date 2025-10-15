@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{common/head :: head-fragment(title = 'サインイン', scripts = ~{}, links = ~{::link})}">
+		<link rel="stylesheet" th:href="@{/css/signin.css}">
+	</head>
+	<body>
+		<div class="login-page">
+		  <div class="form">
+		    <form method="post" th:action="@{/signin}" class="login-form">
+					<img th:src="@{/images/logo.png}" alt="monos"></img>
+					<label for="username">メールアドレス</label>
+		      <input type="email" id="username" name="username"/>
+		      <label for="password">パスワード</label>
+		      <input type="password" id="password" name="password"/>
+		      <button type="submit">サインイン</button>
+		      <div class="item-center">
+				  	<p th:if="${param.error}" class="error">メールアドレスまたはパスワードが違います。</p>
+		      	<p class="message">ユーザー登録（<a href="/signup">はじめての方はこちら</a>）</p>
+			  	</div>
+		    </form>
+		  </div>
+		</div>
+	</body>
+</html>

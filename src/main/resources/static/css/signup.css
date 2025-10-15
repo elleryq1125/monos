@@ -1,0 +1,58 @@
+/* サインアップ関連 */
+#signupLogobox{
+	width: 20%;
+	margin:0 auto;
+}
+#signupLogobox img{
+	width: 100%;
+}
+#signupFormbox{
+	width:30%;
+	max-width:300px;
+	margin:0 auto;
+	min-height: 100px;
+	padding-bottom: 20px;
+}
+.signup-field{
+	margin-top:15px;
+	margin-bottom: 10px;
+	font-size:14px;
+}
+.signup-field label{
+	font-weight: bold;
+}
+.signup-field input{
+	padding:5px;
+}
+.signup-field-error{
+	color:red;
+}
+
+/* ボタン */
+#signupButtonBox{
+	margin-top:20px;
+}
+#signupButtonBox button{
+	width: 100%;
+}
+
+#signupMsgbox{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:5px;
+	text-align: center;
+}
+#signupMsgbox p{
+	white-space: pre-wrap;
+}
+#signupMsgbox a{
+	color:var(--main-color);
+	text-decoration: none;
+}
+#signupTempUserRegistCompEmail{
+	font-size: 24px;
+	font-weight: bold;
+	display: inline-block;
+  background-color: #eae8e1;
+}

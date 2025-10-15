@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{common/head :: head-fragment(title = 'ユーザー更新', scripts = ~{}, links = ~{::link})}">
+		<link rel="stylesheet" th:href="@{/css/users.css}">
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div th:replace="~{common/header :: header-fragment}"></div>
+		
+		<div class="wrapper">
+			<div id="content">
+				<div id="contentTitle">ユーザー更新</div>
+				<form method="post" th:action="@{/users/update/{userId}(userId=${userId})}" th:object="${userUpdateForm}">
+					<div class="user-field">
+						<label class="required" for="name">氏名</label>
+						<input class="form-control" type="text" th:field="*{name}">
+						<div class="user-field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+					</div>
+					<div class="user-field">
+						<label class="required" for="role">権限</label>
+						<select class="form-select" th:field="*{roleCode}">
+							<option th:each="role : ${roles}" th:value="${role.roleCode}">[[${role.name}]]</option>
+						</select>
+					</div>		
+					<div id="userProccessButtons">
+						<button  class="btn main-btn" type="submit">更新</button>
+						<a class="btn grey-btn" href="/users">戻る</a>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<!-- フッター -->
+		<div th:replace="~{common/footer :: footer-fragment}"></div>
+	</body>
+</html>

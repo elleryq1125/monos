@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{common/head :: head-fragment(title = 'サインアップ', scripts = ~{}, links = ~{::link})}">
+	<link rel="stylesheet" th:href="@{/css/signup.css}">
+</head>
+<body>
+	<div class="wrapper">
+		<div id="signupLogobox">
+			<img th:src="@{/images/logo.png}" alt="monos"></img>
+		</div>
+		<div id="signupMsgbox">
+			<p th:text="${resultMessage}"></p>
+			<a href="/signin">サインイン画面へ</a>
+		</div>
+	</div>
+	
+	<!-- フッター -->
+	<div th:replace="~{common/footer :: footer-fragment}"></div>	
+</body>
+</html>

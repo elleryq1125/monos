@@ -1,0 +1,210 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+*{
+	box-sizing: border-box;
+	font-family: "Roboto", sans-serif;
+}
+
+/* カスタムプロパティ */
+:root{
+	--main-color:#088e4c;
+	--main-color-on:#07763f;
+}
+
+html{
+	height: 100%;
+}
+
+body{
+	margin: 0;
+  padding: 0;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper{
+	flex:1;
+}
+
+/* ヘッダー */
+#header{
+	width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+#header header{
+	display: flex;
+	background-color: #ffffff;
+}
+#header nav{
+	background-color:var(--main-color);
+	color: #ffffff;
+}
+#headerLogo{
+	width: 100px;
+}
+#headerRightbox{
+	margin:0 0 0 auto;
+	display: flex;
+	align-items: center;
+}
+#headerUserInfo{
+	margin-right: 50px;
+}
+#headerUserInfo img{
+	width: 17px;
+}
+#headerLogout{
+	padding-right:30px;
+}
+
+
+/* フッター */
+#footer {
+	width: 100%;
+	background-color: #dcdcdc;
+	font-size: 12px;
+	text-align: center;
+	height: 30px;
+}
+
+#proccessButtons{
+	margin-top:10px;
+	margin-left:20px;
+	display: flex;
+}
+
+/* コンテンツ */
+#content{
+	margin-top:10px;
+	margin-left:20px;
+}
+#contentTitle{
+	font-size: 17px;
+	font-weight: bold;
+	border-bottom:3px solid #dbdbdb;
+	margin:0 10px 10px 0;
+}
+
+/* メインボタン */
+.main-btn{
+  background: var(--main-color);
+  color: #ffffff;
+	font-size:14px;
+	min-width: 80px;
+}
+.main-btn:hover,.form button:active,.form button:focus {
+  background: var(--main-color-on);
+  color: #ffffff;
+}
+
+/* メインボタン(反転) */ 
+.main-btn-reversal{
+	background: #ffffff;
+	border-color:var(--main-color);
+	color: var(--main-color);
+	font-size: 14px;
+	transition: .5s;
+	min-width: 80px;
+}
+.main-btn-reversal:hover{
+	background:var(--main-color);
+  color: #ffffff;
+}
+
+/* グレーボタン */
+.grey-btn{
+	background:#81888f;
+	border-color: #81888f;
+  color: #ffffff;
+	font-size:14px;
+	min-width: 80px;
+}
+.grey-btn:hover{
+	background: #6c757d;
+	color: #ffffff;
+}
+
+/* 必須マーク */
+.required::after {
+  content: "必須";
+  background-color:var(--main-color);
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 10px;
+  padding: 3px 7px;
+  margin: 0px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+/* データテーブル */
+.data-table{
+	overflow: auto;
+	width: 100%;
+}
+.data-table table{
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+.data-table thead{
+	position: sticky;
+	top:0;
+	z-index: 10;
+	background: var(--main-color);
+	color:#fff;
+}
+.data-table th,
+.data-table td{
+	padding: 0.5rem;
+}
+.data-table th{
+	padding: relative;
+	border-top: 1px solid #999;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+}
+.data-table th::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-top: 1px solid #999;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+}
+.data-table td{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border: 1px solid #999;
+}
+.data-table td > a,
+.data-table td > button{
+	width: 100%;
+	max-width: 80px;
+}
+
+/* アラート */
+.alert-wrap{
+	display: none;
+}
+
+/* BootStrap上書き */
+.alert{
+	width: 100%;
+	position: absolute;
+	top: 0;
+	z-index: 30;
+}
+

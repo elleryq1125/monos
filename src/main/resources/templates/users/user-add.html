@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{common/head :: head-fragment(title = 'ユーザー追加', scripts = ~{}, links = ~{::link})}">
+		<link rel="stylesheet" th:href="@{/css/users.css}">
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div th:replace="~{common/header :: header-fragment}"></div>
+		
+		<div class="wrapper">
+			<div id="content">
+				<div id="contentTitle">ユーザー追加</div>
+				<form method="post" th:action="@{/users/add}" th:object="${userAddForm}">
+					<div class="user-field">
+						<label class="required" for="name">氏名</label>
+						<input class="form-control" type="text" th:field="*{name}">
+						<div class="user-field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+					</div>
+					<div class="user-field">
+						<label class="required" for="email">メールアドレス</label>
+						<input class="form-control" type="email" th:field="*{email}">
+						<div class="user-field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+					</div>
+					<div class="user-field">
+						<label class="required" for="password">パスワード</label>
+						<input class="form-control" type="password" th:field="*{password}">
+						<div class="user-field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+					</div>
+					<div class="user-field">
+						<label class="required" for="passwordConfirm">パスワード（再入力）</label>
+						<input class="form-control" type="password" th:field="*{passwordConfirm}">
+						<div class="user-field-error" th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}"></div>
+					</div>
+					<div class="user-field">
+						<label class="required" for="role">権限</label>
+						<select class="form-select"  th:field="*{roleCode}">
+							<option th:each="role : ${roles}" th:value="${role.roleCode}">[[${role.name}]]</option>
+						</select>
+					</div>		
+					<div id="userProccessButtons">
+						<button  class="btn main-btn" type="submit">追加</button>
+						<a class="btn grey-btn" href="/users">戻る</a>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<!-- フッター -->
+		<div th:replace="~{common/footer :: footer-fragment}"></div>
+	</body>
+</html>
