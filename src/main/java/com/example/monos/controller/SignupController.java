@@ -1,5 +1,7 @@
 package com.example.monos.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +26,7 @@ import com.example.monos.service.UserService;
 @Controller
 @RequestMapping("/signup")
 public class SignupController {
-    
+	private static final Logger log = LoggerFactory.getLogger(SignupController.class);
     private final TempUserService tempUserService;
     private final UserService userService;
     
@@ -40,6 +42,7 @@ public class SignupController {
      */
     @GetMapping
     public String showSignup(SignupForm signupForm) {
+    	log.info("サインアップ画面：表示");
         return "signup/signup";
     }
     
@@ -53,7 +56,10 @@ public class SignupController {
      */
     @PostMapping
     public String tempUserRegist(@Validated SignupForm signupForm, BindingResult result, RedirectAttributes redirectAttributes) {
+    	log.info("サインアップ画面：仮登録処理 開始");
+    	
         if (result.hasErrors()) {
+        	log.info("サインアップ画面：仮登録処理 入力エラー");
             return "signup/signup";
         }
         
@@ -69,6 +75,8 @@ public class SignupController {
         redirectAttributes.addFlashAttribute("email", signupForm.getEmail());
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage.getMessage());
         
+        log.info("サインアップ画面：仮登録処理 正常終了");
+        
         return "redirect:/signup/tempuserregist";
     }
     
@@ -79,6 +87,7 @@ public class SignupController {
      */
     @GetMapping("/tempuserregist")
     public String showSignupTempUserRegist() {
+    	log.info("仮登録完了画面：表示");
         return "signup/signup-tempuser-regist";
     }
     
@@ -90,6 +99,8 @@ public class SignupController {
      */
     @GetMapping("/userregist")
     public String showSignupUserRegist(@RequestParam("uuid")String uuid, Model model) {
+    	log.info("本登録完了画面：表示");
+    	
         // ユーザ情報本登録
         ResultMessage resultMessage = userService.registUser(uuid);
         model.addAttribute("resultMessage", resultMessage.getMessage());

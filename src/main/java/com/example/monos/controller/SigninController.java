@@ -1,5 +1,7 @@
 package com.example.monos.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class SigninController {
+	private static final Logger log = LoggerFactory.getLogger(SigninController.class);
 
 	/**
 	 * <p>トップページを表示する。</p>
@@ -18,6 +21,7 @@ public class SigninController {
 	 */
 	@GetMapping
 	public String showIndex() {
+		log.info("トップページ：表示");
 		return "index";
 	}
 	
@@ -27,6 +31,7 @@ public class SigninController {
 	 */
 	@GetMapping("/signin")
 	public String showSignin() {
+		log.info("サインイン画面：表示");
 		return "signin";
 	}
 }
