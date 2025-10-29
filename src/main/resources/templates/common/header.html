@@ -36,7 +36,7 @@
 		        <li class="nav-item">
 		          <a class="nav-link active" aria-current="page" href="#">ホーム</a>
 		        </li>
-		        <li class="nav-item dropdown">
+		        <li sec:authorize="hasRole('ADMIN')" class="nav-item dropdown">
 		          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 		            マスタ
 		          </a>
