@@ -32,8 +32,8 @@ public class MasterServiceTest {
     @DisplayName("【正常系】ロールを全件取得する")
     void testGetAllRoles() {
         var currentTime = new Timestamp(System.currentTimeMillis());
-        var mockRole1 = new Role("ADMIN", "管理者", currentTime, currentTime);
-        var mockRole2 = new Role("GENERAL", "一般", currentTime, currentTime);
+        var mockRole1 = new Role("ROLE_ADMIN", "管理者", currentTime, currentTime);
+        var mockRole2 = new Role("ROLE_GENERAL", "一般", currentTime, currentTime);
         List<Role> mockRoles = Arrays.asList(mockRole1, mockRole2);
         
         when(roleMapper.findAll()).thenReturn(mockRoles);
@@ -48,8 +48,8 @@ public class MasterServiceTest {
         assertThat(result)
             .extracting(Role::getRoleCode, Role::getName, Role::getCreatedAt, Role::getUpdatedAt)
             .containsExactly(
-                tuple("ADMIN", "管理者", currentTime, currentTime),
-                tuple("GENERAL", "一般", currentTime, currentTime)
+                tuple("ROLE_ADMIN", "管理者", currentTime, currentTime),
+                tuple("ROLE_GENERAL", "一般", currentTime, currentTime)
             );
     }
 }

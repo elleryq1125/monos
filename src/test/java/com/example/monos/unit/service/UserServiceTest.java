@@ -60,8 +60,8 @@ public class UserServiceTest {
         void testReturnUserInfo() {
             // Arrange
             int signinUserCompanyId = 12345;
-            var mockUser1 = new UserInfo(1, "test1@gmail.com", "1******", "テスト１","ADMIN","管理者", signinUserCompanyId, "株式会社テスト", null, null);
-            var mockUser2 = new UserInfo(2, "test2@gmail.com", "2******", "テスト２","GENERAL","一般", signinUserCompanyId, "株式会社テスト", null, null);
+            var mockUser1 = new UserInfo(1, "test1@gmail.com", "1******", "テスト１","ROLE_ADMIN","管理者", signinUserCompanyId, "株式会社テスト", null, null);
+            var mockUser2 = new UserInfo(2, "test2@gmail.com", "2******", "テスト２","ROLE_GENERAL","一般", signinUserCompanyId, "株式会社テスト", null, null);
             List<UserInfo> mockUsers = Arrays.asList(mockUser1, mockUser2);
             when(userMapper.findByCompanyId(signinUserCompanyId)).thenReturn(mockUsers);
 
@@ -98,7 +98,7 @@ public class UserServiceTest {
             var userId = 1;
             var signinCompanyId = 12345;
             // 会社IDが一致するユーザー情報
-            var mockUser = new UserInfo(userId, "test1@gmail.com", "1******", "テスト１","ADMIN","管理者", signinCompanyId, "株式会社テスト", null, null);
+            var mockUser = new UserInfo(userId, "test1@gmail.com", "1******", "テスト１","ROLE_ADMIN","管理者", signinCompanyId, "株式会社テスト", null, null);
             when(userMapper.findByUserId(userId)).thenReturn(Optional.of(mockUser));
             
             // Act
@@ -116,7 +116,7 @@ public class UserServiceTest {
             var userId = 1;
             var signinCompanyId = 12345;
             // 会社IDが一致しないユーザー情報
-            var mockUser = new UserInfo(userId, "test1@gmail.com", "1******", "テスト１","ADMIN","管理者", 99999, "株式会社テスト", null, null);
+            var mockUser = new UserInfo(userId, "test1@gmail.com", "1******", "テスト１","ROLE_ADMIN","管理者", 99999, "株式会社テスト", null, null);
             when(userMapper.findByUserId(userId)).thenReturn(Optional.of(mockUser));
             
             // Act

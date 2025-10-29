@@ -179,8 +179,8 @@ public class UserMapperTest {
         jdbcTemplate.update("INSERT INTO companies(company_id, name) VALUES (?, ?)", 1002, "テスト商事");
         
         // users
-        jdbcTemplate.update("INSERT INTO users(user_id, email, password, name, role_code, company_id) VALUES(1, 'test1@test.com', 123, 'テスト１', 'ADMIN', 1001)");
-        jdbcTemplate.update("INSERT INTO users(user_id, email, password, name, role_code, company_id) VALUES(2, 'test2@test.com', 123, 'テスト２', 'GENERAL', 1001)");
-        jdbcTemplate.update("INSERT INTO users(user_id, email, password, name, role_code, company_id) VALUES(3, 'test3@test.com', 123, 'テスト３', 'ADMIN', 1002)");
+        jdbcTemplate.update("INSERT INTO users(user_id, email, password, name, role_code, company_id) VALUES(1, 'test1@test.com', 123, 'テスト１', 'ROLE_ADMIN', 1001)");
+        jdbcTemplate.update("INSERT INTO users(user_id, email, password, name, role_code, company_id) VALUES(2, 'test2@test.com', 123, 'テスト２', 'ROLE_GENERAL', 1001)");
+        jdbcTemplate.update("INSERT INTO users(user_id, email, password, name, role_code, company_id) VALUES(3, 'test3@test.com', 123, 'テスト３', 'ROLE_ADMIN', 1002)");
     }
 }
