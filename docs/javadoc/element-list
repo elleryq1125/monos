@@ -1,0 +1,14 @@
+com.example.monos
+com.example.monos.common
+com.example.monos.controller
+com.example.monos.domain
+com.example.monos.dto
+com.example.monos.filter
+com.example.monos.form
+com.example.monos.mapper
+com.example.monos.security
+com.example.monos.service
+com.example.monos.unit.controller
+com.example.monos.unit.mapper
+com.example.monos.unit.service
+com.example.monos.validation
