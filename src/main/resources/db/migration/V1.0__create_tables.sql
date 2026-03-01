@@ -37,32 +37,3 @@ CREATE TABLE roles (
 	created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TABLE stocks (
-	stock_id SERIAL PRIMARY KEY,
-	version INTEGER,
-	optional_code CHAR(10),
-	name VARCHAR(40),
-	quantity INTEGER,
-	reorder_point INTEGER,
-	storage_location VARCHAR(60),
-	company_id INTEGER,
-	created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	deleted_at TIMESTAMP WITH TIME ZONE NOT NULL,
-	CONSTRAINT fk_stocks_company_id FOREIGN KEY (company_id) REFERENCES companies (company_id) ON DELETE CASCADE
-);
-
-CREATE TABLE receivings (
-	receiving_id SERIAL PRIMARY KEY,
-	quantity INTEGER,
-	stock_id INTEGER,
-	CONSTRAINT fk_receivings_stock_id FOREIGN KEY (stock_id) REFERENCES stocks (stock_id) ON DELETE CASCADE
-);
-
-CREATE TABLE issuings (
-	issuing_id SERIAL PRIMARY KEY,
-	quantity INTEGER,
-	stock_id INTEGER,
-	CONSTRAINT fk_issuings_stock_id FOREIGN KEY (stock_id) REFERENCES stocks (stock_id) ON DELETE CASCADE
-);
