@@ -22,6 +22,7 @@ import com.example.monos.domain.Role;
 import com.example.monos.domain.TempUser;
 import com.example.monos.domain.User;
 import com.example.monos.domain.UserDetailsImpl;
+import com.example.monos.dto.ProductSearchCondition;
 import com.example.monos.dto.ResultMessage;
 import com.example.monos.dto.UserInfo;
 import com.example.monos.form.ProductSearchForm;
@@ -56,7 +57,14 @@ public class ProductController {
     											@ModelAttribute ProductSearchForm form,
 												Model model) {
     	log.info("商品一覧画面：表示");
-        List<Product> products = productService.search(form, signinUser.getCompanyId());
+    	
+    	// 入力条件を検索用DTOに設定
+    	var condition = new ProductSearchCondition();
+    	condition.setCompanyId(signinUser.getCompanyId());
+    	condition.setProductCode(form.getProductCode());
+    	condition.setName(form.getName());
+    	
+        List<Product> products = productService.search(condition);
         model.addAttribute("products", products);
         
         return "/products/products";

@@ -39,13 +39,13 @@
 
 /* 検索ボタン */
 .search-btn{
-	background:#81888f;
-	border-color: #81888f;
-  	color: #ffffff;
+	background:#d9dada;
+	border-color: #d9dada;
+  	color: #000000;
 	font-size:14px;
 	min-width: 80px;
 }
 .search-btn:hover{
-	background: #6c757d;
-	color: #ffffff;
+	background: #a9aaaa;
+	color: #000000;
 }

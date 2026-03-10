@@ -29,8 +29,9 @@
 			<div id="proccessButtons">
 				<a class="btn main-btn" href="/users/add">追加</a>
 			</div>
-			<div id="content">
-				<div id="contentTitle">
+			
+			<div class="content">
+				<div class="contentTitle">
 					商品一覧
 				</div>
 				<div class="data-table" style="height: 400px;">
@@ -46,19 +47,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="user:${companyUsers}" th:object="${user}">
+							<tr th:each="product:${products}" th:object="${product}">
+								<td th:text="*{productCode}"></td>
 								<td th:text="*{name}"></td>
-								<td th:text="*{email}"></td>
-								<td th:text="*{roleName}"></td>
-								<td th:text="${#dates.format(user.updatedAt, 'yyyy/MM/dd')}"></td>
-								<td>
+								<td th:text="*{unit}"></td>
+								<td th:text="${#dates.format(product.updatedAt, 'yyyy/MM/dd')}"></td>
+								<!--<td>
 									<a class="btn main-btn" th:href="@{/users/update/{userId}(userId=*{userId})}">更新</a>
 								</td>
 								<td>
 									<form method="post" name="user-delete" th:action="@{/users/delete/{userId}(userId=*{userId})}" th:attr="data-user-name=*{name}">
 										<button  class="btn grey-btn" type="submit">削除</button>
 									</form>
-								</td>
+								</td>-->
 							</tr> 
 						</tbody>
 					</table>
