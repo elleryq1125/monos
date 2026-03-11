@@ -21,7 +21,6 @@ public class SigninController {
 	 */
 	@GetMapping
 	public String showIndex() {
-		log.info("トップページ：表示");
 		return "index";
 	}
 	
@@ -31,7 +30,6 @@ public class SigninController {
 	 */
 	@GetMapping("/signin")
 	public String showSignin() {
-		log.info("サインイン画面：表示");
 		return "signin";
 	}
 }

@@ -36,7 +36,6 @@ import com.example.monos.service.UserService;
 @Controller
 @RequestMapping("/users")
 public class UsersController {
-    private final static Logger log = LoggerFactory.getLogger(UsersController.class);
     private final TempUserService tempUserService;
     private final UserService userService;
     private final MasterService masterService;
@@ -53,7 +52,6 @@ public class UsersController {
      */
     @GetMapping
     public String showUsers(@AuthenticationPrincipal UserDetailsImpl signinUser, Model model) {
-    	log.info("ユーザー一覧画面：表示");
         List<UserInfo> companyUsers = userService.getUserInfoInCompany(signinUser.getCompanyId());
         model.addAttribute("companyUsers", companyUsers);
         
@@ -67,7 +65,6 @@ public class UsersController {
      */
     @GetMapping("/add")
     public String showUserAddForm(UserAddForm userAddForm, Model model) {
-    	log.info("ユーザー追加画面：表示");
         setUserAddFormSelectionValues(model);
         return "/users/user-add";
     }
@@ -84,10 +81,8 @@ public class UsersController {
      */
     @PostMapping("/add")
     public String userAdd(@AuthenticationPrincipal UserDetailsImpl signinUser, @Validated UserAddForm userAddForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-    	log.info("ユーザー追加画面：仮登録処理 開始");
     	
         if (result.hasErrors()) {
-        	log.info("ユーザー追加画面：仮登録処理 入力エラー");
             setUserAddFormSelectionValues(model);
             return "/users/user-add";
         }
@@ -104,8 +99,6 @@ public class UsersController {
         redirectAttributes.addFlashAttribute("resultMessageType", resultMessage.getType());
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage.getMessage());
         
-        log.info("ユーザー追加画面：仮登録処理 正常完了");
-        
         return "redirect:/users";
     }
     
@@ -119,12 +112,10 @@ public class UsersController {
      */
     @GetMapping("/update/{userId}")
     public String showUserUpdateForm(@AuthenticationPrincipal UserDetailsImpl signinUser, @PathVariable int userId, UserUpdateForm userUpdateForm, Model model) {
-    	log.info("ユーザー更新画面：表示");
     	
         // 会社に存在しないユーザーID
         Optional<UserInfo> updateUserOp = userService.getUserInfo(userId, signinUser.getCompanyId());
         if (updateUserOp.isEmpty()) {
-        	log.warn("ユーザー更新画面：パラメータに不正なユーザーIDが指定されたためリダイレクト");
             return "redirect:/users";
         }
 
@@ -152,10 +143,8 @@ public class UsersController {
      */
     @PostMapping("/update/{userId}")
     public String userUpdate(@AuthenticationPrincipal UserDetailsImpl signinUser,@PathVariable int userId, @Validated UserUpdateForm userUpdateForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-    	log.info("ユーザー更新画面：ユーザー情報の更新処理 開始");
         
     	if (result.hasErrors()) {
-    		log.info("ユーザー更新画面：ユーザー情報の更新処理 入力エラー");
     		setUserUpdateFormSelectionValues(model);
             return "users/user-update";
         }
@@ -168,8 +157,6 @@ public class UsersController {
         
         redirectAttributes.addFlashAttribute("resultMessageType", resultMessage.getType());
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage.getMessage());
-        
-        log.info("ユーザー更新画面：ユーザー情報の更新処理 正常完了");
         
         return "redirect:/users";
     }
@@ -184,13 +171,10 @@ public class UsersController {
      */
     @PostMapping("/delete/{userId}")
     public String userDelete(@AuthenticationPrincipal UserDetailsImpl signinUser,@PathVariable int userId, RedirectAttributes redirectAttributes) {
-    	log.info("ユーザー一覧画面：ユーザー情報の削除処理 開始");
         ResultMessage resultMessage = userService.deleteUser(userId, signinUser);
         
         redirectAttributes.addFlashAttribute("resultMessageType", resultMessage.getType());
         redirectAttributes.addFlashAttribute("resultMessage", resultMessage.getMessage());
-        
-        log.info("ユーザー一覧画面：ユーザー情報の削除処理 正常完了");
         
         return "redirect:/users";
     }
