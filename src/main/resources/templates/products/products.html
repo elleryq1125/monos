@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{common/head :: head-fragment(title = '商品一覧', scripts = ~{}, links = ~{})}">
+	<head th:replace="~{common/head :: head-fragment(title = '商品一覧', scripts = ~{::script}, links = ~{})}">
+		<script th:src="@{/scripts/products.js}"></script>
 	</head>
 	<body>
 		<!-- ヘッダー -->
@@ -27,7 +28,7 @@
 			</form>
 			
 			<div id="proccessButtons">
-				<a class="btn main-btn" href="/users/add">追加</a>
+				<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#productModal" onclick="openProductAddModal()" >追加</button>
 			</div>
 			
 			<div class="content">
@@ -65,6 +66,44 @@
 					</table>
 				</div>
 			</div>
+			
+			<!-- モーダル -->
+			<div class="modal fade" data-bs-backdrop="static" id="productModal" tabindex="-1">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			
+			      <div class="modal-header">
+			        <h6 id="modalTitle" class="modal-title">商品登録</h6>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			      </div>
+			
+			      <div class="modal-body">
+			
+			        <form id="productForm">
+			
+			          <input type="hidden" id="productId" name="productId">
+			
+			          <div class="mb-3 form-field">
+			            <label>商品名</label>
+			            <input type="text" class="form-control" id="productName" name="productName">
+			          </div>
+			
+			          <div class="mb-3">
+			            <label class="form-label">価格</label>
+			            <input type="number" class="form-control" id="price" name="price">
+			          </div>
+			
+			        </form>
+			
+			      </div>
+			
+			      <div class="modal-footer">
+			        <button class="btn main-btn" onclick="saveProduct()">保存</button>
+			        <button class="btn grey-btn" data-bs-dismiss="modal">閉じる</button>
+			      </div>
+			
+			    </div>
+			  </div>
 		</main>
 		
 		<!-- フッター -->
