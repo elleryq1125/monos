@@ -56,6 +56,22 @@
 					$alert.hide();
 				}, 3000);
 			});
+			
+			// エラーアラートを表示
+			function showErrorAlert(message){
+				let $alert;
+				let $alertMessage;
+				
+				$alert = $('#errorAlert');
+				$alertMessage =  $('#errorAlertMessage');
+				
+				$alert.show();
+				$alertMessage.text(message);
+				
+				setTimeout(function(){
+					$alert.hide();
+				}, 3000);
+			}
 		</script>
 	</div>
 </html>

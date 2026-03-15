@@ -26,4 +26,22 @@
 			ORDER BY
 				product_code;
 		</select>
+		
+		<select id="selectById" resultType="com.example.monos.domain.Product">
+			SELECT 
+				product_id
+				,company_id
+				,product_code
+				,name
+				,unit
+				,active
+				,created_at
+				,updated_at
+				,deleted_at
+			FROM 
+				products
+			WHERE
+				product_id = #{productId}
+				AND company_id = #{companyId}
+		</select>
 </mapper>

@@ -53,6 +53,9 @@
 								<td th:text="*{name}"></td>
 								<td th:text="*{unit}"></td>
 								<td th:text="${#dates.format(product.updatedAt, 'yyyy/MM/dd')}"></td>
+								<td>
+									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#productModal" th:onclick="'openProductUpdateModal(' + *{productId} + ')'">更新</button>
+								</td>
 								<!--<td>
 									<a class="btn main-btn" th:href="@{/users/update/{userId}(userId=*{userId})}">更新</a>
 								</td>
@@ -77,24 +80,30 @@
 			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			      </div>
 			
-			      <div class="modal-body">
-			
+			      <div class="modal-body">	
 			        <form id="productForm">
-			
-			          <input type="hidden" id="productId" name="productId">
-			
+						
+			          <input type="hidden" id="modalProductId">
+			          
+			          <div class="mb-3 form-field">
+						  <label class="required">商品コード</label>
+						  <input type="text" class="w-120" id="modalProductCode">
+					      <div class="text-denger" id="modalProductCodeError"></div>
+					  </div>
+			          
 			          <div class="mb-3 form-field">
 			            <label>商品名</label>
-			            <input type="text" class="form-control" id="productName" name="productName">
+			            <input type="text" id="modalName">
+				        <div class="text-denger" id="modalNameError"></div>
 			          </div>
 			
-			          <div class="mb-3">
-			            <label class="form-label">価格</label>
-			            <input type="number" class="form-control" id="price" name="price">
+			          <div class="mb-3 form-field">
+			            <label class="form-label">単位</label>
+			            <input type="text" class="w-120" id="modalUnit">
+					    <div class="text-denger" id="modalUnitError"></div>
 			          </div>
 			
 			        </form>
-			
 			      </div>
 			
 			      <div class="modal-footer">
@@ -111,5 +120,6 @@
 		
 		<!-- アラート -->
 		<div th:replace="~{common/alert :: alert-fragment}"></div>
+		
 	</body>
 </html>
