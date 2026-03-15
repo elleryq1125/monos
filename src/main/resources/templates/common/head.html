@@ -2,7 +2,9 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 	<head th:fragment="head-fragment(title, scripts, links)">
 		<meta charset="UTF-8" />
-	  <title th:text="${title}"></title>
+		<meta name="_csrf" th:content="${_csrf.token}">
+		<meta name="_csrf_header" th:content="${_csrf.headerName}">
+ 	 <title th:text="${title}"></title>
 	  <!-- Normalize CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
 		<!-- Bootstrap CSS -->

@@ -67,6 +67,11 @@
   display: inline-block;
 }
 
+.field-error{
+	font-size: 13px;
+	color:red;
+}
+
 .w-80  { width: 80px; }
 .w-120 { width: 120px; }
 .w-160 { width: 160px; }

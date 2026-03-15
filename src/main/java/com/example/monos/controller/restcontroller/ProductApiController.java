@@ -5,15 +5,22 @@ import java.util.Optional;
 
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.monos.domain.Product;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.dto.ApiResponse;
+import com.example.monos.form.ProductInputForm;
 import com.example.monos.service.ProductService;
+
+import jakarta.validation.Valid;
 
 /**
  * <p>商品関連画面の非同期処理を担当する。</p>
@@ -47,4 +54,15 @@ public class ProductApiController {
 					messageSource.getMessage("dataNotExists", new String[] {}, Locale.JAPAN));
 		}
 	}
+	
+		@PostMapping("/save")
+		public ApiResponse<Product> save(@AuthenticationPrincipal UserDetailsImpl signinUser,
+																 @Valid @RequestBody  ProductInputForm form,
+																 BindingResult result){
+			
+			if (result.hasErrors()) {
+				return ApiResponse.validationError(result);
+			}
+			return null;
+		}
 }

@@ -1,6 +1,9 @@
 package com.example.monos.dto;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.validation.BindingResult;
 
 import lombok.Data;
 
@@ -62,11 +65,16 @@ public class ApiResponse<T> {
 	 * @param fieldErrors　フィールドエラー
 	 * @return ApiResponse
 	 */
-	public static  <T>ApiResponse<T> fieldError(String message, Map<String, String> fieldErrors){
-		var res = new ApiResponse<T>();
-		res.success = false;
-		res.message = message;
-		res.fieldErrors = fieldErrors;
-		return res;
-	}
+	 public static <T>ApiResponse<T> validationError(BindingResult result){
+	        Map<String,String> errors = new HashMap<>();
+	        result.getFieldErrors().forEach(e ->
+	                errors.put(e.getField(), e.getDefaultMessage())
+	        );
+
+	        var res = new ApiResponse<T>();
+	        res.success = false;
+	        res.fieldErrors = errors;
+
+	        return res;
+	    }
 }
