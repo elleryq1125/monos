@@ -9,4 +9,5 @@ import com.example.monos.dto.ProductSearchCondition;
 public interface ProductService {
 	List<Product> search(ProductSearchCondition condition);
 	Optional<Product> findById(int productId, int companyId);
+	void save(Product product);
 }

@@ -59,22 +59,35 @@ public class ApiResponse<T> {
 	}
 	
 	/**
-	 * <p>入力エラーを返却する。</p>
+	 * <p>バリデーションエラーを返却する。</p>
 	 * @param <T>
-	 * @param message メッセージ
-	 * @param fieldErrors　フィールドエラー
+	 * @param result BindingResult
 	 * @return ApiResponse
 	 */
 	 public static <T>ApiResponse<T> validationError(BindingResult result){
-	        Map<String,String> errors = new HashMap<>();
-	        result.getFieldErrors().forEach(e ->
-	                errors.put(e.getField(), e.getDefaultMessage())
-	        );
+		 Map<String,String> errors = new HashMap<>();
+		 result.getFieldErrors().forEach(e ->
+		 	errors.put(e.getField(), e.getDefaultMessage())
+		 );
 
-	        var res = new ApiResponse<T>();
-	        res.success = false;
-	        res.fieldErrors = errors;
+	     var res = new ApiResponse<T>();
+	     res.success = false;
+	     res.fieldErrors = errors;
 
-	        return res;
-	    }
+	     return res;
+	 }
+	 
+	 /**
+	  * <p>バリデーションエラーを返却する</p>
+	 * @param <T>
+	 * @param errors HashMap<入力項目のid, エラーメッセージ>
+	 * @return
+	 */
+	public static <T>ApiResponse<T> validationError(Map<String, String> errors){
+	     var res = new ApiResponse<T>();
+	     res.success = false;
+	     res.fieldErrors = errors;
+
+	     return res;
+	 }
 }

@@ -44,4 +44,14 @@
 				product_id = #{productId}
 				AND company_id = #{companyId}
 		</select>
+		
+		<select id="existsByProductCode" resultType="boolean">
+			SELECT
+				COUNT(*) > 0
+			FROM
+				products
+			WHERE
+				product_code = #{productCode}
+				AND company_id = #{companyId}
+		</select>
 </mapper>

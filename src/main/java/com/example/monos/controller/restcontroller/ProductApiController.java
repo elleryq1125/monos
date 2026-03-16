@@ -7,7 +7,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.monos.domain.Product;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.dto.ApiResponse;
+import com.example.monos.exception.BusinessException;
 import com.example.monos.form.ProductInputForm;
 import com.example.monos.service.ProductService;
 
@@ -55,14 +55,31 @@ public class ProductApiController {
 		}
 	}
 	
-		@PostMapping("/save")
-		public ApiResponse<Product> save(@AuthenticationPrincipal UserDetailsImpl signinUser,
-																 @Valid @RequestBody  ProductInputForm form,
-																 BindingResult result){
-			
-			if (result.hasErrors()) {
-				return ApiResponse.validationError(result);
-			}
-			return null;
+	@PostMapping("/save")
+	public ApiResponse<Product> save(@AuthenticationPrincipal UserDetailsImpl signinUser,
+															 @Valid @RequestBody  ProductInputForm form,
+															 BindingResult result){
+		// バリデーションチェック
+		if (result.hasErrors()) {
+			return ApiResponse.validationError(result);
 		}
+		
+		try {
+			// 追加・更新用のDomainを作成
+			var product = new Product();
+			product.setProductId(form.getProductId());
+			product.setCompanyId(signinUser.getCompanyId());
+			product.setProductCode(form.getProductCode());
+			product.setName(form.getName());
+			product.setUnit(form.getUnit());
+			
+			// 商品情報の追加・更新処理
+			productService.save(product);
+			
+		} catch (BusinessException e) {
+			return ApiResponse.validationError(e.getErrors());
+		}
+		
+		return null;
+	}
 }

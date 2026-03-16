@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 public class ProductInputForm {
-	private int productId;
+	private Integer productId;
 	
 	@NotBlank(message = "{NotBlank.productInputForm.productCode}")
 	@Pattern(regexp = "^[A-Z0-9-]+$", message = "{Pattern.productInputForm.productCode}")
