@@ -34,6 +34,9 @@ async function saveProduct(){
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 	
+	// エラークリア
+	clearModalFieldErros();
+	
 	// 入力データを設定
 	const form = {
 		productId: document.getElementById("modalProductId").value,
@@ -57,15 +60,8 @@ async function saveProduct(){
 		
 	}else{
 		if (result.message == null){
-			
-			for(const key in result.fieldErrors){
-				const element = document.getElementById(key + "Error");
-
-		        if(element){
-		            element.innerText = result.fieldErrors[key];
-	        	}
-	    	}
-	    	
+			// バリデーションエラー表示
+			showModalFieldErrors(result.fieldErrors);
 		}
 	}
 }
