@@ -38,9 +38,11 @@ public class ProductApiController {
 	}
 
 	/**
-	 * <p>IDに紐づく商品情報を返却する。</p>
+	 * 指定された商品IDの商品情報を取得する。
+	 * @param signinUser サインインユーザー
 	 * @param productId 商品ID
-	 * @return 商品情報またはエラーメッセージ
+	 * @return 商品情報を含むAPIレスポンス。
+	 * <p>該当データが存在しない場合はエラーメッセージを返却する。</p>
 	 */
 	@GetMapping("/{productId}")
 	public ApiResponse<Product> get(@AuthenticationPrincipal UserDetailsImpl signinUser,
@@ -55,6 +57,15 @@ public class ProductApiController {
 		}
 	}
 	
+	/**
+	 * 商品情報を登録または更新する。
+	 * @param signinUser サインインユーザー
+	 * @param form 商品入力情報
+	 * @param result バリデーション結果
+	 * @return 処理結果を含むAPIレスポンス
+	 * <p>バリデーションエラーがある場合はエラー内容を返却する。</p>
+	 * <p>業務エラーが発生した場合はエラー内容を返却する。</p>
+	 */
 	@PostMapping("/save")
 	public ApiResponse<Product> save(@AuthenticationPrincipal UserDetailsImpl signinUser,
 															 @Valid @RequestBody  ProductInputForm form,
@@ -74,12 +85,12 @@ public class ProductApiController {
 			product.setUnit(form.getUnit());
 			
 			// 商品情報の追加・更新処理
-			productService.save(product);
+			String resultMessage = productService.save(product);
+			
+			return ApiResponse.successMessage(resultMessage);
 			
 		} catch (BusinessException e) {
 			return ApiResponse.validationError(e.getErrors());
 		}
-		
-		return null;
 	}
 }

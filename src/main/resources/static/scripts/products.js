@@ -57,7 +57,10 @@ async function saveProduct(){
 	const result = await res.json();
 	
 	if (result.success){	
-		
+		const modalEl = document.getElementById("productModal");
+		const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+        
 	}else{
 		if (result.message == null){
 			// バリデーションエラー表示

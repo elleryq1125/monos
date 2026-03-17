@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	/**
-	 * 商品を検索する。
+	 * 検索条件に合致する商品情報を検索する。
 	 * @param condition 商品一覧画面の検索条件DTO
 	 * @return 商品情報のリスト
 	 */
@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	/**
-	 * 商品を1件取得する。
+	 * 特定の企業IDを持つ商品情報を1件取得する。
 	 * @param productId 商品ID
 	 * @param companyId 企業ID
 	 * @return 商品情報
@@ -50,7 +50,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void save(Product product) {
+	public String save(Product product) {
+		String resultMaeesage = "";
+		
 		// IDが未設定なら追加、それ以外は更新
 		if (product.getProductId() == null) {
 			
@@ -60,6 +62,15 @@ public class ProductServiceImpl implements ProductService {
 				errors.put("productCode", messageSource.getMessage("existsProductCode", new String[] {}, Locale.JAPAN));
 				throw new BusinessException(errors);
 			}
+			
+			// 商品情報の登録
+			productMapper.insert(product);	
+			resultMaeesage = messageSource.getMessage("registComplete", null, Locale.JAPAN);
+			
+		} else {
+			resultMaeesage = messageSource.getMessage("updateComplete", null, Locale.JAPAN);
 		}
+		
+		return resultMaeesage;
 	}
 }

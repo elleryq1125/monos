@@ -54,4 +54,19 @@
 				product_code = #{productCode}
 				AND company_id = #{companyId}
 		</select>
+		
+		<insert id="insert" parameterType="com.example.monos.domain.Product">
+			INSERT INTO products(
+				company_id,
+				product_code,
+				name,
+				unit
+			)
+			VALUES(
+				#{companyId},
+				#{productCode},
+				#{name},
+				#{unit}
+			)
+		</insert>
 </mapper>
