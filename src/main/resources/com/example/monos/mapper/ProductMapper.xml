@@ -69,4 +69,14 @@
 				#{unit}
 			)
 		</insert>
+		
+		<update id="update" parameterType="com.example.monos.domain.Product">
+			UPDATE products 
+			SET
+				name = #{name},
+				unit = #{unit}
+			WHERE
+				product_id = #{productId}
+				AND company_id = #{companyId}
+		</update>
 </mapper>

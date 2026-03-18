@@ -1,14 +1,24 @@
 // 商品登録モーダル表示
 function openProductAddModal(){  
+　// フィールドエラークリア
+  clearModalFieldErros();
+  
+  // 初期値設定
   document.getElementById("modalTitle").innerText = "商品登録";
   document.getElementById("modalProductId").value = "";
   document.getElementById("modalProductCode").value = "";
   document.getElementById("modalName").value = "";
   document.getElementById("modalUnit").value = "";
+  
+　// 商品コード活性
+　document.getElementById("modalProductCode").disabled = false;
 }
 
 // 商品更新モーダル表示
 async function openProductUpdateModal(productId){
+	// フィールドエラークリア
+	clearModalFieldErros();
+	
 	document.getElementById("modalTitle").innerText = "商品更新";
 	document.getElementById("modalProductId").value = productId;
 	
@@ -22,6 +32,9 @@ async function openProductUpdateModal(productId){
 		document.getElementById("modalProductCode").value = product.productCode;
 		document.getElementById("modalName").value = product.name;
 		document.getElementById("modalUnit").value = product.unit;
+		
+		// 商品コード非活性
+		document.getElementById("modalProductCode").disabled = true;
 	} else{
 		alert(result.message);
 		return;
@@ -34,7 +47,7 @@ async function saveProduct(){
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 	
-	// エラークリア
+	// フィールドエラークリア
 	clearModalFieldErros();
 	
 	// 入力データを設定

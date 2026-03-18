@@ -7,10 +7,12 @@ import java.util.Optional;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.monos.domain.Product;
 import com.example.monos.dto.ProductSearchCondition;
 import com.example.monos.exception.BusinessException;
+import com.example.monos.exception.FatalBusinessException;
 import com.example.monos.mapper.ProductMapper;
 
 
@@ -50,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public String save(Product product) {
 		String resultMaeesage = "";
 		
@@ -68,7 +71,15 @@ public class ProductServiceImpl implements ProductService {
 			resultMaeesage = messageSource.getMessage("registComplete", null, Locale.JAPAN);
 			
 		} else {
-			resultMaeesage = messageSource.getMessage("updateComplete", null, Locale.JAPAN);
+			
+			// 商品情報の更新
+			int count = productMapper.update(product);
+			
+			if (count == 0) {
+				throw new FatalBusinessException(messageSource.getMessage("updateFaild", null, Locale.JAPAN));
+			} else {
+				resultMaeesage = messageSource.getMessage("updateComplete", null, Locale.JAPAN);
+			}
 		}
 		
 		return resultMaeesage;

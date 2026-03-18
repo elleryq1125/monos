@@ -75,22 +75,18 @@ public class ProductApiController {
 			return ApiResponse.validationError(result);
 		}
 		
-		try {
-			// 追加・更新用のDomainを作成
-			var product = new Product();
-			product.setProductId(form.getProductId());
-			product.setCompanyId(signinUser.getCompanyId());
-			product.setProductCode(form.getProductCode());
-			product.setName(form.getName());
-			product.setUnit(form.getUnit());
-			
-			// 商品情報の追加・更新処理
-			String resultMessage = productService.save(product);
-			
-			return ApiResponse.successMessage(resultMessage);
-			
-		} catch (BusinessException e) {
-			return ApiResponse.validationError(e.getErrors());
-		}
+		
+		// 追加・更新用のDomainを作成
+		var product = new Product();
+		product.setProductId(form.getProductId());
+		product.setCompanyId(signinUser.getCompanyId());
+		product.setProductCode(form.getProductCode());
+		product.setName(form.getName());
+		product.setUnit(form.getUnit());
+		
+		// 商品情報の追加・更新処理
+		String resultMessage = productService.save(product);
+		
+		return ApiResponse.successMessage(resultMessage);
 	}
 }
