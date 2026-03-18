@@ -1,0 +1,2 @@
+ALTER TABLE products ALTER COLUMN product_code TYPE VARCHAR(10);
+ALTER TABLE warehouses ALTER COLUMN warehouse_code TYPE VARCHAR(10);
