@@ -49,13 +49,19 @@
 						break;
 				};
 				
-				$alert.show();
-				$alertMessage.text(resultMessage);
-				
-				setTimeout(function(){
-					$alert.hide();
-				}, 3000);
+				showAlert($alert, $alertMessage, resultMessage);
 			});
+			
+			// 成功アラートを表示
+			function showSuccessAlert(message){
+				let $alert;
+				let $alertMessage;
+				
+				$alert = $('#successAlert');
+				$alertMessage =  $('#successAlertMessage');
+				
+				showAlert($alert, $alertMessage, message);
+			}
 			
 			// エラーアラートを表示
 			function showErrorAlert(message){
@@ -65,6 +71,11 @@
 				$alert = $('#errorAlert');
 				$alertMessage =  $('#errorAlertMessage');
 				
+				showAlert($alert, $alertMessage, message);
+			}
+			
+			// アラート表示（共通処理）
+			function showAlert($alert, $alertMessage, message){
 				$alert.show();
 				$alertMessage.text(message);
 				
