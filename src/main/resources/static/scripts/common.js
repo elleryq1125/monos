@@ -14,3 +14,10 @@ function showModalFieldErrors(fieldErrors){
     	}
 	}
 }
+
+// モーダル終了
+function hideModal(modalId){
+	const modalEl = document.getElementById(modalId);
+	const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+}

@@ -57,14 +57,17 @@ async function saveProduct(){
 	const result = await res.json();
 	
 	if (result.success){	
-		const modalEl = document.getElementById("productModal");
-		const modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-        
+		// モーダルを非表示にして成功メッセージ表示
+		hideModal("productModal");
+		showSuccessAlert(result.message);
 	}else{
 		if (result.message == null){
 			// バリデーションエラー表示
 			showModalFieldErrors(result.fieldErrors);
+		}else{
+			// モーダルを非表示にしてエラーメッセージ表示
+			hideModal("productModal");
+			showErrorAlert(result.message);
 		}
 	}
 }
