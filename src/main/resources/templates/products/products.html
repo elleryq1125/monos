@@ -11,7 +11,7 @@
 		<main class="wrapper">
 			
 			<!--検索フォーム -->
-			<form class="search-form" th:action="@{/products}" th:object="${productSearchForm}" method="get">
+			<form class="search-form" id="searchForm" th:action="@{/products}" th:object="${productSearchForm}" method="get">
 				<div class="form-row">
 					<div class="form-field">
 						<label>商品コード</label>

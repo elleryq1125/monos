@@ -36,8 +36,10 @@ async function openProductUpdateModal(productId){
 		// 商品コード非活性
 		document.getElementById("modalProductCode").disabled = true;
 	} else{
-		alert(result.message);
-		return;
+		// モーダルを非表示にしてエラーメッセージ表示
+		hideModal("productModal");
+		setErrorMessage(result.message);
+		search();
 	}
 }
 
@@ -72,7 +74,8 @@ async function saveProduct(){
 	if (result.success){	
 		// モーダルを非表示にして成功メッセージ表示
 		hideModal("productModal");
-		showSuccessAlert(result.message);
+		setSuccessMessage(result.message);
+		search();
 	}else{
 		if (result.message == null){
 			// バリデーションエラー表示
@@ -80,7 +83,13 @@ async function saveProduct(){
 		}else{
 			// モーダルを非表示にしてエラーメッセージ表示
 			hideModal("productModal");
-			showErrorAlert(result.message);
+			setErrorMessage(result.message);
+			search();
 		}
 	}
+}
+
+// 検索
+function search(){
+	document.getElementById("searchForm").submit();
 }
