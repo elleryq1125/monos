@@ -60,13 +60,15 @@
 				company_id,
 				product_code,
 				name,
-				unit
+				unit,
+				active
 			)
 			VALUES(
 				#{companyId},
 				#{productCode},
 				#{name},
-				#{unit}
+				#{unit},
+				#{active}
 			)
 		</insert>
 		
@@ -74,7 +76,8 @@
 			UPDATE products 
 			SET
 				name = #{name},
-				unit = #{unit}
+				unit = #{unit},
+				active = #{active}
 			WHERE
 				product_id = #{productId}
 				AND company_id = #{companyId}

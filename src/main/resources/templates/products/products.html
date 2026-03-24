@@ -40,10 +40,9 @@
 						<thead>
 							<tr>
 								<th style="width: 20%;">コード</th>
-								<th style="width: 30%;">商品名</th>
+								<th style="width: 40%;">商品名</th>
 								<th style="width: 10%">単位</th>
 								<th style="width: 14%;">更新日</th>
-								<th style="width: 13%;"></th>
 								<th style="width: 13%;"></th>
 							</tr>
 						</thead>
@@ -56,14 +55,6 @@
 								<td>
 									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#productModal" th:onclick="'openProductUpdateModal(' + *{productId} + ')'">更新</button>
 								</td>
-								<!--<td>
-									<a class="btn main-btn" th:href="@{/users/update/{userId}(userId=*{userId})}">更新</a>
-								</td>
-								<td>
-									<form method="post" name="user-delete" th:action="@{/users/delete/{userId}(userId=*{userId})}" th:attr="data-user-name=*{name}">
-										<button  class="btn grey-btn" type="submit">削除</button>
-									</form>
-								</td>-->
 							</tr> 
 						</tbody>
 					</table>
@@ -101,6 +92,11 @@
 			            <label class="form-label">単位</label>
 			            <input type="text" class="w-120" id="modalUnit">
 					    <div class="field-error" id="unitError"></div>
+			          </div>
+			          
+			          <div class="mb-3 form-field">
+			            <label class="form-label">有効化</label>
+			            <input type="checkbox" class="w-15" id="modalActive">
 			          </div>
 			
 			        </form>

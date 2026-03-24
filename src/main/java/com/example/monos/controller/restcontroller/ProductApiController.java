@@ -83,6 +83,7 @@ public class ProductApiController {
 		product.setProductCode(form.getProductCode());
 		product.setName(form.getName());
 		product.setUnit(form.getUnit());
+		product.setActive(form.isActive());
 		
 		// 商品情報の追加・更新処理
 		String resultMessage = productService.save(product);

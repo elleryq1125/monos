@@ -9,6 +9,7 @@ function openProductAddModal(){
   document.getElementById("modalProductCode").value = "";
   document.getElementById("modalName").value = "";
   document.getElementById("modalUnit").value = "";
+  document.getElementById("modalActive").checked = true;
   
 　// 商品コード活性
 　document.getElementById("modalProductCode").disabled = false;
@@ -32,6 +33,7 @@ async function openProductUpdateModal(productId){
 		document.getElementById("modalProductCode").value = product.productCode;
 		document.getElementById("modalName").value = product.name;
 		document.getElementById("modalUnit").value = product.unit;
+		document.getElementById("modalActive").checked = product.active;
 		
 		// 商品コード非活性
 		document.getElementById("modalProductCode").disabled = true;
@@ -57,7 +59,8 @@ async function saveProduct(){
 		productId: document.getElementById("modalProductId").value,
 		productCode: document.getElementById("modalProductCode").value,
 		name: document.getElementById("modalName").value,
-		unit: document.getElementById("modalUnit").value
+		unit: document.getElementById("modalUnit").value,
+		active: document.getElementById("modalActive").checked
 	};
 	
 	// リクエスト

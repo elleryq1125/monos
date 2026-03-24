@@ -23,4 +23,6 @@ public class ProductInputForm {
 	
 	@Size(max = 10, message = "{Size.productInputForm.unit}")
 	private String unit;
+	
+	private boolean active;
 }
