@@ -43,6 +43,7 @@ public class ProductController {
     	condition.setCompanyId(signinUser.getCompanyId());
     	condition.setProductCode(form.getProductCode());
     	condition.setName(form.getName());
+    	condition.setActive(form.isActive());
     	
         List<Product> products = productService.search(condition);
         model.addAttribute("products", products);

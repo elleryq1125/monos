@@ -17,6 +17,7 @@
 				products
 			WHERE
 				company_id = #{companyId}
+				AND active = #{active}
 				<if test="productCode != null and productCode != ''">
 					AND product_code LIKE CONCAT('%', #{productCode}, '%')
 				</if>

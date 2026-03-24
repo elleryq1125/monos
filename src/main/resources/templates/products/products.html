@@ -21,6 +21,10 @@
 						<label>商品名</label>
 						<input class="" type="text" th:field="*{name}">
 					</div>
+					<div class="form-field">
+						<label for="active">有効化</label>
+						<input class="w-15" type="checkbox" th:field="*{active}" >
+					</div>
 					<div class="form-actions">
 						<button class="btn search-btn" type="submit">検索</button>
 					</div>
@@ -95,7 +99,7 @@
 			          </div>
 			          
 			          <div class="mb-3 form-field">
-			            <label class="form-label">有効化</label>
+			            <label class="form-label" for="modalActive">有効化</label>
 			            <input type="checkbox" class="w-15" id="modalActive">
 			          </div>
 			

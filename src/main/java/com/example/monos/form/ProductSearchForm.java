@@ -11,5 +11,5 @@ public class ProductSearchForm {
     
     private String productCode;
     private String name;
-    private boolean active;
+    private boolean active = true;
 }

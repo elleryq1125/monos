@@ -6,5 +6,6 @@ import lombok.Data;
 public class ProductSearchCondition {
 	int companyId;
 	String productCode;
-	String Name;
+	String name;
+	boolean active;
 }
