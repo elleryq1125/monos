@@ -1,0 +1,81 @@
+/* コンテンツ */
+.content{
+	margin-top:10px;
+	margin-left:20px;
+}
+.contentTitle{
+	font-size: 15px;
+	border-bottom:3px solid #dbdbdb;
+	margin:0 10px 10px 0;
+}
+
+/* フォーム横並び */
+.form-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+/* ラベル + 入力 */	
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ラベル */
+.form-field label {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* 入力 */
+.form-field input {
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* ボタンエリア */
+.form-actions {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* 検索フォーム */
+.search-form{
+  	padding: 12px 16px;
+  	background: #f8f8f8;
+  	border-radius: 4px;
+}
+
+/* 必須マーク */
+.required::after {
+  content: "必須";
+  background-color:var(--main-color);
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 10px;
+  padding: 3px 7px;
+  margin: 0px 5px;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.field-error{
+	font-size: 13px;
+	color:red;
+}
+
+.w-15  { width: 15px; }
+.w-80  { width: 80px; }
+.w-120 { width: 120px; }
+.w-160 { width: 160px; }
+.w-200 { width: 200px; }
+.w-240 { width: 240px; }
+.w-300 { width: 300px; }

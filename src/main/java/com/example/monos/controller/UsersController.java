@@ -1,9 +1,10 @@
 package com.example.monos.controller;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,6 @@ import com.example.monos.service.UserService;
 @Controller
 @RequestMapping("/users")
 public class UsersController {
-    
     private final TempUserService tempUserService;
     private final UserService userService;
     private final MasterService masterService;
@@ -81,6 +81,7 @@ public class UsersController {
      */
     @PostMapping("/add")
     public String userAdd(@AuthenticationPrincipal UserDetailsImpl signinUser, @Validated UserAddForm userAddForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    	
         if (result.hasErrors()) {
             setUserAddFormSelectionValues(model);
             return "/users/user-add";
@@ -111,6 +112,7 @@ public class UsersController {
      */
     @GetMapping("/update/{userId}")
     public String showUserUpdateForm(@AuthenticationPrincipal UserDetailsImpl signinUser, @PathVariable int userId, UserUpdateForm userUpdateForm, Model model) {
+    	
         // 会社に存在しないユーザーID
         Optional<UserInfo> updateUserOp = userService.getUserInfo(userId, signinUser.getCompanyId());
         if (updateUserOp.isEmpty()) {
@@ -141,8 +143,9 @@ public class UsersController {
      */
     @PostMapping("/update/{userId}")
     public String userUpdate(@AuthenticationPrincipal UserDetailsImpl signinUser,@PathVariable int userId, @Validated UserUpdateForm userUpdateForm, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            setUserUpdateFormSelectionValues(model);
+        
+    	if (result.hasErrors()) {
+    		setUserUpdateFormSelectionValues(model);
             return "users/user-update";
         }
         

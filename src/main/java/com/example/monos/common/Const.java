@@ -9,7 +9,7 @@ public class Const {
     public static final String MESSAGE_TYPE_ERROR = "ERROR";
     
     /* roles */
-    public static final String ROLE_ADMIN = "ADMIN";
-    public static final String ROLE_GENERAL = "GENERAL";
-    public static final String ROLE_REFERENCE = "REFERENCE";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_GENERAL = "ROLE_GENERAL";
+    public static final String ROLE_REFERENCE = "ROLE_REFERENCE";
 }

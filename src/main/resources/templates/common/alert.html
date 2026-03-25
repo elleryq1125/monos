@@ -32,8 +32,18 @@
 		
 		<script th:inline="javascript">
 			$(window).on('load', function(){
-				const resultMessageType = /*[[${resultMessageType}]]*/;
-				const resultMessage =  /*[[${resultMessage}]]*/;				
+				let resultMessageType = /*[[${resultMessageType}]]*/;
+				let resultMessage =  /*[[${resultMessage}]]*/;
+				
+				// sessionStorageから値取得（存在すれば上書き）
+				const flash = sessionStorage.getItem("resultMessage");
+				if(flash){
+					const data = JSON.parse(flash);
+					resultMessageType =  data.type;
+					resultMessage = data.message;
+					
+					sessionStorage.removeItem("resultMessage");
+				}
 				
 				let $alert;
 				let $alertMessage;
@@ -49,13 +59,56 @@
 						break;
 				};
 				
+				showAlert($alert, $alertMessage, resultMessage);
+			});
+			
+			// 成功アラートを表示
+			function showSuccessAlert(message){
+				let $alert;
+				let $alertMessage;
+				
+				$alert = $('#successAlert');
+				$alertMessage =  $('#successAlertMessage');
+				
+				showAlert($alert, $alertMessage, message);
+			}
+			
+			// エラーアラートを表示
+			function showErrorAlert(message){
+				let $alert;
+				let $alertMessage;
+				
+				$alert = $('#errorAlert');
+				$alertMessage =  $('#errorAlertMessage');
+				
+				showAlert($alert, $alertMessage, message);
+			}
+			
+			// アラート表示（共通処理）
+			function showAlert($alert, $alertMessage, message){
 				$alert.show();
-				$alertMessage.text(resultMessage);
+				$alertMessage.text(message);
 				
 				setTimeout(function(){
 					$alert.hide();
 				}, 3000);
-			});
+			}
+			
+			// sessionStorageに成功メッセージを保存
+			function setSuccessMessage(message){
+				sessionStorage.setItem("resultMessage", JSON.stringify({
+					type: "SUCCESS",
+					message: message
+				}));
+			}
+			
+			// sessionStorageにエラーメッセージを保存
+			function setErrorMessage(message){
+				sessionStorage.setItem("resultMessage", JSON.stringify({
+					type: "ERROR",
+					message: message
+				}));
+			}
 		</script>
 	</div>
 </html>

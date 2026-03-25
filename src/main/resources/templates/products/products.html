@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{common/head :: head-fragment(title = '商品一覧', scripts = ~{::script}, links = ~{})}">
+		<script th:src="@{/scripts/products.js}"></script>
+	</head>
+	<body>
+		<!-- ヘッダー -->
+		<div th:replace="~{common/header :: header-fragment}"></div>
+		
+		<!-- メイン -->
+		<main class="wrapper">
+			
+			<!--検索フォーム -->
+			<form class="search-form" id="searchForm" th:action="@{/products}" th:object="${productSearchForm}" method="get">
+				<div class="form-row">
+					<div class="form-field">
+						<label>商品コード</label>
+						<input type="text" th:field="*{productCode}">
+					</div>
+					<div class="form-field">
+						<label>商品名</label>
+						<input class="" type="text" th:field="*{name}">
+					</div>
+					<div class="form-field">
+						<label for="active">有効化</label>
+						<input class="w-15" type="checkbox" th:field="*{active}" >
+					</div>
+					<div class="form-actions">
+						<button class="btn search-btn" type="submit">検索</button>
+					</div>
+				</div>
+			</form>
+			
+			<div id="proccessButtons">
+				<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#productModal" onclick="openProductAddModal()" >追加</button>
+			</div>
+			
+			<div class="content">
+				<div class="contentTitle">
+					商品一覧
+				</div>
+				<div class="data-table" style="height: 400px;">
+					<table style="width: 800px;">
+						<thead>
+							<tr>
+								<th style="width: 20%;">コード</th>
+								<th style="width: 40%;">商品名</th>
+								<th style="width: 10%">単位</th>
+								<th style="width: 14%;">更新日</th>
+								<th style="width: 13%;"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="product:${products}" th:object="${product}">
+								<td th:text="*{productCode}"></td>
+								<td th:text="*{name}"></td>
+								<td th:text="*{unit}"></td>
+								<td th:text="${#dates.format(product.updatedAt, 'yyyy/MM/dd')}"></td>
+								<td>
+									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#productModal" th:onclick="'openProductUpdateModal(' + *{productId} + ')'">更新</button>
+								</td>
+							</tr> 
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			<!-- モーダル -->
+			<div class="modal fade" data-bs-backdrop="static" id="productModal" tabindex="-1">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			
+			      <div class="modal-header">
+			        <h6 id="modalTitle" class="modal-title">商品登録</h6>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			      </div>
+			
+			      <div class="modal-body">	
+			        <form id="productForm">
+						
+			          <input type="hidden" id="modalProductId">
+			          
+			          <div class="mb-3 form-field">
+						  <label class="required">商品コード</label>
+						  <input type="text" class="w-120" id="modalProductCode">
+					      <div class="field-error" id="productCodeError"></div>
+					  </div>
+			          
+			          <div class="mb-3 form-field">
+			            <label>商品名</label>
+			            <input type="text" id="modalName">
+				        <div class="field-error" id="nameError"></div>
+			          </div>
+			
+			          <div class="mb-3 form-field">
+			            <label class="form-label">単位</label>
+			            <input type="text" class="w-120" id="modalUnit">
+					    <div class="field-error" id="unitError"></div>
+			          </div>
+			          
+			          <div class="mb-3 form-field">
+			            <label class="form-label" for="modalActive">有効化</label>
+			            <input type="checkbox" class="w-15" id="modalActive">
+			          </div>
+			
+			        </form>
+			      </div>
+			
+			      <div class="modal-footer">
+			        <button class="btn main-btn" onclick="saveProduct()">保存</button>
+			        <button class="btn grey-btn" data-bs-dismiss="modal">閉じる</button>
+			      </div>
+			
+			    </div>
+			  </div>
+		</main>
+		
+		<!-- フッター -->
+		<div th:replace="~{common/footer :: footer-fragment}"></div>
+		
+		<!-- アラート -->
+		<div th:replace="~{common/alert :: alert-fragment}"></div>
+		
+	</body>
+</html>

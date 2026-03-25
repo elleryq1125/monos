@@ -24,7 +24,6 @@ import com.example.monos.service.UserService;
 @Controller
 @RequestMapping("/signup")
 public class SignupController {
-    
     private final TempUserService tempUserService;
     private final UserService userService;
     
@@ -53,6 +52,7 @@ public class SignupController {
      */
     @PostMapping
     public String tempUserRegist(@Validated SignupForm signupForm, BindingResult result, RedirectAttributes redirectAttributes) {
+    	
         if (result.hasErrors()) {
             return "signup/signup";
         }
