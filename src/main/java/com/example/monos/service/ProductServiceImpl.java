@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 			// 商品コードの重複チェック
 			if (productMapper.existsByProductCode(product.getProductCode(), product.getCompanyId())) {
 				var errors = new HashMap<String, String>();
-				errors.put("productCode", messageSource.getMessage("existsProductCode", new String[] {}, Locale.JAPAN));
+				errors.put("productCode", messageSource.getMessage("existsProductCode", null, Locale.JAPAN));
 				throw new BusinessException(errors);
 			}
 			
