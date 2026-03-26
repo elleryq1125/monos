@@ -34,34 +34,29 @@ public class ProductControllerTest extends AbstractControllerTest {
 	@MockBean
 	ProductService productService; 
 
-	@Nested
-	class ShowProducts {
+	@Test
+	void showProducts_商品一覧が表示_検索結果がモデルに設定される() throws Exception{
+		// Arrange
+		var p1 = new Product();
+		p1.setProductCode("TEST-001");
+		var p2 = new Product();
+		p2.setProductCode("TEST-002");
 		
-		@Test
-		@DisplayName("【正常系】商品一覧画面が表示されることを確認")
-		void testShowProducts() throws Exception{
-			// Arrange
-			var p1 = new Product();
-			p1.setProductCode("TEST-001");
-			var p2 = new Product();
-			p2.setProductCode("TEST-002");
-			
-			List<Product> mockProducts = List.of(p1,p2);
-			
-			when(productService.search(any())).thenReturn(mockProducts);
-			
-			// Act
-			mockMvc.perform(get("/products")
-					.param("productCode", "TEST")
-					.param("name", "テスト商品")
-					.param("active", "true")
-					.with(testUser()))
-			.andExpect(status().isOk())
-			.andExpect(view().name("/products/products"))
-			.andExpect(model().attributeExists("products"))
-			.andExpect(model().attribute("products", mockProducts));
-			
-			verify(productService, times(1)).search(any());
-		}
+		List<Product> mockProducts = List.of(p1,p2);
+		
+		when(productService.search(any())).thenReturn(mockProducts);
+		
+		// Act
+		mockMvc.perform(get("/products")
+				.param("productCode", "TEST")
+				.param("name", "テスト商品")
+				.param("active", "true")
+				.with(testUser()))
+		.andExpect(status().isOk())
+		.andExpect(view().name("/products/products"))
+		.andExpect(model().attributeExists("products"))
+		.andExpect(model().attribute("products", mockProducts));
+		
+		verify(productService, times(1)).search(any());
 	}
 }
