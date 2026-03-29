@@ -56,7 +56,7 @@
 				AND company_id = #{companyId}
 		</select>
 		
-		<insert id="insert" parameterType="com.example.monos.domain.Product">
+		<insert id="insert" parameterType="com.example.monos.domain.Product" useGeneratedKeys="true" keyProperty="productId">
 			INSERT INTO products(
 				company_id,
 				product_code,
@@ -78,7 +78,8 @@
 			SET
 				name = #{name},
 				unit = #{unit},
-				active = #{active}
+				active = #{active},
+				updated_at = now()
 			WHERE
 				product_id = #{productId}
 				AND company_id = #{companyId}
