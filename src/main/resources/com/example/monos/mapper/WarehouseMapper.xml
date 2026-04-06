@@ -27,60 +27,56 @@
 				warehouse_code;
 		</select>
 		
-		<select id="selectById" resultType="com.example.monos.domain.Product">
+		<select id="selectById" resultType="com.example.monos.domain.Warehouse">
 			SELECT 
-				product_id
+				warehouse_id
 				,company_id
-				,product_code
+				,warehouse_code
 				,name
-				,unit
 				,active
 				,created_at
 				,updated_at
 				,deleted_at
 			FROM 
-				products
+				warehouses
 			WHERE
-				product_id = #{productId}
+				warehouse_id = #{warehouseId}
 				AND company_id = #{companyId}
 		</select>
 		
-		<select id="existsByProductCode" resultType="boolean">
+		<select id="existsByWarehouseCode" resultType="boolean">
 			SELECT
 				COUNT(*) > 0
 			FROM
-				products
+				warehouses
 			WHERE
-				product_code = #{productCode}
+				warehouse_code = #{warehouseCode}
 				AND company_id = #{companyId}
 		</select>
 		
-		<insert id="insert" parameterType="com.example.monos.domain.Product" useGeneratedKeys="true" keyProperty="productId">
-			INSERT INTO products(
+		<insert id="insert" parameterType="com.example.monos.domain.Warehouse" useGeneratedKeys="true" keyProperty="warehouseId">
+			INSERT INTO warehouses(
 				company_id,
-				product_code,
+				warehouse_code,
 				name,
-				unit,
 				active
 			)
 			VALUES(
 				#{companyId},
-				#{productCode},
+				#{warehouseCode},
 				#{name},
-				#{unit},
 				#{active}
 			)
 		</insert>
 		
-		<update id="update" parameterType="com.example.monos.domain.Product">
-			UPDATE products 
+		<update id="update" parameterType="com.example.monos.domain.Warehouse">
+			UPDATE warehouses 
 			SET
 				name = #{name},
-				unit = #{unit},
 				active = #{active},
 				updated_at = now()
 			WHERE
-				product_id = #{productId}
+				warehouse_id = #{warehouseId}
 				AND company_id = #{companyId}
 		</update>
 </mapper>

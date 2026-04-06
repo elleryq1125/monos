@@ -64,36 +64,30 @@
 			</div>
 			
 			<!-- モーダル -->
-			<div class="modal fade" data-bs-backdrop="static" id="productModal" tabindex="-1">
+			<div class="modal fade" data-bs-backdrop="static" id="warehouseModal" tabindex="-1">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			
 			      <div class="modal-header">
-			        <h6 id="modalTitle" class="modal-title">商品登録</h6>
+			        <h6 id="modalTitle" class="modal-title">倉庫登録</h6>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			      </div>
 			
 			      <div class="modal-body">	
 			        <form id="productForm">
 						
-			          <input type="hidden" id="modalProductId">
+			          <input type="hidden" id="modalWarehouseId">
 			          
 			          <div class="mb-3 form-field">
-						  <label class="required">商品コード</label>
-						  <input type="text" class="w-120" id="modalProductCode">
-					      <div class="field-error" id="productCodeError"></div>
+						  <label class="required">倉庫コード</label>
+						  <input type="text" class="w-120" id="modalWarehouseCode">
+					      <div class="field-error" id="warehouseCodeError"></div>
 					  </div>
 			          
 			          <div class="mb-3 form-field">
-			            <label>商品名</label>
+			            <label>倉庫名</label>
 			            <input type="text" id="modalName">
 				        <div class="field-error" id="nameError"></div>
-			          </div>
-			
-			          <div class="mb-3 form-field">
-			            <label class="form-label">単位</label>
-			            <input type="text" class="w-120" id="modalUnit">
-					    <div class="field-error" id="unitError"></div>
 			          </div>
 			          
 			          <div class="mb-3 form-field">
@@ -105,7 +99,7 @@
 			      </div>
 			
 			      <div class="modal-footer">
-			        <button class="btn main-btn" onclick="saveProduct()">保存</button>
+			        <button class="btn main-btn" onclick="saveWarehouse()">保存</button>
 			        <button class="btn grey-btn" data-bs-dismiss="modal">閉じる</button>
 			      </div>
 			

@@ -13,7 +13,7 @@ import com.example.monos.dto.WarehouseSearchCondition;
 public interface WarehouseMapper {
 	List<Warehouse> selectList(WarehouseSearchCondition condition);
 	Warehouse selectById(@Param("warehouseId") int productId, @Param("companyId") int companyId);
-	boolean existsByProductCode(@Param("warehouseCode") String warehouseCode, @Param("companyId") int companyId);
+	boolean existsByWarehouseCode(@Param("warehouseCode") String warehouseCode, @Param("companyId") int companyId);
 	void insert(Warehouse warehouse);
 	int update(Warehouse warehouse);
 }
