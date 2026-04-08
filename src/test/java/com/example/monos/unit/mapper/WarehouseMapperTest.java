@@ -128,103 +128,101 @@ public class WarehouseMapperTest {
     	}
     }
     
-//    @Nested
-//    class SelectById{
-//    	@BeforeEach()
-//    	void createTestData() {
-//    		createProducts();
-//    	}
-//    	
-//    	@Test
-//        void 検索結果あり() {	
-//        	// Act
-//        	Product result = productMapper.selectById(2, 1);
-//        	
-//        	// Assert
-//        	assertThat(result)
-//        		.extracting(Product::getProductId, Product::getCompanyId, Product::getProductCode, Product::getName, Product::getUnit, Product::isActive)
-//        		.containsExactly(2, 1, "TEST-002", "テスト商品2", "束", false);
-//        }
-//    	
-//    	@Test
-//    	void 検索結果なし() {
-//    		// Act
-//        	Product result = productMapper.selectById(2, 2);
-//        	
-//        	// Assert
-//    		assertThat(result).isNull();
-//    	}
-//    }
-//    
-//    @Nested
-//    class ExistisByProductCode{
-//    	@BeforeEach()
-//    	void createTestData() {
-//    		createProducts();
-//    	}
-//    	
-//    	@Test
-//    	void 同じ商品コードが存在する() {
-//    		// Act
-//        	boolean result = productMapper.existsByProductCode("TEST-001", 1);
-//        	
-//        	// Assert
-//        	assertThat(result).isTrue();
-//    	}
-//    	
-//    	@Test
-//    	void 同じ商品コードが存在しない() {
-//    		// Act
-//        	boolean result = productMapper.existsByProductCode("TEST-888", 1);
-//        	
-//        	// Assert
-//        	assertThat(result).isFalse();
-//    	}
-//    }
-//    
-//    @Test
-//    void insert_商品情報が登録できていることを確認() {
-//    	// Arrange
-//    	var product = new Product();
-//    	product.setCompanyId(2);
-//    	product.setProductCode("TEST-INS");
-//    	product.setName("新商品");
-//    	product.setUnit("台");
-//    	product.setActive(false);
-//    	
-//    	// Act
-//    	productMapper.insert(product);
-//    	Product insProduct = productMapper.selectById(product.getProductId(), 2);
-//    	
-//    	// Assert
-//    	assertThat(insProduct)
-//		.extracting(Product::getCompanyId, Product::getProductCode, Product::getName, Product::getUnit, Product::isActive)
-//		.containsExactly(2, "TEST-INS", "新商品", "台", false);
-//    }
+    @Nested
+    class SelectById{
+    	@BeforeEach()
+    	void createTestData() {
+    		createWarehouses();
+    	}
+    	
+    	@Test
+        void 検索結果あり() {	
+        	// Act
+        	Warehouse result = warehouseMapper.selectById(2, 1);
+        	
+        	// Assert
+        	assertThat(result)
+        		.extracting(Warehouse::getWarehouseId, Warehouse::getCompanyId, Warehouse::getWarehouseCode, Warehouse::getName, Warehouse::isActive)
+        		.containsExactly(2, 1, "TEST-002", "テスト倉庫2", false);
+        }
+    	
+    	@Test
+    	void 検索結果なし() {
+    		// Act
+    		Warehouse result = warehouseMapper.selectById(2, 2);
+        	
+        	// Assert
+    		assertThat(result).isNull();
+    	}
+    }
     
-//    @Test
-//    void update_商品情報が更新できていることを確認() {
-//    	// Arrange
-//    	createProducts();
-//    	
-//    	var product = new Product();
-//    	product.setProductId(4);
-//    	product.setCompanyId(2);
-//    	product.setName("更新商品");
-//    	product.setUnit("台");
-//    	product.setActive(false);
-//    	
-//    	// Act
-//    	int result = productMapper.update(product);
-//    	Product updProduct = productMapper.selectById(4, 2);
-//    	
-//    	// Assert
-//    	assertThat(result).isEqualTo(1);
-//    	
-//    	assertThat(updProduct)
-//    		.extracting(Product::getName, Product::getUnit, Product::isActive)
-//    		.containsExactly("更新商品", "台", false);
-//    }
+    @Nested
+    class ExistisByWarehouseCode{
+    	@BeforeEach()
+    	void createTestData() {
+    		createWarehouses();
+    	}
+    	
+    	@Test
+    	void 同じ倉庫コードが存在する() {
+    		// Act
+        	boolean result = warehouseMapper.existsByWarehouseCode("TEST-001", 1);
+        	
+        	// Assert
+        	assertThat(result).isTrue();
+    	}
+    	
+    	@Test
+    	void 同じ倉庫コードが存在しない() {
+    		// Act
+        	boolean result = warehouseMapper.existsByWarehouseCode("TEST-888", 1);
+        	
+        	// Assert
+        	assertThat(result).isFalse();
+    	}
+    }
+    
+    @Test
+    void insert_倉庫情報が登録できていることを確認() {
+    	// Arrange
+    	var warehouse = new Warehouse();
+    	warehouse.setCompanyId(2);
+    	warehouse.setWarehouseCode("TEST-INS");
+    	warehouse.setName("新倉庫");
+    	warehouse.setActive(false);
+    	
+    	// Act
+    	warehouseMapper.insert(warehouse);
+    	Warehouse insWarehouse = warehouseMapper.selectById(warehouse.getWarehouseId(), 2);
+    	
+    	// Assert
+    	assertThat(insWarehouse)
+		.extracting(Warehouse::getCompanyId, Warehouse::getWarehouseCode, Warehouse::getName, Warehouse::isActive)
+		.containsExactly(2, "TEST-INS", "新倉庫", false);
+    }
+    
+    @Test
+    void update_倉庫情報が更新できていることを確認() {
+    	// Arrange
+    	createWarehouses();
+    	
+    	var warehouse = new Warehouse();
+    	warehouse.setWarehouseId(4);
+    	warehouse.setCompanyId(2);
+    	warehouse.setName("更新倉庫");
+    	warehouse.setActive(false);
+    	
+    	// Act
+    	int result = warehouseMapper.update(warehouse);
+    	Warehouse updProduct = warehouseMapper.selectById(4, 2);
+    	
+    	// Assert
+    	assertThat(result).isEqualTo(1);
+    	
+    	assertThat(updProduct)
+    		.extracting(Warehouse::getName, Warehouse::isActive)
+    		.containsExactly("更新倉庫", false);
+    }
     
 	/**
 	 * warehousesのテストデータ作成
