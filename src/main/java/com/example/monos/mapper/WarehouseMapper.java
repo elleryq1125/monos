@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.example.monos.domain.Product;
 import com.example.monos.domain.Warehouse;
 import com.example.monos.dto.WarehouseSearchCondition;
 

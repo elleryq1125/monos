@@ -1,5 +1,6 @@
 package com.example.monos.controller.restcontroller;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -11,12 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.monos.domain.Product;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.dto.ApiResponse;
-import com.example.monos.exception.BusinessException;
+import com.example.monos.dto.ProductSuggestDto;
 import com.example.monos.form.ProductInputForm;
 import com.example.monos.service.ProductService;
 
@@ -89,5 +91,17 @@ public class ProductApiController {
 		String resultMessage = productService.save(product);
 		
 		return ApiResponse.successMessage(resultMessage);
+	}
+	
+	/**
+	 * 商品情報をサジェスト検索する。
+	 * @param signinUser サインインユーザー
+	 * @param keyword 商品コードまたは商品名のキーワード
+	 * @return 商品情報のAPIレスポンス
+	 */
+	@GetMapping("/suggest")
+	public List<ProductSuggestDto> suggest(@AuthenticationPrincipal UserDetailsImpl signinUser,
+																	  @RequestParam String keyword){
+		return productService.suggest(keyword, signinUser.getCompanyId());
 	}
 }

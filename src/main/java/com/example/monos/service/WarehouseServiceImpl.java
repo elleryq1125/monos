@@ -39,11 +39,21 @@ public class WarehouseServiceImpl implements WarehouseService {
 	 * 特定のIDを持つ倉庫情報を検索する。
 	 * @param warehouseId 倉庫ID
 	 * @param companyId 会社ID
+	 * 
 	 * @return 倉庫情報
 	 */
 	@Override
 	public Optional<Warehouse> findById(int warehousetId, int companyId) {
 		return Optional.ofNullable(warehouseMapper.selectById(warehousetId, companyId));
+	}
+	
+	@Override
+	public List<Warehouse> findActiveByCompanyId(int companyId) {
+		var condition = new WarehouseSearchCondition();
+		condition.setCompanyId(companyId);
+		condition.setActive(true);
+		
+		return warehouseMapper.selectList(condition);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 	<head th:replace="~{common/head :: head-fragment(title = '入庫予定一覧', scripts = ~{::script}, links = ~{})}">
-		<script th:src="@{/scripts/warehouses.js}"></script>
+		<script th:src="@{/scripts/inbound-schedules.js}"></script>
 	</head>
 	<body>
 		<!-- ヘッダー -->
@@ -42,7 +42,7 @@
 			</form>
 			
 			<div id="proccessButtons">
-				<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#warehouseModal" onclick="openWarehouseAddModal()" >追加</button>
+				<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundScheduleModal" onclick="openInboundScheduleAddModal()" >追加</button>
 			</div>
 			
 			<div class="content">
@@ -84,37 +84,42 @@
 			</div>
 			
 			<!-- モーダル -->
-			<div class="modal fade" data-bs-backdrop="static" id="warehouseModal" tabindex="-1">
+			<div class="modal fade" data-bs-backdrop="static" id="inboundScheduleModal" tabindex="-1">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			
 			      <div class="modal-header">
-			        <h6 id="modalTitle" class="modal-title">倉庫登録</h6>
+			        <h6 id="modalTitle" class="modal-title">入庫予定登録</h6>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			      </div>
 			
 			      <div class="modal-body">	
-			        <form id="productForm">
+			        <form id="inboundScheduleForm">
 						
-			          <input type="hidden" id="modalWarehouseId">
+			          <input type="hidden" id="modalInboundScheduleId">
 			          
-			          <div class="mb-3 form-field">
-						  <label class="required">倉庫コード</label>
-						  <input type="text" class="w-120" id="modalWarehouseCode">
-					      <div class="field-error" id="warehouseCodeError"></div>
+			          <div class="mb-3 form-field position-relative">
+						  <label>商品キーワード</label>
+						  <input type="text" class="w-200" id="modalProductKeyword" autocomplete="off">
+						  <ul id="modalProductSuggestList" class="list-group position-absolute top-100 start-0 w-200" style="z-index:1060;"></ul>
+					  </div>
+					  
+					  <div class="mb-3 form-field">
+						  <label class="required">商品</label>
+						  <input type="text" class="w-200 " id="modalProduct" disabled>
+						  <input type="hidden" id="modalProductId">
+					      <div class="field-error" id="productError"></div>
 					  </div>
 			          
 			          <div class="mb-3 form-field">
-			            <label>倉庫名</label>
-			            <input type="text" id="modalName">
-				        <div class="field-error" id="nameError"></div>
-			          </div>
-			          
-			          <div class="mb-3 form-field">
-			            <label class="form-label" for="modalActive">有効化</label>
-			            <input type="checkbox" class="w-15" id="modalActive">
-			          </div>
-			
+						  <label class="required">倉庫</label>
+						  <select class="form-select w-240"  id="modalWarehouse">
+							  	<option th:each="warehouse : ${warehouses}" th:value="${warehouse.warehouseId}">
+								  [[${warehouse.warehouseCode} + ' ' + ${warehouse.name}]]
+								</option>
+						  </select>
+					      <div class="field-error" id="warehouseError"></div>
+					  </div>
 			        </form>
 			      </div>
 			

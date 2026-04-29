@@ -11,5 +11,6 @@ import com.example.monos.dto.WarehouseSearchCondition;
 public interface WarehouseService {
 	List<Warehouse> search(WarehouseSearchCondition condition);
 	Optional<Warehouse> findById(int warehousetId, int companyId);
+	List<Warehouse> findActiveByCompanyId(int companyId);
 	String save(Warehouse product);
 }
