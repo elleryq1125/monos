@@ -71,6 +71,16 @@
 				AND company_id = #{companyId}
 		</select>
 		
+		<select id="existsByProductId" resultType="boolean">
+			SELECT
+				COUNT(*) > 0
+			FROM
+				products
+			WHERE
+				product_id = #{productId}
+				AND company_id = #{companyId}
+		</select>
+		
 		<insert id="insert" parameterType="com.example.monos.domain.Product" useGeneratedKeys="true" keyProperty="productId">
 			INSERT INTO products(
 				company_id,

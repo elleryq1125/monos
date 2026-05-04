@@ -13,6 +13,7 @@ public interface WarehouseMapper {
 	List<Warehouse> selectList(WarehouseSearchCondition condition);
 	Warehouse selectById(@Param("warehouseId") int productId, @Param("companyId") int companyId);
 	boolean existsByWarehouseCode(@Param("warehouseCode") String warehouseCode, @Param("companyId") int companyId);
+	boolean existsByWarehouseId(@Param("warehouseId") Integer warehouseId, @Param("companyId") int companyId);
 	void insert(Warehouse warehouse);
 	int update(Warehouse warehouse);
 }

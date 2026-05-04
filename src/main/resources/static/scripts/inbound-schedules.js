@@ -54,8 +54,8 @@ async function openWarehouseUpdateModal(warehouseId){
 	}
 }
 
-// 倉庫追加・更新処理
-async function saveWarehouse(){
+// 入庫予定追加・更新処理
+async function saveInboundSchedule(){
 	// CSRFトークン取得
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
@@ -65,14 +65,15 @@ async function saveWarehouse(){
 	
 	// 入力データを設定
 	const form = {
-		warehouseId: document.getElementById("modalWarehouseId").value,
-		warehouseCode: document.getElementById("modalWarehouseCode").value,
-		name: document.getElementById("modalName").value,
-		active: document.getElementById("modalActive").checked
+		inboundScheduleId: document.getElementById("modalInboundScheduleId").value,
+		productId: document.getElementById("modalProductId").value,
+		warehouseId: document.getElementById("modalWarehouse").value,
+		scheduleQty: document.getElementById("modalScheduleQty").value,
+		scheduleDate: document.getElementById("modalScheduleDate").value
 	};
 	
 	// リクエスト
-	const res = await fetch("/api/warehouses/save",{
+	const res = await fetch("/api/inboundschedules/save",{
 		method:"POST",
 		headers:{
 			"Content-Type":"application/json",
@@ -84,7 +85,7 @@ async function saveWarehouse(){
 	
 	if (result.success){	
 		// モーダルを非表示にして成功メッセージ表示
-		hideModal("warehouseModal");
+		hideModal("inboundScheduleModal");
 		setSuccessMessage(result.message);
 		search();
 	}else{
@@ -93,7 +94,7 @@ async function saveWarehouse(){
 			showModalFieldErrors(result.fieldErrors);
 		}else{
 			// モーダルを非表示にしてエラーメッセージ表示
-			hideModal("warehouseModal");
+			hideModal("inboundScheduleModal");
 			setErrorMessage(result.message);
 			search();
 		}

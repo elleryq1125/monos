@@ -43,4 +43,23 @@
 			ORDER BY
 				isch.inbound_schedule_id;
 		</select>
+		
+		<insert id="insert" parameterType="com.example.monos.domain.InboundSchedule" useGeneratedKeys="true" keyProperty="inboundScheduleId">
+			INSERT INTO inbound_schedules(
+				company_id,
+				product_id,
+				warehouse_id,
+				schedule_qty,
+				schedule_date,
+				status
+			)
+			VALUES(
+				#{companyId},
+				#{productId},
+				#{warehouseId},
+				#{scheduleQty},
+				#{scheduleDate},
+				#{status}
+			)
+		</insert>
 </mapper>

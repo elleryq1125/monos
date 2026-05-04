@@ -15,6 +15,7 @@ public interface ProductMapper {
 	Product selectById(@Param("productId") int productId, @Param("companyId") int companyId);
 	List<ProductSuggestDto> selectActiveByKeyword(@Param("keyword") String keyword, @Param("companyId") int companyId);
 	boolean existsByProductCode(@Param("productCode") String productCode, @Param("companyId") int companyId);
+	boolean existsByProductId(@Param("productId") Integer productId, @Param("companyId") int companyId);
 	void insert(Product product);
 	int update(Product product);
 }

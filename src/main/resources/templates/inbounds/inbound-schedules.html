@@ -108,7 +108,7 @@
 						  <label class="required">商品</label>
 						  <input type="text" class="w-200 " id="modalProduct" disabled>
 						  <input type="hidden" id="modalProductId">
-					      <div class="field-error" id="productError"></div>
+					      <div class="field-error" id="productIdError"></div>
 					  </div>
 			          
 			          <div class="mb-3 form-field">
@@ -118,13 +118,26 @@
 								  [[${warehouse.warehouseCode} + ' ' + ${warehouse.name}]]
 								</option>
 						  </select>
-					      <div class="field-error" id="warehouseError"></div>
+					      <div class="field-error" id="warehouseIdError"></div>
 					  </div>
+					  
+					  <div class="mb-3 form-field">
+						  <label class="required">予定数量</label>
+						  <input type="number" class="w-80 " id="modalScheduleQty">
+					      <div class="field-error" id="scheduleQtyError"></div>
+					  </div>
+					  
+					  <div class="mb-3 form-field">
+						  <label class="required">予定日</label>
+						  <input type="date" class="w-140 " id="modalScheduleDate">
+					      <div class="field-error" id="scheduleDateError"></div>
+					  </div>
+					  
 			        </form>
 			      </div>
 			
 			      <div class="modal-footer">
-			        <button class="btn main-btn" onclick="saveWarehouse()">保存</button>
+			        <button class="btn main-btn" onclick="saveInboundSchedule()">保存</button>
 			        <button class="btn grey-btn" data-bs-dismiss="modal">閉じる</button>
 			      </div>
 			

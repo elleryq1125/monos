@@ -54,7 +54,7 @@ function setProductSuggest({
 
          li.onclick = () => {
              keywordEl.value = li.textContent;
-             productEl.vallue = li.textContent;
+             productEl.value = li.textContent;
              productIdEl.value = p.productId;
              suggestListEl.innerHTML = "";
          };
