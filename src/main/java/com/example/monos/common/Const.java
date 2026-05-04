@@ -15,4 +15,10 @@ public class Const {
     
     /* codeType */
     public static final String CODE_TYPE_INBOUND_STATUS = "INBOUND_STATUS";
+    
+    /* inbound_status */
+    public static final int INBOUND_STATUS_MINYUKO = 0;
+    public static final int INBOUND_STATUS_NYUKOCHU = 1;
+    public static final int INBOUND_STATUS_NYUKOZUMI = 2;
+    public static final int INBOUND_STATUS_CANCEL = 3;
 }

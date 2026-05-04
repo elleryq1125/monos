@@ -73,9 +73,9 @@
 								<td th:text="*{warehouseName}"></td>
 								<td th:text="*{scheduleQty}"></td>
 								<td th:text="${#dates.format(inboundschedule.scheduleDate, 'yyyy/MM/dd')}"></td>
-								<td th:text=""></td>
+								<td></td>
 								<td>
-									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#warehouseModal" th:onclick="'openWarehouseUpdateModal(' + *{warehouseId} + ')'">更新</button>
+									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#warehouseModal" th:onclick="'openWarehouseUpdateModal(' + *{inboundScheduleId} + ')'">更新</button>
 								</td>
 							</tr> 
 						</tbody>

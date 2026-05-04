@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import com.example.monos.common.Const;
 import com.example.monos.domain.InboundSchedule;
 import com.example.monos.dto.InboundScheduleListDto;
 import com.example.monos.dto.InboundScheduleSearchCondition;
@@ -69,6 +70,7 @@ public class InboundScheduleServiceImpl implements InboundScheduleService {
 			}
 			
 			// 入庫予定情報の登録
+			inboundSchedule.setStatus(Const.INBOUND_STATUS_MINYUKO);
 			inboundScheduleMapper.insert(inboundSchedule);
 			resultMessage = messageSource.getMessage("registComplete", null, Locale.JAPAN);
 			
