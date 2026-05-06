@@ -1,13 +1,13 @@
 // モーダルのフィールドエラークリア
-function clearModalFieldErros(){
-	   document.querySelectorAll(".field-error")
+function clearModalFieldErros(modal){
+	   modal.querySelectorAll(".field-error")
         .forEach(e => e.innerText = "");
 }
 
 // モーダルのフィールドエラー表示
-function showModalFieldErrors(fieldErrors){
+function showModalFieldErrors(modal, fieldErrors){
 	for(const key in fieldErrors){
-		const element = document.getElementById(key + "Error");
+		const element = modal.querySelector(`#${key}Error`);
 
         if(element){
             element.innerText = fieldErrors[key];

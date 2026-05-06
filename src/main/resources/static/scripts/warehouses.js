@@ -1,7 +1,9 @@
 // 倉庫登録モーダル表示
 function openWarehouseAddModal(){  
+  const modal = document.getElementById("warehouseModal");
+	
 　// フィールドエラークリア
-  clearModalFieldErros();
+  clearModalFieldErros(modal);
   
   // 初期値設定
   document.getElementById("modalTitle").innerText = "倉庫登録";
@@ -16,8 +18,10 @@ function openWarehouseAddModal(){
 
 // 倉庫更新モーダル表示
 async function openWarehouseUpdateModal(warehouseId){
+	const modal = document.getElementById("warehouseModal");
+	
 	// フィールドエラークリア
-	clearModalFieldErros();
+	clearModalFieldErros(modal);
 	
 	document.getElementById("modalTitle").innerText = "倉庫更新";
 	document.getElementById("modalWarehouseId").value = warehouseId;
@@ -49,8 +53,10 @@ async function saveWarehouse(){
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 	
+	const modal = document.getElementById("warehouseModal");
+	
 	// フィールドエラークリア
-	clearModalFieldErros();
+	clearModalFieldErros(modal);
 	
 	// 入力データを設定
 	const form = {
@@ -79,7 +85,7 @@ async function saveWarehouse(){
 	}else{
 		if (result.message == null){
 			// バリデーションエラー表示
-			showModalFieldErrors(result.fieldErrors);
+			showModalFieldErrors(modal, result.fieldErrors);
 		}else{
 			// モーダルを非表示にしてエラーメッセージ表示
 			hideModal("warehouseModal");
