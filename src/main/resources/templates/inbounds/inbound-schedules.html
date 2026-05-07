@@ -50,7 +50,7 @@
 					入庫予定一覧
 				</div>
 				<div class="data-table" style="height: 400px;">
-					<table style="width: 1200px;">
+					<table style="width: 1500px;">
 						<thead>
 							<tr>
 								<th style="width: 7%;">状態</th>
@@ -75,7 +75,7 @@
 								<td th:text="${#dates.format(inboundschedule.scheduleDate, 'yyyy/MM/dd')}"></td>
 								<td></td>
 								<td>
-									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#warehouseModal" th:onclick="'openWarehouseUpdateModal(' + *{inboundScheduleId} + ')'">更新</button>
+									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundScheduleModal" th:onclick="'openInboundScheduleUpdateModal(' + *{inboundScheduleId} + ')'">更新</button>
 								</td>
 							</tr> 
 						</tbody>
@@ -97,6 +97,7 @@
 			        <form id="inboundScheduleForm">
 						
 			          <input type="hidden" id="modalInboundScheduleId">
+			          <input type="hidden" id="modalVersion">
 			          
 			          <div class="mb-3 form-field position-relative">
 						  <label>商品キーワード</label>

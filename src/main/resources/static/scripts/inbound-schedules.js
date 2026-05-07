@@ -9,49 +9,81 @@ document.addEventListener("DOMContentLoaded", () => {
     
 });
 
-// 入庫予定登録モーダル表示
-function openInboundScheduleAddModal(){  
-　// フィールドエラークリア
-  clearModalFieldErros();
-  
-  // 初期値設定
-  document.getElementById("modalTitle").innerText = "入庫予定登録";
-  document.getElementById("modalInboundScheduleId").value = "";
-  document.getElementById("modalProductKeyword").value = "";
-  document.getElementById("modalProduct").value = "";
-  document.getElementById("modalName").value = "";
-  document.getElementById("modalActive").checked = true;
-  
-　
+// 入庫予定情報モーダルの要素取得
+function getInboundScheduleModalElements(modal) {
+    return {
+        title: modal.querySelector("#modalTitle"),
+        inboundScheduleId: modal.querySelector("#modalInboundScheduleId"),
+        version: modal.querySelector("#modalVersion"),
+        productKeyword: modal.querySelector("#modalProductKeyword"),
+        product: modal.querySelector("#modalProduct"),
+        productId: modal.querySelector("#modalProductId"),
+        warehouse: modal.querySelector("#modalWarehouse"),
+        scheduleDate: modal.querySelector("#modalScheduleDate"),
+        scheduleQty: modal.querySelector("#modalScheduleQty")
+    };
 }
 
-// 倉庫更新モーダル表示
-async function openWarehouseUpdateModal(warehouseId){
-	// フィールドエラークリア
-	clearModalFieldErros();
+// 入庫予定登録モーダル表示
+function openInboundScheduleAddModal(){
+  const modal = document.getElementById("inboundScheduleModal");
+  const modalEl = getInboundScheduleModalElements(modal);
 	
-	document.getElementById("modalTitle").innerText = "倉庫更新";
-	document.getElementById("modalWarehouseId").value = warehouseId;
+  clearModalFieldErros(modal);
+  
+  initInboundScheduleAddModal(modalEl);
+}
+
+// 入庫予定登録モーダル初期化
+function initInboundScheduleAddModal(modalEl){
+  modalEl.title.innerText = "入庫予定登録";
+  modalEl.inboundScheduleId.value = "";
+  modalEl.version.value = "";
+  modalEl.productKeyword.value = "";
+  modalEl.product.value = "";
+  modalEl.productId.value = "";
+  modalEl.scheduleQty.value = "";
+  modalEl.scheduleDate.value = "";
+}
+
+// 入庫予定更新モーダル表示
+async function openInboundScheduleUpdateModal(inboundScheduleId){
+	const modal = document.getElementById("inboundScheduleModal");
+	const modalEl = getInboundScheduleModalElements(modal);
 	
-	// 倉庫情報を取得
-	const res = await fetch("/api/warehouses/" + warehouseId);
+  	clearModalFieldErros(modal);
+	
+	initInboundScheduleUpdateModal(modalEl, inboundScheduleId);
+	
+	// 入庫予定情報を取得
+	const res = await fetch("/api/inboundschedules/" + inboundScheduleId);
 	const result = await res.json();
 	
 	if (result.success){
-		// 戻り値を画面に設定
-		const warehouse = result.data;
-		document.getElementById("modalWarehouseCode").value = warehouse.warehouseCode;
-		document.getElementById("modalName").value = warehouse.name;
-		document.getElementById("modalActive").checked = warehouse.active;
-		
-		// 倉庫コード非活性
-		document.getElementById("modalWarehouseCode").disabled = true;
+		setDataForInboundScheduleUpdateModal(modalEl, result.data);
 	} else{
-		// モーダルを非表示にしてエラーメッセージ表示
-		hideModal("warehouseModal");
-		setErrorMessage(result.message);
-		search();
+		handleInboundScheduleLoadError(result.message);
 	}
+}
+
+// 入庫予定更新モーダル初期化
+function initInboundScheduleUpdateModal(modalEl, inboundScheduleId){
+	modalEl.title.innerText = "入庫予定更新";
+	modalEl.inboundScheduleId.value = inboundScheduleId;
+}
+
+// 入庫予定更新モーダルにデータ設定
+function setDataForInboundScheduleUpdateModal(modalEl, data){
+	modalEl.version.value = data.version;
+	modalEl.product.value = `${data.productCode} ${data.productName}`;
+	modalEl.warehouse.value = data.warehouseId;
+	modalEl.scheduleDate.value = data.scheduleDate;
+	modalEl.scheduleQty.value = data.scheduleQty;
+}
+
+// 入庫予定更新モーダルの入力項目の状態切り替え
+function toggleStateInboudScheduleUpdateForm(modal, status){
+	
 }
 
 // 入庫予定追加・更新処理
@@ -60,16 +92,18 @@ async function saveInboundSchedule(){
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 	
-	// フィールドエラークリア
-	clearModalFieldErros();
+	const modal = document.getElementById("inboundScheduleModal");
+	const modalEl = getInboundScheduleModalElements(modal);
+	
+	clearModalFieldErros(modal);
 	
 	// 入力データを設定
 	const form = {
-		inboundScheduleId: document.getElementById("modalInboundScheduleId").value,
-		productId: document.getElementById("modalProductId").value,
-		warehouseId: document.getElementById("modalWarehouse").value,
-		scheduleQty: document.getElementById("modalScheduleQty").value,
-		scheduleDate: document.getElementById("modalScheduleDate").value
+		inboundScheduleId: modalEl.inboundScheduleId.value,
+		productId: modalEl.productId.value,
+		warehouseId: modalEl.warehouse.value,
+		scheduleQty: modalEl.scheduleQty.value,
+		scheduleDate: modalEl.scheduleDate.value
 	};
 	
 	// リクエスト
@@ -93,12 +127,17 @@ async function saveInboundSchedule(){
 			// バリデーションエラー表示
 			showModalFieldErrors(result.fieldErrors);
 		}else{
-			// モーダルを非表示にしてエラーメッセージ表示
-			hideModal("inboundScheduleModal");
-			setErrorMessage(result.message);
-			search();
+			handleInboundScheduleLoadError(result.message);
 		}
 	}
+}
+
+// 入庫予定モーダルのエラーハンドリング
+function handleInboundScheduleLoadError(message){
+	// モーダルを非表示にしてエラーメッセージ表示
+	hideModal("inboundScheduleModal");
+	setErrorMessage(message);
+	search();
 }
 
 // 検索

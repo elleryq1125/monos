@@ -3,12 +3,14 @@ package com.example.monos.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.example.monos.common.Const;
 import com.example.monos.domain.InboundSchedule;
+import com.example.monos.dto.InboundScheduleDetailDto;
 import com.example.monos.dto.InboundScheduleListDto;
 import com.example.monos.dto.InboundScheduleSearchCondition;
 import com.example.monos.exception.BusinessException;
@@ -78,6 +80,17 @@ public class InboundScheduleServiceImpl implements InboundScheduleService {
 			
 		}
 		return resultMessage;
+	}
+
+	/**
+	 * 入庫予定情報を取得する。
+	 * @param inboundScheduleId 入庫予定ID
+	 * @param companyId 企業ID
+	 * @return 入庫予定詳細情報
+	 */
+	@Override
+	public Optional<InboundScheduleDetailDto> findById(int inboundScheduleId, int companyId) {
+		return Optional.ofNullable(inboundScheduleMapper.selectDetailById(inboundScheduleId, companyId));
 	}
 
 }

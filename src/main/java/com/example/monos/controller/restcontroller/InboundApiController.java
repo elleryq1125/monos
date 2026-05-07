@@ -1,8 +1,13 @@
 package com.example.monos.controller.restcontroller;
 
+import java.util.Locale;
+import java.util.Optional;
+
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.monos.domain.InboundSchedule;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.dto.ApiResponse;
+import com.example.monos.dto.InboundScheduleDetailDto;
 import com.example.monos.form.InboundScheduleInputForm;
 import com.example.monos.service.InboundScheduleService;
 
@@ -30,6 +36,20 @@ public class InboundApiController {
 												 InboundScheduleService inboundScheduleService) {
 		this.messageSource = messageSource;
 		this.inboundScheduleService = inboundScheduleService;
+	}
+	
+	@GetMapping("/inboundschedules/{inboundScheduleId}")
+	public ApiResponse<?> get(@AuthenticationPrincipal UserDetailsImpl signinUser,
+												 @PathVariable int inboundScheduleId){
+		
+		Optional<InboundScheduleDetailDto> inboundSchedule = inboundScheduleService.findById(inboundScheduleId, signinUser.getCompanyId());
+		
+		if (inboundSchedule.isPresent()) {
+			return ApiResponse.successData(inboundSchedule.get());
+		} else {
+			return ApiResponse.errorMessage(
+					messageSource.getMessage("dataNotExists", new String[] {}, Locale.JAPAN));
+		}
 	}
 	
 	/**

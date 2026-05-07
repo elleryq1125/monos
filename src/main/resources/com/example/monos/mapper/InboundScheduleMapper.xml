@@ -44,6 +44,26 @@
 				isch.inbound_schedule_id;
 		</select>
 		
+		<select id="selectDetailById" resultType="com.example.monos.dto.InboundScheduleDetailDto">
+			SELECT
+				isch.inbound_schedule_id,
+				proc.product_code,
+				proc.name AS product_name,
+				isch.warehouse_id,
+				isch.schedule_qty,
+				isch.schedule_date,
+				isch.status,
+				isch.version
+			FROM
+				inbound_schedules AS isch
+				JOIN products AS proc 
+			        ON isch.company_id = proc.company_id 
+			        AND isch.product_id = proc.product_id 
+			WHERE
+				isch.inbound_schedule_id = #{inboundScheduleId}
+				AND isch.company_id = #{companyId};
+		</select>
+		
 		<insert id="insert" parameterType="com.example.monos.domain.InboundSchedule" useGeneratedKeys="true" keyProperty="inboundScheduleId">
 			INSERT INTO inbound_schedules(
 				company_id,
