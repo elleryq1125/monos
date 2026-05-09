@@ -31,19 +31,33 @@ function openInboundScheduleAddModal(){
 	
   clearModalFieldErros(modal);
   
-  initInboundScheduleAddModal(modalEl);
+  initInboundScheduleModal(modalEl, "add");
 }
 
-// 入庫予定登録モーダル初期化
-function initInboundScheduleAddModal(modalEl){
-  modalEl.title.innerText = "入庫予定登録";
-  modalEl.inboundScheduleId.value = "";
-  modalEl.version.value = "";
-  modalEl.productKeyword.value = "";
-  modalEl.product.value = "";
-  modalEl.productId.value = "";
-  modalEl.scheduleQty.value = "";
-  modalEl.scheduleDate.value = "";
+// 入庫予定モーダル初期化
+function initInboundScheduleModal(modalEl, mode){
+  switch(mode){
+	  case "add":
+		  modalEl.title.innerText = "入庫予定登録";
+		  modalEl.inboundScheduleId.value = "";
+		  modalEl.version.value = "";
+		  modalEl.productKeyword.value = "";
+		  modalEl.product.value = "";
+		  modalEl.productId.value = "";
+		  modalEl.scheduleQty.value = "";
+		  modalEl.scheduleDate.value = "";
+		  break;
+		  
+	  case "update":
+		  modalEl.title.innerText = "入庫予定更新";
+		  break;
+	  }
+	  
+	  modalEl.productKeyword.disabled = false;
+	  modalEl.product.disabled = true;
+	  modalEl.warehouse.disabled = false;
+	  modalEl.scheduleQty.disabled = false;
+	  modalEl.scheduleDate.disabled = false;
 }
 
 // 入庫予定更新モーダル表示
@@ -53,7 +67,9 @@ async function openInboundScheduleUpdateModal(inboundScheduleId){
 	
   	clearModalFieldErros(modal);
 	
-	initInboundScheduleUpdateModal(modalEl, inboundScheduleId);
+	initInboundScheduleModal(modalEl, "update");
+	
+	modalEl.inboundScheduleId.value = inboundScheduleId;
 	
 	// 入庫予定情報を取得
 	const res = await fetch("/api/inboundschedules/" + inboundScheduleId);
@@ -61,15 +77,10 @@ async function openInboundScheduleUpdateModal(inboundScheduleId){
 	
 	if (result.success){
 		setDataForInboundScheduleUpdateModal(modalEl, result.data);
+		toggleStateInboudScheduleUpdateForm(modalEl, result.data.status);
 	} else{
 		handleInboundScheduleLoadError(result.message);
 	}
-}
-
-// 入庫予定更新モーダル初期化
-function initInboundScheduleUpdateModal(modalEl, inboundScheduleId){
-	modalEl.title.innerText = "入庫予定更新";
-	modalEl.inboundScheduleId.value = inboundScheduleId;
 }
 
 // 入庫予定更新モーダルにデータ設定
@@ -82,8 +93,22 @@ function setDataForInboundScheduleUpdateModal(modalEl, data){
 }
 
 // 入庫予定更新モーダルの入力項目の状態切り替え
-function toggleStateInboudScheduleUpdateForm(modal, status){
-	
+function toggleStateInboudScheduleUpdateForm(modalEl, status){
+	switch(status){
+		case 1:
+			// 入庫中
+			modalEl.productKeyword.disabled =true;
+			modalEl.warehouse.disabled=true;
+			break;
+			
+		case 2,3:
+			// 入庫済、キャンセル
+			modalEl.productKeyword.disabled = true;
+			modalEl.warehouse.disabled = true;
+			modalEl.scheduleDate.disabled = true;
+			modalEl.scheduleQty.disabled = true;
+			break;
+	}
 }
 
 // 入庫予定追加・更新処理
