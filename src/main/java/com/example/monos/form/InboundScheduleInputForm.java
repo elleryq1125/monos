@@ -15,6 +15,8 @@ import lombok.Data;
 public class InboundScheduleInputForm {
 	private Integer inboundScheduleId;
 	
+	private Integer version;
+	
 	@NotNull(message = "{NotNull.inboundScheduleInputForm}")
 	private Integer productId;
 	

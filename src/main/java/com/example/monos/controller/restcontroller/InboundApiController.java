@@ -79,6 +79,7 @@ public class InboundApiController {
 		inboundSchedule.setWarehouseId(form.getWarehouseId());
 		inboundSchedule.setScheduleQty(form.getScheduleQty());
 		inboundSchedule.setScheduleDate(form.getScheduleDate());
+		inboundSchedule.setVersion(form.getVersion());
 		
 		// 入庫予定の追加・更新処理
 		String resultMessage = inboundScheduleService.save(inboundSchedule);

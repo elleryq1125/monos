@@ -9,6 +9,7 @@ public class InboundScheduleDetailDto {
 	private Integer inboundScheduleId;
 	private String productCode;
 	private String productName;
+	private Integer productId;
 	private Integer warehouseId;
 	private int scheduleQty;
 	private LocalDate scheduleDate;

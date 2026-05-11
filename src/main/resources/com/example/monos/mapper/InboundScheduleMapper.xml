@@ -44,11 +44,29 @@
 				isch.inbound_schedule_id;
 		</select>
 		
+		<select id="selectByIdAndVersion" resultType="com.example.monos.domain.InboundSchedule">
+			SELECT
+				isch.inbound_schedule_id,
+				isch.product_id,
+				isch.warehouse_id,
+				isch.schedule_qty,
+				isch.schedule_date,
+				isch.status,
+				isch.version
+			FROM
+				inbound_schedules AS isch
+			WHERE
+				isch.inbound_schedule_id = #{inboundScheduleId}
+				AND isch.company_id = #{companyId}
+				AND isch.version = #{version};
+		</select>
+		
 		<select id="selectDetailById" resultType="com.example.monos.dto.InboundScheduleDetailDto">
 			SELECT
 				isch.inbound_schedule_id,
 				proc.product_code,
 				proc.name AS product_name,
+				proc.product_id,
 				isch.warehouse_id,
 				isch.schedule_qty,
 				isch.schedule_date,

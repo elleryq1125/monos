@@ -87,6 +87,7 @@ async function openInboundScheduleUpdateModal(inboundScheduleId){
 function setDataForInboundScheduleUpdateModal(modalEl, data){
 	modalEl.version.value = data.version;
 	modalEl.product.value = `${data.productCode} ${data.productName}`;
+	modalEl.productId.value = data.productId;
 	modalEl.warehouse.value = data.warehouseId;
 	modalEl.scheduleDate.value = data.scheduleDate;
 	modalEl.scheduleQty.value = data.scheduleQty;
@@ -125,6 +126,7 @@ async function saveInboundSchedule(){
 	// 入力データを設定
 	const form = {
 		inboundScheduleId: modalEl.inboundScheduleId.value,
+		version: modalEl.version.value,
 		productId: modalEl.productId.value,
 		warehouseId: modalEl.warehouse.value,
 		scheduleQty: modalEl.scheduleQty.value,
@@ -150,7 +152,7 @@ async function saveInboundSchedule(){
 	}else{
 		if (result.message == null){
 			// バリデーションエラー表示
-			showModalFieldErrors(result.fieldErrors);
+			showModalFieldErrors(modal, result.fieldErrors);
 		}else{
 			handleInboundScheduleLoadError(result.message);
 		}

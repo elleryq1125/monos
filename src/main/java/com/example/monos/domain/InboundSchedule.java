@@ -20,6 +20,7 @@ public class InboundSchedule {
     private Integer scheduleQty;
     private LocalDate scheduleDate;
     private Integer status;
+    private Integer version;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deteledAt;

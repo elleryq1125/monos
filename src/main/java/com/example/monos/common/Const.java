@@ -16,9 +16,18 @@ public class Const {
     /* codeType */
     public static final String CODE_TYPE_INBOUND_STATUS = "INBOUND_STATUS";
     
-    /* inbound_status */
-    public static final int INBOUND_STATUS_MINYUKO = 0;
-    public static final int INBOUND_STATUS_NYUKOCHU = 1;
-    public static final int INBOUND_STATUS_NYUKOZUMI = 2;
-    public static final int INBOUND_STATUS_CANCEL = 3;
+    /* 入庫状態 */
+    public static final class InboundStatus{
+        public static final int MINYUKO = 0;
+        public static final String MINYUKO_LABEL = "未入庫";
+        
+        public static final int NYUKOCHU = 1;
+        public static final String NYUKOCHU_LABEL = "入庫中";
+        
+        public static final int NYUKOZUMI = 2;
+        public static final String NYUKOZUMI_LABEL = "入庫済";
+        
+        public static final int CANCEL = 3;
+        public static final String CANCEL_LABEL = "キャンセル";
+    }
 }

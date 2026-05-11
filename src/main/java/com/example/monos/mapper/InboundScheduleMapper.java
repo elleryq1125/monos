@@ -13,6 +13,7 @@ import com.example.monos.dto.InboundScheduleSearchCondition;
 @Mapper
 public interface InboundScheduleMapper {
 	List<InboundScheduleListDto> selectList(InboundScheduleSearchCondition condition);
+	InboundSchedule selectByIdAndVersion(@Param("inboundScheduleId") int inboundScheduleId, @Param("companyId") int companyId, @Param("version") int version);
 	InboundScheduleDetailDto selectDetailById(@Param("inboundScheduleId") int inboundScheduleId, @Param("companyId") int companyId);
 	void insert(InboundSchedule inboundSchedule);
 }
