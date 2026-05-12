@@ -25,7 +25,7 @@
 			        AND isch.status = stat.code
 			WHERE
 				isch.company_id = #{companyId}
-				<if test="status != null and status != ''">
+				<if test="status != null">
 					AND isch.status = #{status}
 				</if>
 				<if test="productCode != null and productCode != ''">
