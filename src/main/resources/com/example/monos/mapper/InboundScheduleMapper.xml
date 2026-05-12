@@ -100,4 +100,16 @@
 				#{status}
 			)
 		</insert>
+		
+		<update id="update"  parameterType="com.example.monos.domain.InboundSchedule">
+			UPDATE inbound_schedules 
+			SET
+				product_id = #{productId},
+				warehouse_id = #{warehouseId},
+				schedule_qty = #{scheduleQty},
+				schedule_date = #{scheduleDate}
+			WHERE
+				inbound_schedule_id = #{inboundScheduleId}
+				AND company_id = #{companyId}
+		</update>
 </mapper>

@@ -90,6 +90,16 @@ public class InboundScheduleServiceImpl implements InboundScheduleService {
 			
 			// フィールドチェック
 			validateUpdateFields(currentInboundSchedule, inboundSchedule);
+			
+			// 入庫予定情報の更新
+			int count = inboundScheduleMapper.update(inboundSchedule);
+		
+			if (count == 0) {
+				throw new FatalBusinessException(messageSource.getMessage("updateFaild", null, Locale.JAPAN));
+			} else {
+				resultMessage = messageSource.getMessage("updateComplete", null, Locale.JAPAN);
+			}
+		
 		}
 		return resultMessage;
 	}
