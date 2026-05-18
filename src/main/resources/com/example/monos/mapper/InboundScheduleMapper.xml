@@ -107,9 +107,12 @@
 				product_id = #{productId},
 				warehouse_id = #{warehouseId},
 				schedule_qty = #{scheduleQty},
-				schedule_date = #{scheduleDate}
+				schedule_date = #{scheduleDate},
+				version = version + 1,
+				updated_at = transaction_timestamp()
 			WHERE
 				inbound_schedule_id = #{inboundScheduleId}
 				AND company_id = #{companyId}
+				AND version = #{version}
 		</update>
 </mapper>
