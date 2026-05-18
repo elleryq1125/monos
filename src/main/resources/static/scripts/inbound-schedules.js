@@ -167,6 +167,16 @@ function handleInboundScheduleLoadError(message){
 	search();
 }
 
+// 入庫実績登録モーダル表示
+function openInboundResultAddModal(){
+  const modal = document.getElementById("openInboundResultAddModal");
+  //const modalEl = getInboundScheduleModalElements(modal);
+	
+  clearModalFieldErros(modal);
+  
+  //initInboundScheduleModal(modalEl, "add");
+}
+
 // 検索
 function search(){
 	document.getElementById("searchForm").submit();
