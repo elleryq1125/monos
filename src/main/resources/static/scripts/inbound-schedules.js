@@ -221,6 +221,52 @@ function handleInboundReulstModalLoadError(message){
 	search();
 }
 
+// 入庫実績登録処理
+async function registerInboundResult(){
+	// CSRFトークン取得
+	const csrfToken = document.querySelector("meta[name='_csrf']").content;
+	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
+	
+	const modal = document.getElementById("inboundResultModal");
+	const modalEl = getInboundResultModalElements(modal);
+	
+	clearModalFieldErros(modal);
+	
+	// 入力データを設定
+	const form = {
+		inboundScheduleId: modalEl.inboundScheduleId.value,
+		inboundScheduleVersion: modalEl.version.value,
+		totalResultQty: modalEl.totalResultQty.value,
+		resultQty: modalEl.resultQty.value,
+		resultDate: modalEl.resultDate.value
+	};
+	
+	// リクエスト
+	const res = await fetch("/api/inboundschedules/result/regist",{
+		method:"POST",
+		headers:{
+			"Content-Type":"application/json",
+			[csrfHeader]: csrfToken
+		},
+		body:JSON.stringify(form)
+	});
+	const result = await res.json();
+	
+	if (result.success){	
+		// モーダルを非表示にして成功メッセージ表示
+		hideModal("inboundResultModal");
+		setSuccessMessage(result.message);
+		search();
+	}else{
+		if (result.message == null){
+			// バリデーションエラー表示
+			showModalFieldErrors(modal, result.fieldErrors);
+		}else{
+			handleInboundScheduleLoadError(result.message);
+		}
+	}
+}
+
 // 検索
 function search(){
 	document.getElementById("searchForm").submit();
