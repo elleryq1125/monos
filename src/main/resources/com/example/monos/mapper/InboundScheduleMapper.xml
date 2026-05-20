@@ -78,8 +78,8 @@
 			FROM
 				inbound_schedules AS isch
 				JOIN products AS proc 
-			        ON isch.company_id = proc.company_id 
-			        AND isch.product_id = proc.product_id
+			        ON isch.product_id = proc.product_id
+			        AND isch.company_id = proc.company_id 
 			    JOIN warehouses AS wrhs
 			        ON isch.warehouse_id = wrhs.warehouse_id
 			    	AND isch.company_id = wrhs.company_id
@@ -87,13 +87,16 @@
 			    	(
 			    		SELECT
 			    			inbound_schedule_id,
+			    			company_id,
 			    			COALESCE(SUM(result_qty), 0) AS total_result_qty
 			    		FROM
 			    			inbound_results
 			    		GROUP BY
-			    			inbound_schedule_id
+			    			inbound_schedule_id,
+			    			company_id
 			    	) AS ires
 			    	ON isch.inbound_schedule_id = ires.inbound_schedule_id
+			    	AND isch.company_id = ires.company_id
 			WHERE
 				isch.inbound_schedule_id = #{inboundScheduleId}
 				AND isch.company_id = #{companyId};
