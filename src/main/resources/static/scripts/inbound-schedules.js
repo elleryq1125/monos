@@ -207,7 +207,7 @@ function getInboundResultModalElements(modal) {
 function setDataForInboundResultModal(modalEl, data){
 	modalEl.version.value = data.version;
 	modalEl.product.value = `${data.productCode} ${data.productName}`;
-	modalEl.warehouse.value = data.warehouseId;
+	modalEl.warehouse.value = `${data.warehouseCode} ${data.warehouseName}`;
 	modalEl.scheduleQty.value = data.scheduleQty;
 	modalEl.scheduleDate.value = data.scheduleDate;
 	modalEl.totalResultQty.value = data.totalResultQty;

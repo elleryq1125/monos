@@ -68,6 +68,8 @@
 				proc.name AS product_name,
 				proc.product_id,
 				isch.warehouse_id,
+				wrhs.warehouse_code,
+				wrhs.name AS warehouse_name,
 				isch.schedule_qty,
 				isch.schedule_date,
 				isch.status,
@@ -78,6 +80,9 @@
 				JOIN products AS proc 
 			        ON isch.company_id = proc.company_id 
 			        AND isch.product_id = proc.product_id
+			    JOIN warehouses AS wrhs
+			        ON isch.warehouse_id = wrhs.warehouse_id
+			    	AND isch.company_id = wrhs.company_id
 			    LEFT JOIN 
 			    	(
 			    		SELECT
