@@ -71,12 +71,24 @@
 				isch.schedule_qty,
 				isch.schedule_date,
 				isch.status,
-				isch.version
+				isch.version,
+				ires.total_result_qty
 			FROM
 				inbound_schedules AS isch
 				JOIN products AS proc 
 			        ON isch.company_id = proc.company_id 
-			        AND isch.product_id = proc.product_id 
+			        AND isch.product_id = proc.product_id
+			    LEFT JOIN 
+			    	(
+			    		SELECT
+			    			inbound_schedule_id,
+			    			COALESCE(SUM(result_qty), 0) AS total_result_qty
+			    		FROM
+			    			inbound_results
+			    		GROUP BY
+			    			inbound_schedule_id
+			    	) AS ires
+			    	ON isch.inbound_schedule_id = ires.inbound_schedule_id
 			WHERE
 				isch.inbound_schedule_id = #{inboundScheduleId}
 				AND isch.company_id = #{companyId};

@@ -79,7 +79,7 @@
 									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundScheduleModal" th:onclick="'openInboundScheduleUpdateModal(' + *{inboundScheduleId} + ')'">更新</button>
 								</td>
 								<td>
-									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundResultModal" th:onclick="'openInboundResultAddModal(' + *{inboundScheduleId} + ')'">入庫</button>
+									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundResultModal" th:onclick="'openInboundResultModal(' + *{inboundScheduleId} + ')'">入庫</button>
 								</td>
 							</tr> 
 						</tbody>
@@ -168,35 +168,44 @@
 						  
 						  <div class="mb-3 form-field">
 							  <label>商品</label>
-							  <label  id="modalProduct">
+							  <input type="text" class="w-200" id="modalProduct" disabled>
 						  </div>
 				          
 				          <div class="mb-3 form-field">
 							  <label>倉庫</label>
-							  <label  id="modalWarehouse">
+							  <input type="text" class="w-200" id="modalWarehouse" disabled>
 						  </div>
 						  
-						  <div class="mb-3 form-field">
-							  <label>予定数量</label>
-							  <label  id="modalScheduleQty">
-						  </div>
-						  
-  						  <div class="mb-3 form-field">
-							  <label>予定日</label>
-							  <label  id="modalScheduleDate">
+						  <div class="row mb-3">
+	  						  <div class="col-md-4 form-field">
+								  <label>入庫予定数量</label>
+								  <input type="number" class="w-80" id="modalScheduleQty" disabled>
+							  </div>
+							  
+	  						  <div class="col-md-8 form-field">
+								  <label>入庫予定日</label>
+								  <input type="date" class="w-140" id="modalScheduleDate" disabled>
+							  </div>
 						  </div>
 						  
   						  <div class="mb-3 form-field">
 							  <label>入庫済数量</label>
-							  <label  id="modaTotalResultQty">
+							  <input type="number" class="w-80" id="modalTotalResultQty" disabled>
 						  </div>
 						  
-						  <div class="mb-3 form-field">
-							  <label class="required">入庫数量</label>
-							  <input type="number" class="w-80 " id="modalResultQty">
-						      <div class="field-error" id="resultQtyError"></div>
+						  <div class="row mb-3">
+	  						   <div class="col-md-4 form-field">
+								  <label class="required">入庫数量</label>
+								  <input type="number" class="w-80" id="modalResultQty">
+							      <div class="field-error" id="resultQtyError"></div>
+							  </div>
+							  
+							  <div class="col-md-8 form-field">
+								  <label class="required">入庫日</label>
+								  <input type="date" class="w-140" id="modalResultDate">
+							      <div class="field-error" id="resultDateError"></div>
+						  	  </div>
 						  </div>
-						  
 				        </form>
 				      </div>
 				

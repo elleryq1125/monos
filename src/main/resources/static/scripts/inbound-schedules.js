@@ -168,13 +168,57 @@ function handleInboundScheduleLoadError(message){
 }
 
 // 入庫実績登録モーダル表示
-function openInboundResultAddModal(){
-  const modal = document.getElementById("openInboundResultAddModal");
-  //const modalEl = getInboundScheduleModalElements(modal);
-	
-  clearModalFieldErros(modal);
+async function openInboundResultModal(inboundScheduleId){
+	const modal = document.getElementById("inboundResultModal");
+	const modalEl = getInboundResultModalElements(modal);
   
-  //initInboundScheduleModal(modalEl, "add");
+  	modalEl.inboundScheduleId.value = inboundScheduleId;
+  	
+  	clearModalFieldErros(modal);
+	  
+	// 入庫予定情報を取得
+  	const res = await fetch("/api/inboundschedules/" + inboundScheduleId);
+ 	const result = await res.json();
+	
+	if (result.success){
+		setDataForInboundResultModal(modalEl, result.data);
+	} else{
+		handleInboundReulstModalLoadError(result.message);
+	}
+}
+
+// 入庫実績登録モーダルの要素取得
+function getInboundResultModalElements(modal) {
+    return {
+        title: modal.querySelector("#modalTitle"),
+        inboundScheduleId: modal.querySelector("#modalInboundScheduleId"),
+        version: modal.querySelector("#modalVersion"),
+        product: modal.querySelector("#modalProduct"),
+        warehouse: modal.querySelector("#modalWarehouse"),
+        scheduleQty: modal.querySelector("#modalScheduleQty"),
+        scheduleDate: modal.querySelector("#modalScheduleDate"),
+        totalResultQty: modal.querySelector("#modalTotalResultQty"),
+        resultQty: modal.querySelector("#modalResultQty"),
+        resultDate: modal.querySelector("#modalResultDate")
+    };
+}
+
+// 入庫実績登録モーダルにデータ設定
+function setDataForInboundResultModal(modalEl, data){
+	modalEl.version.value = data.version;
+	modalEl.product.value = `${data.productCode} ${data.productName}`;
+	modalEl.warehouse.value = data.warehouseId;
+	modalEl.scheduleQty.value = data.scheduleQty;
+	modalEl.scheduleDate.value = data.scheduleDate;
+	modalEl.totalResultQty.value = data.totalResultQty;
+}
+
+// 入庫実績モーダルのエラーハンドリング
+function handleInboundReulstModalLoadError(message){
+	// モーダルを非表示にしてエラーメッセージ表示
+	hideModal("inboundResultModal");
+	setErrorMessage(message);
+	search();
 }
 
 // 検索

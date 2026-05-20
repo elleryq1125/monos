@@ -15,4 +15,5 @@ public class InboundScheduleDetailDto {
 	private LocalDate scheduleDate;
 	private Integer status;
 	private Integer version;
+	private int totalResultQty;
 }
