@@ -17,7 +17,7 @@ import com.example.monos.domain.InboundSchedule;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.dto.ApiResponse;
 import com.example.monos.dto.InboundScheduleDetailDto;
-import com.example.monos.form.InboundResultInputForm;
+import com.example.monos.form.InboundResultRegisterForm;
 import com.example.monos.form.InboundScheduleInputForm;
 import com.example.monos.service.InboundScheduleService;
 
@@ -99,7 +99,7 @@ public class InboundApiController {
 	 */
 	@PostMapping("/inboundschedules/result/regist")
 	public ApiResponse<?> registerInboundResult(@AuthenticationPrincipal UserDetailsImpl signinUser,
-																			   @Valid @RequestBody InboundResultInputForm form,
+																			   @Valid @RequestBody InboundResultRegisterForm form,
 																			   BindingResult result){
 		
 		// バリデーションチェック

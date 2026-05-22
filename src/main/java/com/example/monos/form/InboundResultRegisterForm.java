@@ -12,7 +12,7 @@ import lombok.Data;
  * 入庫実績登録画面のリクエストデータ
  */
 @Data
-public class InboundResultInputForm {
+public class InboundResultRegisterForm {
 	private Integer inboundScheduleId;
 	
 	private Integer inboundScheduleVersion;
