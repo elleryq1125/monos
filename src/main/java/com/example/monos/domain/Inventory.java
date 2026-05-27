@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Inventori {
-	private Integer inventoriId;
+public class Inventory {
+	private Integer inventoryId;
 	private Integer companyId;
 	private Integer productId;
 	private Integer warehouseId;
