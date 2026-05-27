@@ -1,5 +1,5 @@
 CREATE TABLE inventories (
-	inventori_id SERIAL PRIMARY KEY,
+	inventory_id SERIAL PRIMARY KEY,
 	company_id INTEGER  NOT NULL,
 	product_id INTEGER  NOT NULL,
 	warehouse_id INTEGER  NOT NULL,
