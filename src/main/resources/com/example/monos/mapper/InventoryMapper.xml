@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.monos.mapper.InventoryMapper">
+  <!-- SQL -->  
+	  <select id="selectByProductIdAndWarehouseId" resultType="com.example.monos.domain.Inventory">
+		   	SELECT
+   				 ivtr.inventory_id,
+   				 ivtr.company_id,
+   				 ivtr.product_id,
+   				 ivtr.warehouse_id,
+   				 ivtr.on_hand_qty,
+   				 ivtr.reseved_qty,
+   				 ivtr.version,
+   				 ivtr.created_at,
+   				 ivtr.updated_at,
+   				 ivtr.deleted_at
+			FROM
+			    inventories AS ivtr
+			WHERE
+				ivtr.company_id = #{companyId}
+				AND ivtr.product_id = #{productId}
+				AND ivtr.warehouse_id = #{warehouseId};
+		</select>
+		
+		<insert id="insert" useGeneratedKeys="true" keyProperty="inventoryId">
+			INSERT INTO inventories(
+				company_id,
+				product_id,
+				warehouse_id,
+				on_hand_qty
+			)
+			VALUES(
+				#{companyId},
+				#{productId},
+				#{warehouseId},
+				#{onHandQty}
+			)
+		</insert>
+		
+		<update id="updateOnHandQty">
+			UPDATE inventories 
+			SET
+				on_hand_qty = on_hand_qty + #{inboundQty},
+				version = version + 1,
+				updated_at = transaction_timestamp()
+			WHERE
+				inventory_id = #{inventoryId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
+</mapper>

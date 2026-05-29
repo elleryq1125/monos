@@ -17,4 +17,5 @@ public interface InboundScheduleMapper {
 	InboundScheduleDetailDto selectDetailById(@Param("inboundScheduleId") int inboundScheduleId, @Param("companyId") int companyId);
 	void insert(InboundSchedule inboundSchedule);
 	int update(InboundSchedule inboundSchedule);
+	int updateStatus(InboundSchedule inboundSchedule);
 }

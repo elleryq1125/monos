@@ -135,4 +135,16 @@
 				AND company_id = #{companyId}
 				AND version = #{version}
 		</update>
+		
+		<update id="updateStatus"  parameterType="com.example.monos.domain.InboundSchedule">
+			UPDATE inbound_schedules 
+			SET
+				version = version + 1,
+				status = #{status},
+				updated_at = transaction_timestamp()
+			WHERE
+				inbound_schedule_id = #{inboundScheduleId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
 </mapper>
