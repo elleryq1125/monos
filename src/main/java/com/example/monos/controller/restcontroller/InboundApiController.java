@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.monos.domain.InboundSchedule;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.dto.ApiResponse;
+import com.example.monos.dto.InboundResultRegisterDto;
 import com.example.monos.dto.InboundScheduleDetailDto;
 import com.example.monos.form.InboundResultRegisterForm;
 import com.example.monos.form.InboundScheduleInputForm;
+import com.example.monos.service.InboundResultService;
 import com.example.monos.service.InboundScheduleService;
 
 import jakarta.validation.Valid;
@@ -32,11 +34,14 @@ import jakarta.validation.Valid;
 public class InboundApiController {
 	private final MessageSource messageSource;
 	private final InboundScheduleService inboundScheduleService;
+	private final InboundResultService inboundResultService;
 	
 	public InboundApiController(MessageSource messageSource,
-												 InboundScheduleService inboundScheduleService) {
+												 InboundScheduleService inboundScheduleService,
+												 InboundResultService inboundResultService) {
 		this.messageSource = messageSource;
 		this.inboundScheduleService = inboundScheduleService;
+		this.inboundResultService = inboundResultService;
 	}
 	
 	@GetMapping("/inboundschedules/{inboundScheduleId}")
@@ -107,19 +112,17 @@ public class InboundApiController {
 			return ApiResponse.validationError(result);
 		}
 		
-//		// 追加・更新用のDomainを作成
-//		var inboundSchedule = new InboundSchedule();
-//		inboundSchedule.setInboundScheduleId(form.getInboundScheduleId());
-//		inboundSchedule.setCompanyId(signinUser.getCompanyId());
-//		inboundSchedule.setProductId(form.getProductId());
-//		inboundSchedule.setWarehouseId(form.getWarehouseId());
-//		inboundSchedule.setScheduleQty(form.getScheduleQty());
-//		inboundSchedule.setScheduleDate(form.getScheduleDate());
-//		inboundSchedule.setVersion(form.getVersion());
-//		
-//		// 入庫予定の追加・更新処理
-//		String resultMessage = inboundScheduleService.save(inboundSchedule);
+		// 入庫実績登録用のDTOを作成
+		var registerDto = new InboundResultRegisterDto();
+		registerDto.setInboundScheduleId(form.getInboundScheduleId());
+		registerDto.setCompanyId(signinUser.getCompanyId());
+		registerDto.setInboundScheduleVersion(form.getInboundScheduleVersion());
+		registerDto.setResultQty(form.getResultQty());
+		registerDto.setResultDate(form.getResultDate());
 		
-		return null;
+		// 入庫実績登録
+		String resultMessage = inboundResultService.register(registerDto);
+		
+		return ApiResponse.successMessage(resultMessage);
 	}
 }
