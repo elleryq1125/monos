@@ -47,6 +47,7 @@
 		<select id="selectByIdAndVersion" resultType="com.example.monos.domain.InboundSchedule">
 			SELECT
 				isch.inbound_schedule_id,
+				isch.company_id,
 				isch.product_id,
 				isch.warehouse_id,
 				isch.schedule_qty,

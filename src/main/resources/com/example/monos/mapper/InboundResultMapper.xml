@@ -9,7 +9,7 @@
 			    inbound_results AS ires
 			WHERE
 				ires.inbound_schedule_id = #{inboundScheduleId}
-				AND ires.comapny_id = #{companyId};
+				AND ires.company_id = #{companyId};
 		</select>
 		
 		<insert id="insert" parameterType="com.example.monos.domain.InboundResult" useGeneratedKeys="true" keyProperty="inboundResultId">
@@ -21,7 +21,7 @@
 			)
 			VALUES(
 				#{companyId},
-				#{inboundResultId},
+				#{inboundScheduleId},
 				#{resultQty},
 				#{resultDate}
 			)

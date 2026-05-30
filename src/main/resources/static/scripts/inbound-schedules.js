@@ -262,7 +262,7 @@ async function registerInboundResult(){
 			// バリデーションエラー表示
 			showModalFieldErrors(modal, result.fieldErrors);
 		}else{
-			handleInboundScheduleLoadError(result.message);
+			handleInboundReulstModalLoadError(result.message);
 		}
 	}
 }

@@ -44,8 +44,8 @@
 				version = version + 1,
 				updated_at = transaction_timestamp()
 			WHERE
-				inventory_id = #{inventoryId}
-				AND company_id = #{companyId}
-				AND version = #{version}
+				inventory_id = #{inventory.inventoryId}
+				AND company_id = #{inventory.companyId}
+				AND version = #{inventory.version}
 		</update>
 </mapper>

@@ -43,7 +43,7 @@ public class InboundResultServiceImpl implements InboundResultService {
 	 */
 	@Override
 	@Transactional
-	public void register(InboundResultRegisterDto registerDto) {
+	public String register(InboundResultRegisterDto registerDto) {
 		
 		// 入庫予定を取得
 		InboundSchedule schedule = inboundScheduleMapper.selectByIdAndVersion(registerDto.getInboundScheduleId(),
@@ -72,6 +72,8 @@ public class InboundResultServiceImpl implements InboundResultService {
 		
 		// 在庫が存在しなければ作成、存在すれば更新
 		insertOrUpdateInventory(inventory, registerDto, schedule);
+		
+		return messageSource.getMessage("registComplete", null, Locale.JAPAN);
 	}
 
 	/**
