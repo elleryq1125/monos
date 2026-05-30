@@ -5,7 +5,8 @@
 	  <select id="selectList" resultType="com.example.monos.dto.InboundScheduleListDto">
 		   	SELECT
    				 isch.inbound_schedule_id
-    			, stat.name AS status
+   				, isch.status
+    			, stat.name AS status_name
 			    , proc.product_code
 			    , proc.name AS product_name
 			    , wrhs.warehouse_code

@@ -67,7 +67,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="inboundschedule:${inboundschedules}" th:object="${inboundschedule}">
-								<td th:text="*{status}"></td>
+								<td th:text="*{statusName}"></td>
 								<td th:text="*{productCode}"></td>
 								<td th:text="*{productName}"></td>
 								<td th:text="*{warehouseCode}"></td>
@@ -76,10 +76,12 @@
 								<td th:text="${#dates.format(inboundschedule.scheduleDate, 'yyyy/MM/dd')}"></td>
 								<td></td>
 								<td>
-									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundScheduleModal" th:onclick="'openInboundScheduleUpdateModal(' + *{inboundScheduleId} + ')'">更新</button>
+									<!-- 入庫済・キャンセル以外で表示 -->
+									<button th:if="*{status != 2 and status != 3}" class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundScheduleModal" th:onclick="'openInboundScheduleUpdateModal(' + *{inboundScheduleId} + ')'">更新</button>
 								</td>
 								<td>
-									<button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundResultModal" th:onclick="'openInboundResultModal(' + *{inboundScheduleId} + ')'">入庫</button>
+									<!-- 入庫済・キャンセル以外で表示 -->
+									<button th:if="*{status != 2 and status != 3}" class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inboundResultModal" th:onclick="'openInboundResultModal(' + *{inboundScheduleId} + ')'">入庫</button>
 								</td>
 							</tr> 
 						</tbody>

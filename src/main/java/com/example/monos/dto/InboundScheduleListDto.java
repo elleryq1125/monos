@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class InboundScheduleListDto {
 	private int inboundScheduleId;
-	private String status;
+	private Integer status;
+	private String statusName;
 	private String productCode;
 	private String productName;
 	private String warehouseCode;
