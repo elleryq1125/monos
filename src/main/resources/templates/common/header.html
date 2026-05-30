@@ -44,6 +44,14 @@
 		            <li><a class="dropdown-item" th:href="@{/inboundschedules}">入庫予定一覧</a></li>
 		          </ul>
 		        </li>
+		        <li class="nav-item dropdown">
+		          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+		            在庫
+		          </a>
+		          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+		            <li><a class="dropdown-item" th:href="@{/inventories}">在庫一覧</a></li>
+		          </ul>
+		        </li>
 		        <li sec:authorize="hasRole('ADMIN')" class="nav-item dropdown">
 		          <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 		            マスタ
