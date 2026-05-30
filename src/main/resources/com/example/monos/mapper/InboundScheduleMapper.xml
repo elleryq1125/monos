@@ -13,6 +13,7 @@
 			    , wrhs.name AS warehouse_name
 			    , isch.schedule_qty
 			    , isch.schedule_date 
+			    , COALESCE(ires.total_result_qty, 0) AS total_result_qty
 			FROM
 			    inbound_schedules AS isch 
 			    JOIN products AS proc 
@@ -24,6 +25,18 @@
 			    LEFT JOIN code_masters AS stat 
 			        ON stat.code_type = 'INBOUND_STATUS' 
 			        AND isch.status = stat.code
+			    LEFT JOIN (
+			    	SELECT
+			    		inbound_schedule_id,
+			    		SUM(result_qty) AS total_result_qty
+			    	FROM
+			    		inbound_results
+			    	WHERE
+			    		company_id = #{companyId}
+			    	GROUP BY
+			    		inbound_schedule_id
+			    	) AS ires
+			    	ON isch.inbound_schedule_id = ires.inbound_schedule_id
 			WHERE
 				isch.company_id = #{companyId}
 				<if test="status != null">

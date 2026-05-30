@@ -15,4 +15,5 @@ public class InboundScheduleListDto {
 	private String warehouseName;
 	private int scheduleQty;
 	private Date scheduleDate;
+	private int totalResultQty;
 }
