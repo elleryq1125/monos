@@ -58,7 +58,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="inventories:${inventory}" th:object="${inventory}">
+							<tr th:each="inventory:${inventories}" th:object="${inventory}">
 								<td th:text="*{productCode}"></td>
 								<td th:text="*{productName}"></td>
 								<td th:text="*{warehouseCode}"></td>
