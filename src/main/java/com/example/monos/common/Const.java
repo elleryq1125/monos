@@ -15,6 +15,7 @@ public class Const {
     
     /* codeType */
     public static final String CODE_TYPE_INBOUND_STATUS = "INBOUND_STATUS";
+    public static final String CODE_TYPE_OUTBOUND_STATUS = "OUTBOUND_STATUS";
     
     /* 入庫状態 */
     public static final class InboundStatus{
@@ -26,6 +27,21 @@ public class Const {
         
         public static final int NYUKOZUMI = 2;
         public static final String NYUKOZUMI_LABEL = "入庫済";
+        
+        public static final int CANCEL = 3;
+        public static final String CANCEL_LABEL = "キャンセル";
+    }
+
+    /* 出庫状態  */
+    public static final class OutboundStatus{
+        public static final int MINSHUKO = 0;
+        public static final String MINSHUKO_LABEL = "未出庫";
+        
+        public static final int SHUKOCHU = 1;
+        public static final String SHUKOCHU_LABEL = "出庫中";
+        
+        public static final int SHUKOZUMI = 2;
+        public static final String SHUKOZUMI_LABEL = "出庫済";
         
         public static final int CANCEL = 3;
         public static final String CANCEL_LABEL = "キャンセル";
