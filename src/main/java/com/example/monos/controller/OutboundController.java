@@ -12,8 +12,11 @@ import com.example.monos.common.Const;
 import com.example.monos.domain.CodeMaster;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.domain.Warehouse;
+import com.example.monos.dto.OutboundScheduleListDto;
+import com.example.monos.dto.OutboundScheduleSearchCondition;
 import com.example.monos.form.OutboundScheduleSearchForm;
 import com.example.monos.service.CodeMasterService;
+import com.example.monos.service.OutboundScheduleService;
 import com.example.monos.service.WarehouseService;
 
 
@@ -23,10 +26,12 @@ import com.example.monos.service.WarehouseService;
  */
 @Controller
 public class OutboundController {
+    private final OutboundScheduleService outboundScheduleService;
     private final WarehouseService warehouseService;
     private final CodeMasterService codeMasterService;
     
-    public OutboundController(WarehouseService warehouseService, CodeMasterService codeMasterService) {
+    public OutboundController(OutboundScheduleService outboundScheduleService, WarehouseService warehouseService, CodeMasterService codeMasterService) {
+    	this.outboundScheduleService = outboundScheduleService;
     	this.warehouseService = warehouseService;
     	this.codeMasterService = codeMasterService;
     }
@@ -41,16 +46,16 @@ public class OutboundController {
     									Model model) {
     	
     	// 入力条件を検索用DTOに設定
-    	// var condition = new InboundScheduleSearchCondition();
-    	// condition.setCompanyId(signinUser.getCompanyId());
-    	// condition.setProductCode(form.getProductCode());
-    	// condition.setProductName(form.getProductName());
-    	// condition.setWarehouseCode(form.getWarehouseCode());
-    	// condition.setWarehouseName(form.getWarehouseName());
-    	// condition.setStatus(form.getStatusValue());
+    	var condition = new OutboundScheduleSearchCondition();
+    	condition.setCompanyId(signinUser.getCompanyId());
+    	condition.setProductCode(form.getProductCode());
+    	condition.setProductName(form.getProductName());
+    	condition.setWarehouseCode(form.getWarehouseCode());
+    	condition.setWarehouseName(form.getWarehouseName());
+    	condition.setStatus(form.getStatusValue());
     	
-        //List<InboundScheduleListDto> inboundSchedules = inboundScheduleService.search(condition);
-        //model.addAttribute("inboundschedules", inboundSchedules);
+        List<OutboundScheduleListDto> outboundSchedules = outboundScheduleService.search(condition);
+        model.addAttribute("outboundschedules", outboundSchedules);
     	
     	setSearchStatusSelectionValues(model);
     	
