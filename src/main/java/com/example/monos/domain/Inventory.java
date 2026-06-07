@@ -1,7 +1,6 @@
 package com.example.monos.domain;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
