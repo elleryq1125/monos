@@ -38,6 +38,22 @@
 				</if>
 		</select>
 
+		<select id="selectWarehouseAvailabilities" resultType="com.example.monos.dto.WarehouseAvailabilityDto">
+		   	SELECT
+   				 wrhs.warehouse_id,
+   				 wrhs.warehouse_code,
+   				 wrhs.name AS warehouse_name,
+   				 COALESCE(ivtr.on_hand_qty - ivtr.reseved_qty, 0) AS available_qty
+			FROM
+				 inventories AS ivtr
+				JOIN warehouses AS wrhs
+					ON ivtr.company_id = wrhs.company_id
+					AND ivtr.warehouse_id = wrhs.warehouse_id
+			WHERE
+				ivtr.company_id = #{companyId}
+				AND ivtr.product_id = #{productId}
+		</select>
+
 	  	<select id="selectByProductIdAndWarehouseId" resultType="com.example.monos.domain.Inventory">
 		   	SELECT
    				 ivtr.inventory_id,

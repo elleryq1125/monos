@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.monos.common.Const;
 import com.example.monos.domain.CodeMaster;
 import com.example.monos.domain.UserDetailsImpl;
-import com.example.monos.domain.Warehouse;
 import com.example.monos.dto.OutboundScheduleListDto;
 import com.example.monos.dto.OutboundScheduleSearchCondition;
 import com.example.monos.form.OutboundScheduleSearchForm;
 import com.example.monos.service.CodeMasterService;
 import com.example.monos.service.OutboundScheduleService;
-import com.example.monos.service.WarehouseService;
 
 
 /**
@@ -27,12 +25,10 @@ import com.example.monos.service.WarehouseService;
 @Controller
 public class OutboundController {
     private final OutboundScheduleService outboundScheduleService;
-    private final WarehouseService warehouseService;
     private final CodeMasterService codeMasterService;
     
-    public OutboundController(OutboundScheduleService outboundScheduleService, WarehouseService warehouseService, CodeMasterService codeMasterService) {
+    public OutboundController(OutboundScheduleService outboundScheduleService, CodeMasterService codeMasterService) {
     	this.outboundScheduleService = outboundScheduleService;
-    	this.warehouseService = warehouseService;
     	this.codeMasterService = codeMasterService;
     }
 
@@ -58,8 +54,6 @@ public class OutboundController {
         model.addAttribute("outboundschedules", outboundSchedules);
     	
     	setSearchStatusSelectionValues(model);
-    	
-    	setModalWarehouseSelectionValues(model, signinUser.getCompanyId());
         
         return "/outbounds/outbound-schedules";
     }
@@ -71,15 +65,5 @@ public class OutboundController {
     private void setSearchStatusSelectionValues(Model model) {
     	List<CodeMaster> statuses = codeMasterService.findByCodeType(Const.CODE_TYPE_OUTBOUND_STATUS, true);
     	model.addAttribute("statuses", statuses);
-    }
-    
-    /**
-     * モーダル項目「倉庫」に値を設定
-     * @param model ビューに渡すモデル
-     * @param companyId 企業ID
-     */
-    private void setModalWarehouseSelectionValues(Model model, int companyId) {
-    	List<Warehouse> warehouses = warehouseService.findActiveByCompanyId(companyId);
-    	model.addAttribute("warehouses", warehouses);
     }
 }
