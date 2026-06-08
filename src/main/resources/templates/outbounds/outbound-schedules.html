@@ -120,7 +120,7 @@
 			          
 			          <div class="mb-3 form-field">
 						  <label class="required">倉庫</label>
-						  <select class="form-select w-240"  id="modalWarehouse">
+						  <select class="form-select w-400"  id="modalWarehouse">
 							  	<option th:each="warehouse : ${warehouses}" th:value="${warehouse.warehouseId}">
 								  [[${warehouse.warehouseCode} + ' ' + ${warehouse.name}]]
 								</option>

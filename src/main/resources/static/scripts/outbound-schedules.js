@@ -58,7 +58,7 @@ function initOutboundScheduleModal(modalEl, mode){
 	  
 	  modalEl.productKeyword.disabled = false;
 	  modalEl.product.disabled = true;
-	  modalEl.warehouse.disabled = false;
+	  modalEl.warehouse.disabled = true;
 	  modalEl.scheduleQty.disabled = false;
 	  modalEl.scheduleDate.disabled = false;
 }
