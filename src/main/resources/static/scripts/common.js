@@ -92,7 +92,6 @@ function setProductSuggest({
          li.textContent = `${p.productCode} ${p.name}`;
 
          li.onclick = () => {
-             keywordEl.value = li.textContent;
              productEl.value = li.textContent;
              productIdEl.value = p.productId;
              suggestListEl.innerHTML = "";
