@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.example.monos.dto.InventoryListDto;
 import com.example.monos.dto.InventorySearchCondition;
-import com.example.monos.dto.WarehouseAvailabilityDto;
+import com.example.monos.dto.AvaliableInventoryDto;
 
 public interface InventoryService {
 	List<InventoryListDto> search(InventorySearchCondition condition);
-	List<WarehouseAvailabilityDto> getWarehouseAvailabilities(int companyId, int productId);
+	List<AvaliableInventoryDto> getAvailableInventories(int companyId, int productId);
 }

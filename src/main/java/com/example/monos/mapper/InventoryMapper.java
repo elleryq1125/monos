@@ -8,13 +8,13 @@ import org.apache.ibatis.annotations.Param;
 import com.example.monos.domain.Inventory;
 import com.example.monos.dto.InventoryListDto;
 import com.example.monos.dto.InventorySearchCondition;
-import com.example.monos.dto.WarehouseAvailabilityDto;
+import com.example.monos.dto.AvaliableInventoryDto;
 
 @Mapper
 public interface InventoryMapper {
 	List<InventoryListDto> selectList(InventorySearchCondition condition);
 	Inventory selectByProductIdAndWarehouseId(@Param("companyId") Integer companyId, @Param("productId") Integer productId, @Param("warehouseId") Integer warehouseId);
-	List<WarehouseAvailabilityDto> selectWarehouseAvailabilities(@Param("companyId") int companyId, @Param("productId") int productId);
+	List<AvaliableInventoryDto> selectAvailableInventories(@Param("companyId") int companyId, @Param("productId") int productId);
 	Integer insert(Inventory inventory);
 	int updateOnHandQty(@Param("inventory") Inventory inventory, @Param("inboundQty") int inboundQty);
 }

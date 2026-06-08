@@ -38,9 +38,10 @@
 				</if>
 		</select>
 
-		<select id="selectWarehouseAvailabilities" resultType="com.example.monos.dto.WarehouseAvailabilityDto">
+		<select id="selectAvailableInventories" resultType="com.example.monos.dto.AvaliableInventoryDto">
 		   	SELECT
-   				 wrhs.warehouse_id,
+		         ivtr.inventory_id,
+				 ivtr.version,     
    				 wrhs.warehouse_code,
    				 wrhs.name AS warehouse_name,
    				 COALESCE(ivtr.on_hand_qty - ivtr.reseved_qty, 0) AS available_qty

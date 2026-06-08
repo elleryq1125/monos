@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.monos.dto.InventoryListDto;
 import com.example.monos.dto.InventorySearchCondition;
-import com.example.monos.dto.WarehouseAvailabilityDto;
+import com.example.monos.dto.AvaliableInventoryDto;
 import com.example.monos.mapper.InventoryMapper;
 
 @Service
@@ -30,14 +30,14 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     /**
-     * 指定された商品IDと会社IDの倉庫在庫状況を取得する。
+     * 指定された商品IDと会社IDの在庫状況を取得する。
      * @param companyId  会社ID
      * @param productId  商品ID
-     * @return 倉庫在庫状況のリスト {@link WarehouseAvailabilityDto}
-     * @see InventoryMapper#selectWarehouseAvailabilities(int, int)
+     * @return 在庫状況のリスト {@link AvaliableInventoryDto}
+     * @see InventoryMapper#selectAvailableInventories(int, int)
      */
     @Override
-    public List<WarehouseAvailabilityDto> getWarehouseAvailabilities(int companyId, int productId) {
-        return inventoryMapper.selectWarehouseAvailabilities(companyId, productId);
+    public List<AvaliableInventoryDto> getAvailableInventories(int companyId, int productId) {
+        return inventoryMapper.selectAvailableInventories(companyId, productId);
     }
 }

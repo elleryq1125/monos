@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.monos.domain.UserDetailsImpl;
-import com.example.monos.dto.WarehouseAvailabilityDto;
+import com.example.monos.dto.AvaliableInventoryDto;
 import com.example.monos.service.InventoryService;
 
 
@@ -23,18 +23,18 @@ public class InventoryApiController {
     }
 
     /**
-     * 指定された商品IDの倉庫在庫状況を取得する。
+     * 指定された商品IDの在庫状況を取得する。
      * @param signinUser サインインユーザー
      * @param productId  商品ID
-     * @return <p>倉庫在庫状況を含むAPIレスポンス。</p>
+     * @return <p>在庫状況を含むAPIレスポンス。</p>
      * <p>該当データが存在しない場合はエラーメッセージを返却する。</p> 
      */
     @GetMapping("/warehouse-availabilities")
-    public List<WarehouseAvailabilityDto> getWarehouseAvailabilities(@AuthenticationPrincipal UserDetailsImpl signinUser, 
+    public List<AvaliableInventoryDto> getavailableInventories(@AuthenticationPrincipal UserDetailsImpl signinUser, 
                                                                      @RequestParam int productId) {
 
-        List<WarehouseAvailabilityDto> availabilities = 
-            inventoryService.getWarehouseAvailabilities(signinUser.getCompanyId(), productId);
+        List<AvaliableInventoryDto> availabilities = 
+            inventoryService.getAvailableInventories(signinUser.getCompanyId(), productId);
         
         return availabilities;
     }

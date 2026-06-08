@@ -7,8 +7,9 @@ import lombok.Data;
  * @author t.ueta
  */
 @Data
-public class WarehouseAvailabilityDto {
-    private int warehouseId;
+public class AvaliableInventoryDto {
+    int inventoryId;
+    int version;
     private String warehouseCode;
     private String warehouseName;
     private int availableQty;

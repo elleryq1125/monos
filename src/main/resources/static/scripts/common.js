@@ -44,10 +44,11 @@ async function loadWarehouseAndInventory(productId, warehouseElId){
         return;
     }
 
-    result.forEach(w => {
+    result.forEach(i => {
         const option = document.createElement("option");
-        option.value = w.warehouseId;
-        option.textContent = `${w.warehouseName} (在庫数: ${w.availableQty.toString()})`;
+        option.value = i.inventoryId;
+        option.dataset.version = i.version; // 在庫のバージョンをデータ属性に保存
+        option.textContent = `${i.warehouseName} (在庫数: ${i.availableQty.toString()})`;
         warehouseEl.appendChild(option);
     });
 
