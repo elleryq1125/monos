@@ -103,7 +103,7 @@
 			        <form id="outboundScheduleForm">
 						
 			          <input type="hidden" id="modalOutboundScheduleId">
-			          <input type="hidden" id="modalVersion">
+			          <input type="hidden" id="modalOutboundScheduleVersion">
 			          
 			          <div class="mb-3 form-field position-relative">
 						  <label>商品キーワード</label>
@@ -119,13 +119,10 @@
 					  </div>
 			          
 			          <div class="mb-3 form-field">
-						  <label class="required">倉庫</label>
-						  <select class="form-select w-400"  id="modalWarehouse">
-							  	<option th:each="warehouse : ${warehouses}" th:value="${warehouse.warehouseId}">
-								  [[${warehouse.warehouseCode} + ' ' + ${warehouse.name}]]
-								</option>
+						  <label class="required">在庫</label>
+						  <select class="form-select w-400"  id="modalInventory">
 						  </select>
-					      <div class="field-error" id="warehouseIdError"></div>
+					      <div class="field-error" id="inventoryIdError"></div>
 					  </div>
 					  
 					  <div class="mb-3 form-field">

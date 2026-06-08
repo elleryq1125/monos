@@ -23,24 +23,24 @@ function hideModal(modalId){
 }
 
 /** 
- * 商品IDから倉庫と在庫数を取得して倉庫セレクトを更新
+ * 商品IDから在庫数を取得して在庫セレクトを更新
  * @param {number} productId - 商品ID
- * @param {string} warehouseElId - 倉庫セレクトのID
+ * @param {string} inventoryElId - 在庫セレクトのID
  */
-async function loadWarehouseAndInventory(productId, warehouseElId){
+async function loadInventory(productId, inventoryElId){
     const res = await fetch(`/api/inventories/warehouse-availabilities?productId=${encodeURIComponent(productId)}`);
     const result = await res.json();
 
-    const warehouseEl = document.getElementById(warehouseElId);
-    warehouseEl.disabled = false;
-    warehouseEl.innerHTML = "";
+    const inventoryEl = document.getElementById(inventoryElId);
+    inventoryEl.disabled = false;
+    inventoryEl.innerHTML = "";
 
     if (!Array.isArray(result) || result.length === 0){
         const option = document.createElement("option");    
         option.value = "";
-        option.textContent = "該当商品を保管している倉庫がありません";
-        warehouseEl.appendChild(option);
-        warehouseEl.disabled = true;
+        option.textContent = "該当商品を保管している在庫がありません";
+        inventoryEl.appendChild(option);
+        inventoryEl.disabled = true;
         return;
     }
 
@@ -49,7 +49,7 @@ async function loadWarehouseAndInventory(productId, warehouseElId){
         option.value = i.inventoryId;
         option.dataset.version = i.version; // 在庫のバージョンをデータ属性に保存
         option.textContent = `${i.warehouseName} (在庫数: ${i.availableQty.toString()})`;
-        warehouseEl.appendChild(option);
+        inventoryEl.appendChild(option);
     });
 
 }

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         product:"modalProduct",
         productId: "modalProductId",
 		onSelected: (productId) => {
-			loadWarehouseAndInventory(productId, "modalWarehouse");
+			loadInventory(productId, "modalInventory");
 		}
     });
     
@@ -27,11 +27,11 @@ function getOutboundScheduleModalElements(modal) {
     return {
         title: modal.querySelector("#modalTitle"),
         outboundScheduleId: modal.querySelector("#modalOutboundScheduleId"),
-        version: modal.querySelector("#modalVersion"),
+        outboundScheduleVersion: modal.querySelector("#modalOutboundScheduleVersion"),
         productKeyword: modal.querySelector("#modalProductKeyword"),
         product: modal.querySelector("#modalProduct"),
         productId: modal.querySelector("#modalProductId"),
-        warehouse: modal.querySelector("#modalWarehouse"),
+        inventory: modal.querySelector("#modalInventory"),
         scheduleDate: modal.querySelector("#modalScheduleDate"),
         scheduleQty: modal.querySelector("#modalScheduleQty")
     };
@@ -43,10 +43,11 @@ function initOutboundScheduleModal(modalEl, mode){
 	  case "add":
 		  modalEl.title.innerText = "出庫予定登録";
 		  modalEl.outboundScheduleId.value = "";
-		  modalEl.version.value = "";
+		  modalEl.outboundScheduleVersion.value = "";
 		  modalEl.productKeyword.value = "";
 		  modalEl.product.value = "";
 		  modalEl.productId.value = "";
+		  modalEl.inventory.innerHTML = "";
 		  modalEl.scheduleQty.value = "";
 		  modalEl.scheduleDate.value = "";
 		  break;
@@ -58,7 +59,7 @@ function initOutboundScheduleModal(modalEl, mode){
 	  
 	  modalEl.productKeyword.disabled = false;
 	  modalEl.product.disabled = true;
-	  modalEl.warehouse.disabled = true;
+	  modalEl.inventory.disabled = true;
 	  modalEl.scheduleQty.disabled = false;
 	  modalEl.scheduleDate.disabled = false;
 }
@@ -116,22 +117,22 @@ function toggleStateInboudScheduleUpdateForm(modalEl, status){
 }
 
 // 入庫予定追加・更新処理
-async function saveInboundSchedule(){
+async function saveOutboundSchedule(){
 	// CSRFトークン取得
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 	
-	const modal = document.getElementById("inboundScheduleModal");
-	const modalEl = getInboundScheduleModalElements(modal);
+	const modal = document.getElementById("outboundScheduleModal");
+	const modalEl = getOutboundScheduleModalElements(modal);
 	
 	clearModalFieldErros(modal);
 	
 	// 入力データを設定
 	const form = {
-		inboundScheduleId: modalEl.inboundScheduleId.value,
-		version: modalEl.version.value,
-		productId: modalEl.productId.value,
-		warehouseId: modalEl.warehouse.value,
+		outboundScheduleId: modalEl.outboundScheduleId.value,
+		outboundScheduleVersion: modalEl.version.value,
+		inventoryId: modalEl.warehouse.value,
+		inventoryVersion: modalEl.warehouse.options[modalEl.warehouse.selectedIndex].dataset.version,
 		scheduleQty: modalEl.scheduleQty.value,
 		scheduleDate: modalEl.scheduleDate.value
 	};
