@@ -33,7 +33,8 @@ public class InventoryApiController {
     public List<WarehouseAvailabilityDto> getWarehouseAvailabilities(@AuthenticationPrincipal UserDetailsImpl signinUser, 
                                                                      @RequestParam int productId) {
 
-        List<WarehouseAvailabilityDto> availabilities = inventoryService.getWarehouseAvailabilities(productId, signinUser.getCompanyId());
+        List<WarehouseAvailabilityDto> availabilities = 
+            inventoryService.getWarehouseAvailabilities(signinUser.getCompanyId(), productId);
         
         return availabilities;
     }

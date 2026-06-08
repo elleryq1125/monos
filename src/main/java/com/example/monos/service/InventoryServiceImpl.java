@@ -31,13 +31,13 @@ public class InventoryServiceImpl implements InventoryService {
 
     /**
      * 指定された商品IDと会社IDの倉庫在庫状況を取得する。
-     * @param productId  商品ID
      * @param companyId  会社ID
+     * @param productId  商品ID
      * @return 倉庫在庫状況のリスト {@link WarehouseAvailabilityDto}
      * @see InventoryMapper#selectWarehouseAvailabilities(int, int)
      */
     @Override
-    public List<WarehouseAvailabilityDto> getWarehouseAvailabilities(int productId, int companyId) {
-        return inventoryMapper.selectWarehouseAvailabilities(productId, companyId);
+    public List<WarehouseAvailabilityDto> getWarehouseAvailabilities(int companyId, int productId) {
+        return inventoryMapper.selectWarehouseAvailabilities(companyId, productId);
     }
 }
