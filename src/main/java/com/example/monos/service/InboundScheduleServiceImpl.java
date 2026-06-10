@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.monos.common.Const;
 import com.example.monos.domain.InboundSchedule;
@@ -51,6 +52,7 @@ public class InboundScheduleServiceImpl implements InboundScheduleService {
 	 * @param 入庫予定情報
 	 */
 	@Override
+	@Transactional
 	public String save(InboundSchedule inboundSchedule) {
 		String resultMessage = "";
 		
