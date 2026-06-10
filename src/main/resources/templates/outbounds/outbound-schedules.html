@@ -66,14 +66,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="inboundschedule:${inboundschedules}" th:object="${inboundschedule}">
+							<tr th:each="outboundschedule:${outboundschedules}" th:object="${outboundschedule}">
 								<td th:text="*{statusName}"></td>
 								<td th:text="*{productCode}"></td>
 								<td th:text="*{productName}"></td>
 								<td th:text="*{warehouseCode}"></td>
 								<td th:text="*{warehouseName}"></td>
 								<td th:text="*{scheduleQty}"></td>
-								<td th:text="${#dates.format(inboundschedule.scheduleDate, 'yyyy/MM/dd')}"></td>
+								<td th:text="${#dates.format(outboundschedule.scheduleDate, 'yyyy/MM/dd')}"></td>
 								<td th:text="*{totalResultQty}"></td>
 								<td>
 									<!-- 出庫済・キャンセル以外で表示 -->
