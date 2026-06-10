@@ -74,6 +74,25 @@
 				AND ivtr.product_id = #{productId}
 				AND ivtr.warehouse_id = #{warehouseId};
 		</select>
+
+		<select id="selectByIdAndVersion" resultType="com.example.monos.domain.Inventory">
+		   	SELECT
+   				 ivtr.inventory_id,
+   				 ivtr.company_id,
+   				 ivtr.product_id,
+   				 ivtr.warehouse_id,
+   				 ivtr.on_hand_qty,
+   				 ivtr.reseved_qty,
+   				 ivtr.version,
+   				 ivtr.created_at,
+   				 ivtr.updated_at,
+   				 ivtr.deleted_at
+			FROM
+			    inventories AS ivtr
+			WHERE
+				ivtr.inventory_id = #{inventoryId}
+				AND ivtr.version = #{version}
+		</select>
 		
 		<insert id="insert" useGeneratedKeys="true" keyProperty="inventoryId">
 			INSERT INTO inventories(
@@ -94,6 +113,18 @@
 			UPDATE inventories 
 			SET
 				on_hand_qty = on_hand_qty + #{inboundQty},
+				version = version + 1,
+				updated_at = transaction_timestamp()
+			WHERE
+				inventory_id = #{inventory.inventoryId}
+				AND company_id = #{inventory.companyId}
+				AND version = #{inventory.version}
+		</update>
+		
+		<update id="updateReservedQty">
+			UPDATE inventories 
+			SET
+				reseved_qty = reseved_qty + #{scheduleQty},
 				version = version + 1,
 				updated_at = transaction_timestamp()
 			WHERE

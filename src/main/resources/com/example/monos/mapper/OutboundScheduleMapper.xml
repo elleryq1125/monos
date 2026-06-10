@@ -60,4 +60,21 @@
 			ORDER BY
 				osch.outbound_schedule_id;
 		</select>
+
+		<insert id="insert" useGeneratedKeys="true" keyProperty="outboundScheduleId">
+			INSERT INTO outbound_schedules(
+				company_id,
+				inventory_id,
+				schedule_qty,
+				schedule_date,
+				status
+			)
+			VALUES(
+				#{companyId},
+				#{inventoryId},
+				#{scheduleQty},
+				#{scheduleDate},
+				#{status}
+			)
+		</insert>
 </mapper>

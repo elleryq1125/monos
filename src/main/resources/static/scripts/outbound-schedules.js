@@ -42,14 +42,6 @@ function initOutboundScheduleModal(modalEl, mode){
   switch(mode){
 	  case "add":
 		  modalEl.title.innerText = "出庫予定登録";
-		  modalEl.outboundScheduleId.value = "";
-		  modalEl.outboundScheduleVersion.value = "";
-		  modalEl.productKeyword.value = "";
-		  modalEl.product.value = "";
-		  modalEl.productId.value = "";
-		  modalEl.inventory.innerHTML = "";
-		  modalEl.scheduleQty.value = "";
-		  modalEl.scheduleDate.value = "";
 		  break;
 		  
 	  case "update":
@@ -57,6 +49,17 @@ function initOutboundScheduleModal(modalEl, mode){
 		  break;
 	  }
 	  
+	  // 入力項目初期化
+	  modalEl.outboundScheduleId.value = "";
+	  modalEl.outboundScheduleVersion.value = "";
+	  modalEl.productKeyword.value = "";
+	  modalEl.product.value = "";
+	  modalEl.productId.value = "";
+	  modalEl.inventory.innerHTML = "";
+	  modalEl.scheduleQty.value = "";
+	  modalEl.scheduleDate.value = "";
+
+	  // 入力項目の状態初期化
 	  modalEl.productKeyword.disabled = false;
 	  modalEl.product.disabled = true;
 	  modalEl.inventory.disabled = true;
@@ -116,7 +119,7 @@ function toggleStateInboudScheduleUpdateForm(modalEl, status){
 	}
 }
 
-// 入庫予定追加・更新処理
+// 出庫予定追加・更新処理
 async function saveOutboundSchedule(){
 	// CSRFトークン取得
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
@@ -130,15 +133,15 @@ async function saveOutboundSchedule(){
 	// 入力データを設定
 	const form = {
 		outboundScheduleId: modalEl.outboundScheduleId.value,
-		outboundScheduleVersion: modalEl.version.value,
-		inventoryId: modalEl.warehouse.value,
-		inventoryVersion: modalEl.warehouse.options[modalEl.warehouse.selectedIndex].dataset.version,
+		outboundScheduleVersion: modalEl.outboundScheduleVersion.value,
+		inventoryId: modalEl.inventory.value,
+		inventoryVersion: modalEl.inventory.selectedOptions[0] ? modalEl.inventory.selectedOptions[0].dataset.version : "",
 		scheduleQty: modalEl.scheduleQty.value,
 		scheduleDate: modalEl.scheduleDate.value
 	};
 	
 	// リクエスト
-	const res = await fetch("/api/inboundschedules/save",{
+	const res = await fetch("/api/outbound-schedules/save",{
 		method:"POST",
 		headers:{
 			"Content-Type":"application/json",
@@ -150,7 +153,7 @@ async function saveOutboundSchedule(){
 	
 	if (result.success){	
 		// モーダルを非表示にして成功メッセージ表示
-		hideModal("inboundScheduleModal");
+		hideModal("outboundScheduleModal");
 		setSuccessMessage(result.message);
 		search();
 	}else{
@@ -158,18 +161,19 @@ async function saveOutboundSchedule(){
 			// バリデーションエラー表示
 			showModalFieldErrors(modal, result.fieldErrors);
 		}else{
-			handleInboundScheduleLoadError(result.message);
+			handleOutboundScheduleLoadError(result.message);
 		}
 	}
 }
 
-// 入庫予定モーダルのエラーハンドリング
-function handleInboundScheduleLoadError(message){
+// 出庫予定モーダルのエラーハンドリング
+function handleOutboundScheduleLoadError(message){
 	// モーダルを非表示にしてエラーメッセージ表示
-	hideModal("inboundScheduleModal");
+	hideModal("outboundScheduleModal");
 	setErrorMessage(message);
 	search();
 }
+
 
 // 入庫実績登録モーダル表示
 async function openInboundResultModal(inboundScheduleId){
