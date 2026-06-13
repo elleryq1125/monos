@@ -57,7 +57,7 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
 
             insertOutboundSchedule(saveDto);
             
-            updateInventoryReservedQty(inventory, saveDto.getScheduleQty());
+            updateInventoryVersion(inventory);
             
             resultMessage = messageSource.getMessage("registCompleteTarget", new String[] {"出庫予定"}, LocaleContextHolder.getLocale());
 
@@ -90,8 +90,11 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
     private void validateInsertFields(OutboundScheduleSaveDto saveDto, Inventory inventory) {
         var errors = new HashMap<String, String>();
 
+        int totalScheduleQty = outboundScheduleMapper.selectTotalScheduleQtyByInventoryId(
+                saveDto.getCompanyId(), saveDto.getInventoryId());
+
         // 出庫予定数量が在庫数量を超過している場合はエラー
-        if (saveDto.getScheduleQty() > (inventory.getOnHandQty() - inventory.getResevedQty())) {
+        if (saveDto.getScheduleQty() > (inventory.getOnHandQty() - totalScheduleQty)) {
             errors.put(
                 "scheduleQty", 
                 messageSource.getMessage("totalOutboundScheduleQtyOver", null, LocaleContextHolder.getLocale())
@@ -127,12 +130,11 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
     }
 
     /**
-     * <p>在庫の出庫予定数（予約数）を加算する。</p>
+     * <p>在庫のバージョンを更新する。</p>
      * @param inventory 在庫情報
-     * @param scheduleQty 加算する出庫予定数
      */
-    private void updateInventoryReservedQty(Inventory inventory, Integer scheduleQty) {
-        int updatedRows = inventoryMapper.updateReservedQty(inventory, scheduleQty);
+    private void updateInventoryVersion(Inventory inventory) {
+        int updatedRows = inventoryMapper.updateVersion(inventory);
         if (updatedRows == 0) {
             throw new FatalBusinessException(
                     messageSource.getMessage("updateFaildTarget", new String[]{"在庫"}, LocaleContextHolder.getLocale())

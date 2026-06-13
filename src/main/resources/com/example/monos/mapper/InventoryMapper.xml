@@ -10,7 +10,7 @@
    				 wrhs.warehouse_code,
    				 wrhs.name AS warehouse_name,
    				 ivtr.on_hand_qty,
-   				 ivtr.reseved_qty
+   				 COALESCE(osch.total_schedule_qty, 0) AS total_schedule_qty
 			FROM
 				 inventories AS ivtr
 				JOIN products AS proc
@@ -19,6 +19,19 @@
 				JOIN warehouses AS wrhs
 					ON ivtr.company_id = wrhs.company_id
 					AND ivtr.warehouse_id = wrhs.warehouse_id
+				LEFT JOIN
+					(SELECT
+						inventory_id,
+						SUM(schedule_qty) AS total_schedule_qty
+					 FROM
+					 	outbound_schedules
+					 WHERE
+					 	company_id = #{companyId}
+						AND status IN ('0', '1')
+					 GROUP BY
+						inventory_id
+					) AS osch
+					ON ivtr.inventory_id = osch.inventory_id
 			WHERE
 				ivtr.company_id = #{companyId}
 				<if test="productCode != null and productCode != ''">
@@ -44,12 +57,26 @@
 				 ivtr.version,     
    				 wrhs.warehouse_code,
    				 wrhs.name AS warehouse_name,
-   				 COALESCE(ivtr.on_hand_qty - ivtr.reseved_qty, 0) AS available_qty
+   				 COALESCE(ivtr.on_hand_qty - COALESCE(osch.total_schedule_qty, 0), 0) AS available_qty
 			FROM
 				 inventories AS ivtr
 				JOIN warehouses AS wrhs
 					ON ivtr.company_id = wrhs.company_id
 					AND ivtr.warehouse_id = wrhs.warehouse_id
+				LEFT JOIN 
+					<!-- 各在庫の未出庫・出庫中の予定数量を集計 -->
+					(SELECT
+						inventory_id,
+						SUM(schedule_qty) AS total_schedule_qty
+					 FROM
+					 	outbound_schedules
+					 WHERE
+					 	company_id = #{companyId}
+						AND status IN ('0', '1')
+					 GROUP BY
+						inventory_id
+					) AS osch
+					ON ivtr.inventory_id = osch.inventory_id
 			WHERE
 				ivtr.company_id = #{companyId}
 				AND ivtr.product_id = #{productId}
@@ -57,12 +84,13 @@
 
 	  	<select id="selectByProductIdAndWarehouseId" resultType="com.example.monos.domain.Inventory">
 		   	SELECT
-   				 ivtr.inventory_id,
-   				 ivtr.company_id,
-   				 ivtr.product_id,
-   				 ivtr.warehouse_id,
+				LEFT JOIN products AS proc
+					ON ivtr.company_id = proc.company_id
+					AND ivtr.product_id = proc.product_id
+			WHERE
+				ivtr.company_id = #{companyId}
+				AND ivtr.product_id = #{productId};
    				 ivtr.on_hand_qty,
-   				 ivtr.reseved_qty,
    				 ivtr.version,
    				 ivtr.created_at,
    				 ivtr.updated_at,
@@ -82,7 +110,6 @@
    				 ivtr.product_id,
    				 ivtr.warehouse_id,
    				 ivtr.on_hand_qty,
-   				 ivtr.reseved_qty,
    				 ivtr.version,
    				 ivtr.created_at,
    				 ivtr.updated_at,
@@ -121,10 +148,9 @@
 				AND version = #{inventory.version}
 		</update>
 		
-		<update id="updateReservedQty">
+		<update id="updateVersion">
 			UPDATE inventories 
 			SET
-				reseved_qty = reseved_qty + #{scheduleQty},
 				version = version + 1,
 				updated_at = transaction_timestamp()
 			WHERE

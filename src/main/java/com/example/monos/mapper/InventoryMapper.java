@@ -18,5 +18,5 @@ public interface InventoryMapper {
 	List<AvaliableInventoryDto> selectAvailableInventories(@Param("companyId") int companyId, @Param("productId") int productId);
 	Integer insert(Inventory inventory);
 	int updateOnHandQty(@Param("inventory") Inventory inventory, @Param("inboundQty") int inboundQty);
-	int updateReservedQty(@Param("inventory") Inventory inventory, @Param("scheduleQty") Integer scheduleQty);
+	int updateVersion(@Param("inventory") Inventory inventory);
 }

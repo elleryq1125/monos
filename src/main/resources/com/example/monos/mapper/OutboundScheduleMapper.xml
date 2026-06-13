@@ -77,4 +77,15 @@
 				#{status}
 			)
 		</insert>
+
+		<select id="selectTotalScheduleQtyByInventoryId" resultType="int">
+			SELECT
+				COALESCE(SUM(schedule_qty), 0)
+			FROM
+				outbound_schedules
+			WHERE
+				company_id = #{companyId}
+				AND inventory_id = #{inventoryId}
+				AND status IN ('0', '1')
+		</select>
 </mapper>

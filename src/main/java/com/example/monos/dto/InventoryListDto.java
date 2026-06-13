@@ -14,5 +14,5 @@ public class InventoryListDto {
 	private String warehouseCode;
 	private String warehouseName;
 	private int onHandQty;
-	private int resevedQty;
+	private int totalScheduleQty;
 }

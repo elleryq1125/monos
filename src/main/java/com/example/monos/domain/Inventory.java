@@ -17,7 +17,6 @@ public class Inventory {
 	private Integer productId;
 	private Integer warehouseId;
 	private int onHandQty;
-    private int resevedQty;
     private Integer version;
     private Timestamp createdAt;
     private Timestamp updatedAt;
