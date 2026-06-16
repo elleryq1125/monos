@@ -61,6 +61,22 @@
 				osch.outbound_schedule_id;
 		</select>
 
+		<select id="selectById" resultType="com.example.monos.domain.OutboundSchedule">
+			SELECT
+				osch.outbound_schedule_id,
+				osch.company_id,
+				osch.inventory_id,
+				osch.schedule_qty,
+				osch.schedule_date,
+				osch.status,
+				osch.version
+			FROM
+				outbound_schedules AS osch
+			WHERE
+				osch.outbound_schedule_id = #{outboundScheduleId}
+				AND osch.company_id = #{companyId};
+		</select>
+
 		<insert id="insert" useGeneratedKeys="true" keyProperty="outboundScheduleId">
 			INSERT INTO outbound_schedules(
 				company_id,

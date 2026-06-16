@@ -12,6 +12,7 @@ import com.example.monos.dto.OutboundScheduleSearchCondition;
 @Mapper
 public interface OutboundScheduleMapper {
 	List<OutboundScheduleListDto> selectList(OutboundScheduleSearchCondition condition);
+	OutboundSchedule selectById(@Param("outboundScheduleId") Integer outboundScheduleId, @Param("companyId") Integer companyId);
 	Integer insert(OutboundSchedule outboundSchedule);
 	int selectTotalScheduleQtyByInventoryId(@Param("companyId") Integer companyId, @Param("inventoryId") Integer inventoryId);
 }

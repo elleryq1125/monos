@@ -67,53 +67,47 @@ function initOutboundScheduleModal(modalEl, mode){
 	  modalEl.scheduleDate.disabled = false;
 }
 
-// 入庫予定更新モーダル表示
-async function openInboundScheduleUpdateModal(inboundScheduleId){
-	const modal = document.getElementById("inboundScheduleModal");
-	const modalEl = getInboundScheduleModalElements(modal);
+// 出庫予定更新モーダル表示
+async function openOutboundScheduleUpdateModal(outboundScheduleId){
+	const modal = document.getElementById("outboundScheduleModal");
+	const modalEl = getOutboundScheduleModalElements(modal);
 	
   	clearModalFieldErros(modal);
 	
-	initInboundScheduleModal(modalEl, "update");
+	initOutboundScheduleModal(modalEl, "update");
 	
-	modalEl.inboundScheduleId.value = inboundScheduleId;
-	
-	// 入庫予定情報を取得
-	const res = await fetch("/api/inboundschedules/" + inboundScheduleId);
+	// 出庫予定情報を取得
+	const res = await fetch("/api/outbound-schedules/" + outboundScheduleId);
 	const result = await res.json();
 	
 	if (result.success){
-		setDataForInboundScheduleUpdateModal(modalEl, result.data);
-		toggleStateInboudScheduleUpdateForm(modalEl, result.data.status);
+		setDataForOutboundScheduleUpdateModal(modalEl, result.data);
+		toggleStateOutboundScheduleUpdateForm(modalEl, result.data.status);
 	} else{
-		handleInboundScheduleLoadError(result.message);
+		handleOutboundScheduleLoadError(result.message);
 	}
 }
 
-// 入庫予定更新モーダルにデータ設定
-function setDataForInboundScheduleUpdateModal(modalEl, data){
-	modalEl.version.value = data.version;
+// 出庫予定更新モーダルにデータ設定
+function setDataForOutboundScheduleUpdateModal(modalEl, data){
+	modalEl.outboundScheduleId.value = data.outboundScheduleId;
+	modalEl.outboundScheduleVersion.value = data.version;
 	modalEl.product.value = `${data.productCode} ${data.productName}`;
 	modalEl.productId.value = data.productId;
-	modalEl.warehouse.value = data.warehouseId;
 	modalEl.scheduleDate.value = data.scheduleDate;
 	modalEl.scheduleQty.value = data.scheduleQty;
+
+	// 在庫リスト作成
+	loadInventory(data.productId, "modalInventory");
 }
 
-// 入庫予定更新モーダルの入力項目の状態切り替え
-function toggleStateInboudScheduleUpdateForm(modalEl, status){
+// 出庫予定更新モーダルの入力項目の状態切り替え
+function toggleStateOutboundScheduleUpdateForm(modalEl, status){
 	switch(status){
 		case 1:
-			// 入庫中
+			// 出庫中
 			modalEl.productKeyword.disabled =true;
-			modalEl.warehouse.disabled=true;
-			break;
-			
-		case 2,3:
-			// 入庫済、キャンセル
-			modalEl.productKeyword.disabled = true;
-			modalEl.warehouse.disabled = true;
-			modalEl.scheduleDate.disabled = true;
+			modalEl.inventory.disabled=true;
 			modalEl.scheduleQty.disabled = true;
 			break;
 	}
