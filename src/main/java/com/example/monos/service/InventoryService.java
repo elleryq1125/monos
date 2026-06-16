@@ -8,5 +8,5 @@ import com.example.monos.dto.AvaliableInventoryDto;
 
 public interface InventoryService {
 	List<InventoryListDto> search(InventorySearchCondition condition);
-	List<AvaliableInventoryDto> getAvailableInventories(int companyId, int productId);
+	List<AvaliableInventoryDto> getAvailableInventories(int companyId, int productId, Integer outboundScheduleId);
 }

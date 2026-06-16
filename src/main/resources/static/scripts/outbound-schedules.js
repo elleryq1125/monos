@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         product:"modalProduct",
         productId: "modalProductId",
 		onSelected: (productId) => {
-			loadInventory(productId, "modalInventory");
+			loadInventory(productId, "modalInventory", null);
 		}
     });
     
@@ -98,7 +98,7 @@ function setDataForOutboundScheduleUpdateModal(modalEl, data){
 	modalEl.scheduleQty.value = data.scheduleQty;
 
 	// 在庫リスト作成
-	loadInventory(data.productId, "modalInventory");
+	loadInventory(data.productId, "modalInventory", data.outboundScheduleId);
 }
 
 // 出庫予定更新モーダルの入力項目の状態切り替え

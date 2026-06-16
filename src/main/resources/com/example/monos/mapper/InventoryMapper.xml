@@ -89,24 +89,22 @@
 
 		<select id="selectByProductIdAndWarehouseId" resultType="com.example.monos.domain.Inventory">
 		   	SELECT
-				LEFT JOIN products AS proc
-					ON ivtr.company_id = proc.company_id
-					AND ivtr.product_id = proc.product_id
-			WHERE
-				ivtr.company_id = #{companyId}
-				AND ivtr.product_id = #{productId};
-   				 ivtr.on_hand_qty,
-   				 ivtr.version,
-   				 ivtr.created_at,
-   				 ivtr.updated_at,
-   				 ivtr.deleted_at
+    				ivtr.inventory_id,
+    				ivtr.company_id,
+    				ivtr.product_id,
+    				ivtr.warehouse_id,
+    				ivtr.on_hand_qty,
+    				ivtr.version,
+    				ivtr.created_at,
+    				ivtr.updated_at,
+    				ivtr.deleted_at
 			FROM
 			    inventories AS ivtr
 			WHERE
 				ivtr.company_id = #{companyId}
 				AND ivtr.product_id = #{productId}
-				AND ivtr.warehouse_id = #{warehouseId};
-		</select>	
+				AND ivtr.warehouse_id = #{warehouseId}
+		</select>
 
 		<select id="selectAvailableInventories" resultType="com.example.monos.dto.AvaliableInventoryDto">
 		   	SELECT
@@ -128,6 +126,9 @@
 					 FROM
 					 	outbound_schedules
 					 WHERE
+					    <if test="outboundScheduleId != null">
+							outbound_schedule_id &lt;&gt; #{outboundScheduleId} AND
+						</if>
 					 	company_id = #{companyId}
 						AND status IN ('0', '1')
 					 GROUP BY

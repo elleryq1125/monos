@@ -26,9 +26,18 @@ function hideModal(modalId){
  * 商品IDから在庫数を取得して在庫セレクトを更新
  * @param {number} productId - 商品ID
  * @param {string} inventoryElId - 在庫セレクトのID
+ * @param {number} outboundScheduleId - 引当可能数から除外する出庫予定ID
  */
-async function loadInventory(productId, inventoryElId){
-    const res = await fetch(`/api/inventories/warehouse-availabilities?productId=${encodeURIComponent(productId)}`);
+async function loadInventory(productId, inventoryElId, outboundScheduleId){
+    const params = new URLSearchParams();
+    params.append("productId", productId);
+
+    if (outboundScheduleId != null){
+        params.append("outboundScheduleId", outboundScheduleId);
+    }
+
+    const res = await fetch(
+        `/api/inventories/warehouse-availabilities?${params}`);
     const result = await res.json();
 
     const inventoryEl = document.getElementById(inventoryElId);

@@ -26,15 +26,17 @@ public class InventoryApiController {
      * 指定された商品IDの在庫状況を取得する。
      * @param signinUser サインインユーザー
      * @param productId  商品ID
+     * @param outboundScheduleId 出庫予定ID（引き当て可能数加算用）
      * @return <p>在庫状況を含むAPIレスポンス。</p>
      * <p>該当データが存在しない場合はエラーメッセージを返却する。</p> 
      */
     @GetMapping("/warehouse-availabilities")
     public List<AvaliableInventoryDto> getavailableInventories(@AuthenticationPrincipal UserDetailsImpl signinUser, 
-                                                                     @RequestParam int productId) {
+                                                               @RequestParam int productId,
+                                                               @RequestParam(required = false) Integer outboundScheduleId) {
 
         List<AvaliableInventoryDto> availabilities = 
-            inventoryService.getAvailableInventories(signinUser.getCompanyId(), productId);
+            inventoryService.getAvailableInventories(signinUser.getCompanyId(), productId, outboundScheduleId);
         
         return availabilities;
     }
