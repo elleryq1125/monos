@@ -77,6 +77,23 @@
 				AND osch.company_id = #{companyId};
 		</select>
 
+		<select id="selectByIdAndVersion" resultType="com.example.monos.domain.OutboundSchedule">
+			SELECT
+				osch.outbound_schedule_id,
+				osch.company_id,
+				osch.inventory_id,
+				osch.schedule_qty,
+				osch.schedule_date,
+				osch.status,
+				osch.version
+			FROM
+				outbound_schedules AS osch
+			WHERE
+				osch.outbound_schedule_id = #{outboundScheduleId}
+				AND osch.company_id = #{companyId}
+				AND osch.version = #{version};
+		</select>
+
 		<insert id="insert" useGeneratedKeys="true" keyProperty="outboundScheduleId">
 			INSERT INTO outbound_schedules(
 				company_id,
@@ -93,6 +110,20 @@
 				#{status}
 			)
 		</insert>
+
+		<update id="update">
+			UPDATE outbound_schedules
+			SET
+				inventory_id = #{inventoryId},
+				schedule_qty = #{scheduleQty},
+				schedule_date = #{scheduleDate},
+				version = version + 1,
+				updated_at = transaction_timestamp()
+			WHERE
+				outbound_schedule_id = #{outboundScheduleId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
 
 		<select id="selectTotalScheduleQtyByInventoryId" resultType="int">
 			SELECT
