@@ -2,6 +2,7 @@ package com.example.monos.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -192,13 +193,31 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
                 messageSource.getMessage("ExclusiveError", new String[]{"出庫予定"}, LocaleContextHolder.getLocale())
             );
         }
+
+        // ステータスチェック
+        if (schedule.getStatus().equals(Const.OutboundStatus.SHUKOZUMI)){
+            throw new FatalBusinessException(
+                messageSource.getMessage(
+                    "outboundScheduleUpdStatusError",
+                    new String[]{Const.OutboundStatus.SHUKOZUMI_LABEL},
+                    LocaleContextHolder.getLocale())
+            );
+
+        } else if(schedule.getStatus().equals(Const.OutboundStatus.CANCEL)){
+            throw new FatalBusinessException(
+                messageSource.getMessage(
+                    "outboundScheduleUpdStatusError",
+                    new String[]{Const.OutboundStatus.CANCEL_LABEL},
+                    LocaleContextHolder.getLocale())
+            );
+        }
         
         // 在庫の存在チェック
         validateInventoryExists(inventory);
     }
 
     /**
-     * <p>出庫予定の登録に関する入力フィールドを検証する。</p>
+     * <p>出庫予定の更新に関する入力フィールドを検証する。</p>
      * @param saveDto 出庫予定の保存情報
      * @param schedule 出庫予定情報
      * @param inventory 出庫予定に関する在庫情報
@@ -218,8 +237,44 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
             );
         }
 
+        switch (schedule.getStatus()) {
+            case Const.OutboundStatus.SHUKOCHU:
+                validateShukochuUpdateFields(errors, schedule, saveDto);    
+            break;
+        }
+
         if (!errors.isEmpty()) {
             throw new BusinessException(errors);
+        }
+    }
+
+    /**
+     * <p>出庫予定が出庫中の場合の更新に関するフィールド値を検証する。</p>
+     * <p>errorsにフィールドエラーを格納して返却する<。</p>
+     * @param errors   フィールドエラー
+     * @param schedule 更新対象の出庫予定情報
+     * @param saveDto  出庫予定の入力内容
+     */
+    private void validateShukochuUpdateFields(HashMap<String,String> errors, OutboundSchedule schedule, OutboundScheduleSaveDto saveDto){
+
+        // 在庫または予定数量が変更されている場合はエラー
+        if (schedule.getInventoryId() != saveDto.getInventoryId()){
+            errors.put(
+                "inventoryId",
+                messageSource.getMessage(
+                    "outboundScheduleFieldUpdError",
+                    new String[]{Const.OutboundStatus.SHUKOCHU_LABEL, "在庫"},
+                    LocaleContextHolder.getLocale())
+            );
+
+        } else if (schedule.getScheduleQty() != saveDto.getScheduleQty()){
+            errors.put(
+                "scheduleQty",
+                messageSource.getMessage(
+                    "outboundScheduleFieldUpdError",
+                    new String[]{Const.OutboundStatus.SHUKOCHU_LABEL, "予定数量"},
+                    LocaleContextHolder.getLocale())
+            );
         }
     }
 
@@ -250,6 +305,7 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
      * <p>出庫予定情報を更新する。</p>
      * @param saveDto   出庫予定の保存情報
      * @param schedule　出庫予定情報（更新対象）
+     * @throws FatalBusinessException 更新に失敗した場合
      */
     private void updateOutboundSchedule(OutboundScheduleSaveDto saveDto, OutboundSchedule schedule){
 
@@ -260,7 +316,9 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
         int count = outboundScheduleMapper.update(schedule);
 
         if (count == 0){
-
+            throw new FatalBusinessException(
+                messageSource.getMessage("updateFaildTarget", new String[]{"出庫予定"} , LocaleContextHolder.getLocale())
+            );
         }
     }
 
