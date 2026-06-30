@@ -33,7 +33,6 @@ import com.example.monos.mapper.ProductMapper;
 public class OutboundScheduleServiceImpl implements OutboundScheduleService {
     private final OutboundScheduleMapper outboundScheduleMapper;
     private final InventoryMapper inventoryMapper;
-    private final ProductMapper productMapper;
     private final MessageSource messageSource;
 
     /**
@@ -44,10 +43,9 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
      * @param productMapper 商品用マッパー
      * @param messageSource メッセージソース（国際化用）
      */
-    public OutboundScheduleServiceImpl(OutboundScheduleMapper outboundScheduleMapper, InventoryMapper inventoryMapper, ProductMapper productMapper, MessageSource messageSource) {
+    public OutboundScheduleServiceImpl(OutboundScheduleMapper outboundScheduleMapper, InventoryMapper inventoryMapper,MessageSource messageSource) {
         this.outboundScheduleMapper = outboundScheduleMapper;
         this.inventoryMapper = inventoryMapper;
-        this.productMapper = productMapper;
         this.messageSource = messageSource;
     }
 
@@ -70,33 +68,7 @@ public class OutboundScheduleServiceImpl implements OutboundScheduleService {
      */
     @Override
     public Optional<OutboundScheduleDetailDto> findById(int outboundScheduleId, int companyId) {
-
-        var schedule = outboundScheduleMapper.selectById(outboundScheduleId, companyId);
-        if (schedule == null) {
-            return Optional.empty();
-        }
-
-        var inventory = inventoryMapper.selectById(schedule.getInventoryId(), companyId);
-        if (inventory == null) {
-            return Optional.empty();
-        }
-
-        var product = productMapper.selectById(inventory.getProductId(), companyId);
-        if (product == null) {
-            return Optional.empty();
-        }
-
-        var detailDto = new OutboundScheduleDetailDto();
-        detailDto.setOutboundScheduleId(outboundScheduleId);
-        detailDto.setProductCode(product.getProductCode());
-        detailDto.setProductName(product.getName());
-        detailDto.setProductId(product.getProductId());
-        detailDto.setScheduleQty(schedule.getScheduleQty());
-        detailDto.setScheduleDate(schedule.getScheduleDate());
-        detailDto.setStatus(schedule.getStatus());
-        detailDto.setVersion(schedule.getVersion());
-
-        return Optional.ofNullable(detailDto);
+        return Optional.ofNullable(outboundScheduleMapper.selectDetailById(outboundScheduleId, companyId));
     }
 
     /**

@@ -94,6 +94,47 @@
 				AND osch.version = #{version};
 		</select>
 
+		<select id="selectDetailById" resultType="com.example.monos.dto.OutboundScheduleDetailDto">
+			SELECT
+				osch.outbound_schedule_id,
+				proc.product_id,
+				proc.product_code,
+				proc.name AS product_name,
+				wrhs.warehouse_code,
+				wrhs.name AS warehouse_name,
+				COALESCE(ores.total_result_qty, 0) AS total_result_qty,
+				osch.schedule_qty,
+				osch.schedule_date,
+				osch.status,
+				osch.version
+			FROM
+				outbound_schedules AS osch
+				JOIN inventories AS invt
+					ON osch.inventory_id = invt.inventory_id
+					ANd osch.company_id = invt.company_id
+				JOIN products AS proc
+					ON invt.product_id = proc.product_id
+					AND invt.company_id = proc.company_id
+				JOIN warehouses AS wrhs
+					ON invt.warehouse_id = wrhs.warehouse_id
+					AND invt.company_id = wrhs.company_id
+			    LEFT JOIN (
+			    	SELECT
+			    		outbound_schedule_id,
+			    		SUM(result_qty) AS total_result_qty
+			    	FROM
+			    		outbound_results
+			    	WHERE
+			    		company_id = #{companyId}
+			    	GROUP BY
+			    		outbound_schedule_id
+			    	) AS ores
+			    	ON osch.outbound_schedule_id = ores.outbound_schedule_id
+			WHERE
+				osch.outbound_schedule_id = #{outboundScheduleId}
+				AND osch.company_id = #{companyId};
+		</select>
+
 		<insert id="insert" useGeneratedKeys="true" keyProperty="outboundScheduleId">
 			INSERT INTO outbound_schedules(
 				company_id,

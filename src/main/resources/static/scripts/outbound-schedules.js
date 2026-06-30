@@ -169,31 +169,31 @@ function handleOutboundScheduleLoadError(message){
 }
 
 
-// 入庫実績登録モーダル表示
-async function openInboundResultModal(inboundScheduleId){
-	const modal = document.getElementById("inboundResultModal");
-	const modalEl = getInboundResultModalElements(modal);
+// 出庫実績登録モーダル表示
+async function openOutboundResultModal(outboundScheduleId){
+	const modal = document.getElementById("outboundResultModal");
+	const modalEl = getOutboundResultModalElements(modal);
   
-  	modalEl.inboundScheduleId.value = inboundScheduleId;
+  	modalEl.outboundScheduleId.value = outboundScheduleId;
   	
   	clearModalFieldErros(modal);
 	  
-	// 入庫予定情報を取得
-  	const res = await fetch("/api/inboundschedules/" + inboundScheduleId);
+	// 出庫予定情報を取得
+  	const res = await fetch("/api/outbound-schedules/" + outboundScheduleId);
  	const result = await res.json();
 	
 	if (result.success){
-		setDataForInboundResultModal(modalEl, result.data);
+		setDataForOutboundResultModal(modalEl, result.data);
 	} else{
-		handleInboundReulstModalLoadError(result.message);
+		handleOutboundReulstModalLoadError(result.message);
 	}
 }
 
-// 入庫実績登録モーダルの要素取得
-function getInboundResultModalElements(modal) {
+// 出庫実績登録モーダルの要素取得
+function getOutboundResultModalElements(modal) {
     return {
         title: modal.querySelector("#modalTitle"),
-        inboundScheduleId: modal.querySelector("#modalInboundScheduleId"),
+        outboundScheduleId: modal.querySelector("#modalOutboundScheduleId"),
         version: modal.querySelector("#modalVersion"),
         product: modal.querySelector("#modalProduct"),
         warehouse: modal.querySelector("#modalWarehouse"),
@@ -205,8 +205,8 @@ function getInboundResultModalElements(modal) {
     };
 }
 
-// 入庫実績登録モーダルにデータ設定
-function setDataForInboundResultModal(modalEl, data){
+// 出庫実績登録モーダルにデータ設定
+function setDataForOutboundResultModal(modalEl, data){
 	modalEl.version.value = data.version;
 	modalEl.product.value = `${data.productCode} ${data.productName}`;
 	modalEl.warehouse.value = `${data.warehouseCode} ${data.warehouseName}`;
@@ -215,10 +215,10 @@ function setDataForInboundResultModal(modalEl, data){
 	modalEl.totalResultQty.value = data.totalResultQty;
 }
 
-// 入庫実績モーダルのエラーハンドリング
-function handleInboundReulstModalLoadError(message){
+// 出庫実績モーダルのエラーハンドリング
+function handleOutboundReulstModalLoadError(message){
 	// モーダルを非表示にしてエラーメッセージ表示
-	hideModal("inboundResultModal");
+	hideModal("OutboundResultModal");
 	setErrorMessage(message);
 	search();
 }

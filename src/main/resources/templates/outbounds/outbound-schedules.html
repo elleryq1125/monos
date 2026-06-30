@@ -148,6 +148,72 @@
 			    </div>
 			    </div>
 			  </div>
+
+			<div class="modal fade" data-bs-backdrop="static" id="outboundResultModal" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+		
+						<div class="modal-header">
+							<h6 id="modalTitle" class="modal-title">出庫実績登録</h6>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+				
+						<div class="modal-body">	
+							<form id="outboundScheduleForm">
+								<input type="hidden" id="modalOutboundScheduleId">
+								<input type="hidden" id="modalVersion">
+								
+								<div class="mb-3 form-field">
+									<label>商品</label>
+									<input type="text" class="w-200" id="modalProduct" disabled>
+								</div>
+								
+								<div class="mb-3 form-field">
+									<label>倉庫</label>
+									<input type="text" class="w-200" id="modalWarehouse" disabled>
+								</div>
+								
+								<div class="row mb-3">
+									<div class="col-md-4 form-field">
+										<label>出庫予定数量</label>
+										<input type="number" class="w-80" id="modalScheduleQty" disabled>
+									</div>
+									
+									<div class="col-md-8 form-field">
+										<label>出庫予定日</label>
+										<input type="date" class="w-140" id="modalScheduleDate" disabled>
+									</div>
+								</div>
+
+								<div class="mb-3 form-field">
+									<label>出庫済数量</label>
+									<input type="number" class="w-80" id="modalTotalResultQty" disabled>
+								</div>
+								
+								<div class="row mb-3">
+									<div class="col-md-4 form-field">
+										<label class="required">出庫数量</label>
+										<input type="number" class="w-80" id="modalResultQty">
+										<div class="field-error" id="resultQtyError"></div>
+									</div>
+									
+									<div class="col-md-8 form-field">
+										<label class="required">出庫日</label>
+										<input type="date" class="w-140" id="modalResultDate">
+										<div class="field-error" id="resultDateError"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+		
+						<div class="modal-footer">
+							<button class="btn main-btn" onclick="saveOutboundResult()">保存</button>
+							<button class="btn grey-btn" data-bs-dismiss="modal">閉じる</button>
+						</div>
+		
+					</div>
+				</div>
+			</div>
 		</main>
 		
 		<!-- フッター -->
