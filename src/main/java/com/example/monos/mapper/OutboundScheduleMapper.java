@@ -18,5 +18,6 @@ public interface OutboundScheduleMapper {
 	OutboundScheduleDetailDto selectDetailById(@Param("outboundScheduleId") Integer outboundScheduleId, @Param("companyId") Integer companyId);
 	Integer insert(OutboundSchedule outboundSchedule);
 	int update(OutboundSchedule outboundSchedule);
+	int updateStatus(OutboundSchedule outboundSchedule);
 	int selectTotalScheduleQtyByInventoryId(@Param("companyId") Integer companyId, @Param("inventoryId") Integer inventoryId);
 }

@@ -185,7 +185,7 @@ async function openOutboundResultModal(outboundScheduleId){
 	if (result.success){
 		setDataForOutboundResultModal(modalEl, result.data);
 	} else{
-		handleOutboundReulstModalLoadError(result.message);
+		handleOutboundResultModalLoadError(result.message);
 	}
 }
 
@@ -216,35 +216,34 @@ function setDataForOutboundResultModal(modalEl, data){
 }
 
 // 出庫実績モーダルのエラーハンドリング
-function handleOutboundReulstModalLoadError(message){
+function handleOutboundResultModalLoadError(message){
 	// モーダルを非表示にしてエラーメッセージ表示
 	hideModal("OutboundResultModal");
 	setErrorMessage(message);
 	search();
 }
 
-// 入庫実績登録処理
-async function registerInboundResult(){
+// 出庫実績登録処理
+async function registerOutboundResult(){
 	// CSRFトークン取得
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 	
-	const modal = document.getElementById("inboundResultModal");
-	const modalEl = getInboundResultModalElements(modal);
+	const modal = document.getElementById("outboundResultModal");
+	const modalEl = getOutboundResultModalElements(modal);
 	
 	clearModalFieldErros(modal);
 	
 	// 入力データを設定
 	const form = {
-		inboundScheduleId: modalEl.inboundScheduleId.value,
-		inboundScheduleVersion: modalEl.version.value,
-		totalResultQty: modalEl.totalResultQty.value,
+		outboundScheduleId: modalEl.outboundScheduleId.value,
+		version: modalEl.version.value,
 		resultQty: modalEl.resultQty.value,
 		resultDate: modalEl.resultDate.value
 	};
 	
 	// リクエスト
-	const res = await fetch("/api/inboundschedules/result/regist",{
+	const res = await fetch("/api/outbound-schedules/result/regist",{
 		method:"POST",
 		headers:{
 			"Content-Type":"application/json",
@@ -256,7 +255,7 @@ async function registerInboundResult(){
 	
 	if (result.success){	
 		// モーダルを非表示にして成功メッセージ表示
-		hideModal("inboundResultModal");
+		hideModal("outboundResultModal");
 		setSuccessMessage(result.message);
 		search();
 	}else{
@@ -264,7 +263,7 @@ async function registerInboundResult(){
 			// バリデーションエラー表示
 			showModalFieldErrors(modal, result.fieldErrors);
 		}else{
-			handleInboundReulstModalLoadError(result.message);
+			handleOutboundResultModalLoadError(result.message);
 		}
 	}
 }

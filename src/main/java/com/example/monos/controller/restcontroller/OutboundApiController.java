@@ -1,10 +1,8 @@
 package com.example.monos.controller.restcontroller;
 
-import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -18,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.dto.ApiResponse;
 import com.example.monos.dto.OutboundScheduleDetailDto;
+import com.example.monos.form.OutboundResultRegisterForm;
+import com.example.monos.form.OutboundResultService;
 import com.example.monos.form.OutboundScheduleInputForm;
 import com.example.monos.form.OutboundScheduleSaveDto;
 import com.example.monos.service.OutboundScheduleService;
@@ -33,10 +33,12 @@ import jakarta.validation.Valid;
 public class OutboundApiController {
     private final MessageSource messageSource;
     private final OutboundScheduleService outboundScheduleService;
+    private final OutboundResultService outboundResultService;
 
-    public OutboundApiController(MessageSource messageSource, OutboundScheduleService outboundScheduleService) {
+    public OutboundApiController(MessageSource messageSource, OutboundScheduleService outboundScheduleService, OutboundResultService outboundResultService) {
         this.messageSource = messageSource;
         this.outboundScheduleService = outboundScheduleService;
+        this.outboundResultService = outboundResultService;
     }
 
     /**
@@ -61,6 +63,13 @@ public class OutboundApiController {
         }
     }
 
+    /**
+     * 出庫予定を登録・更新する。
+     * @param signinUser サインインユーザー
+     * @param form 出庫予定入力フォーム
+     * @param result バリデーション結果
+     * @return APIレスポンス
+     */
     @PostMapping("/outbound-schedules/save")
     public ApiResponse<?> save(@AuthenticationPrincipal UserDetailsImpl signinUser,
                                @Valid @RequestBody OutboundScheduleInputForm form,
@@ -81,6 +90,34 @@ public class OutboundApiController {
 
         String resultMessage = outboundScheduleService.save(saveDto);
                             
+        return ApiResponse.successMessage(resultMessage);
+    }
+
+    /**
+     * 出庫実績を登録する。
+     * @param signinUser サインインユーザー
+     * @param form 出庫実績登録フォーム
+     * @param result バリデーション結果
+     * @return APIレスポンス
+     */
+    @PostMapping("/outbound-schedules/result/regist")
+    public ApiResponse<?> registerOutboundResult(@AuthenticationPrincipal UserDetailsImpl signinUser,
+                                                 @Valid @RequestBody OutboundResultRegisterForm form,
+                                                 BindingResult result){
+        
+        if (result.hasErrors()) {
+            return ApiResponse.validationError(result);
+        }
+
+        var registerDto = new com.example.monos.dto.OutboundResultRegisterDto();
+        registerDto.setOutboundScheduleId(form.getOutboundScheduleId());
+        registerDto.setCompanyId(signinUser.getCompanyId());
+        registerDto.setVersion(form.getVersion());
+        registerDto.setResultQty(form.getResultQty());
+        registerDto.setResultDate(form.getResultDate());
+        
+        String resultMessage = outboundResultService.register(registerDto);
+
         return ApiResponse.successMessage(resultMessage);
     }
 }

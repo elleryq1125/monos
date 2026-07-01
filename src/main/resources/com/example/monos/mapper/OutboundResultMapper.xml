@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.monos.mapper.OutboundResultMapper">
+  	  <!-- SQL -->  
+	  <select id="selectTotalResultQty" resultType="int">
+		   	SELECT
+   				 COALESCE(SUM(ores.result_qty), 0) 
+			FROM
+			    outbound_results AS ores
+			WHERE
+				ores.outbound_schedule_id = #{outboundScheduleId}
+				AND ores.company_id = #{companyId};
+		</select>
+		
+		<insert id="insert" parameterType="com.example.monos.domain.OutboundResult" useGeneratedKeys="true" keyProperty="outboundResultId">
+			INSERT INTO outbound_results(
+				company_id,
+				outbound_schedule_id,
+				result_qty,
+				result_date
+			)
+			VALUES(
+				#{companyId},
+				#{outboundScheduleId},
+				#{resultQty},
+				#{resultDate}
+			)
+		</insert>
+</mapper>

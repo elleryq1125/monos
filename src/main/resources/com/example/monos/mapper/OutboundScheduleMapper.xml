@@ -166,6 +166,18 @@
 				AND version = #{version}
 		</update>
 
+		<update id="updateStatus">
+			UPDATE outbound_schedules
+			SET
+				status = #{status},
+				version = version + 1,
+				updated_at = transaction_timestamp()
+			WHERE
+				outbound_schedule_id = #{outboundScheduleId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
+
 		<select id="selectTotalScheduleQtyByInventoryId" resultType="int">
 			SELECT
 				COALESCE(SUM(schedule_qty), 0)
