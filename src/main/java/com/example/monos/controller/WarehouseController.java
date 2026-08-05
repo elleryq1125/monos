@@ -48,6 +48,6 @@ public class WarehouseController {
         List<Warehouse> warehouses = warehouseServise.search(condition);
         model.addAttribute("warehouses", warehouses);
         
-        return "/warehouses/warehouses";
+        return "warehouses/warehouses";
     }
 }

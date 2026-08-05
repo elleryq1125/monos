@@ -50,7 +50,7 @@ public class WarehouseControllerTest extends AbstractControllerTest {
 				.param("active", "true")
 				.with(testUser()))
 		.andExpect(status().isOk())
-		.andExpect(view().name("/warehouses/warehouses"))
+		.andExpect(view().name("warehouses/warehouses"))
 		.andExpect(model().attributeExists("warehouses"))
 		.andExpect(model().attribute("warehouses", mockWarehouses));
 		

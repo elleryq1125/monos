@@ -52,6 +52,6 @@ public class InventoryController {
         List<InventoryListDto> inventories = inventoryService.search(condition);
         model.addAttribute("inventories", inventories);
 
-        return "/inventories/inventories";
+        return "inventories/inventories";
     }
 }

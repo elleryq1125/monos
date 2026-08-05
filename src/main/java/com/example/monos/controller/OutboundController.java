@@ -55,7 +55,7 @@ public class OutboundController {
     	
     	setSearchStatusSelectionValues(model);
         
-        return "/outbounds/outbound-schedules";
+        return "outbounds/outbound-schedules";
     }
     
     /**

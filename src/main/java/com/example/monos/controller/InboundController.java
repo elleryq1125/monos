@@ -61,7 +61,7 @@ public class InboundController {
     	
     	setModalWarehouseSelectionValues(model, signinUser.getCompanyId());
         
-        return "/inbounds/inbound-schedules";
+        return "inbounds/inbound-schedules";
     }
     
     /**

@@ -51,7 +51,7 @@ public class ProductControllerTest extends AbstractControllerTest {
 				.param("active", "true")
 				.with(testUser()))
 		.andExpect(status().isOk())
-		.andExpect(view().name("/products/products"))
+		.andExpect(view().name("products/products"))
 		.andExpect(model().attributeExists("products"))
 		.andExpect(model().attribute("products", mockProducts));
 		
