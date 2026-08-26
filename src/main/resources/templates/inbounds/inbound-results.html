@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{common/head :: head-fragment(title = '入庫実績一覧', scripts = ~{}, links = ~{})}"></head>
+	<body>
+		<div th:replace="~{common/header :: header-fragment}"></div>
+
+		<main class="wrapper">
+			<form class="search-form" id="searchForm" th:action="@{/inbound-results}" th:object="${inboundResultSearchForm}" method="get">
+				<div class="form-row">
+					<div class="form-field">
+						<label>商品コード</label>
+						<input type="text" th:field="*{productCode}">
+					</div>
+					<div class="form-field">
+						<label>商品名</label>
+						<input type="text" th:field="*{productName}">
+					</div>
+					<div class="form-field">
+						<label>倉庫コード</label>
+						<input type="text" th:field="*{warehouseCode}">
+					</div>
+					<div class="form-field">
+						<label>倉庫名</label>
+						<input type="text" th:field="*{warehouseName}">
+					</div>
+					<div class="form-field">
+						<label>入庫日（開始）</label>
+						<input type="date" th:field="*{resultDateFrom}">
+					</div>
+					<div class="form-field">
+						<label>入庫日（終了）</label>
+						<input type="date" th:field="*{resultDateTo}">
+					</div>
+					<div class="form-actions">
+						<button class="btn search-btn" type="submit">検索</button>
+					</div>
+				</div>
+			</form>
+
+			<div class="content">
+				<div class="contentTitle">入庫実績一覧</div>
+				<div class="data-table" style="height: 400px;">
+					<table style="width: 90%;">
+						<thead>
+							<tr>
+								<th style="width: 12%;">商品コード</th>
+								<th style="width: 22%;">商品名</th>
+								<th style="width: 12%;">倉庫コード</th>
+								<th style="width: 22%;">倉庫名</th>
+								<th style="width: 16%;">入庫数量</th>
+								<th style="width: 16%;">入庫日</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="inboundresult : ${inboundresults}" th:object="${inboundresult}">
+								<td th:text="*{productCode}"></td>
+								<td th:text="*{productName}"></td>
+								<td th:text="*{warehouseCode}"></td>
+								<td th:text="*{warehouseName}"></td>
+								<td th:text="*{resultQty}"></td>
+								<td th:text="${#dates.format(inboundresult.resultDate, 'yyyy/MM/dd')}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+
+		<div th:replace="~{common/footer :: footer-fragment}"></div>
+		<div th:replace="~{common/alert :: alert-fragment}"></div>
+	</body>
+</html>

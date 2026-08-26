@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import com.example.monos.common.Const;
 import com.example.monos.domain.CodeMaster;
 import com.example.monos.domain.UserDetailsImpl;
+import com.example.monos.dto.OutboundResultListDto;
+import com.example.monos.dto.OutboundResultSearchCondition;
 import com.example.monos.dto.OutboundScheduleListDto;
 import com.example.monos.dto.OutboundScheduleSearchCondition;
+import com.example.monos.form.OutboundResultSearchForm;
 import com.example.monos.form.OutboundScheduleSearchForm;
 import com.example.monos.service.CodeMasterService;
 import com.example.monos.service.OutboundScheduleService;
+import com.example.monos.form.OutboundResultService;
 
 
 /**
@@ -25,11 +29,37 @@ import com.example.monos.service.OutboundScheduleService;
 @Controller
 public class OutboundController {
     private final OutboundScheduleService outboundScheduleService;
+    private final OutboundResultService outboundResultService;
     private final CodeMasterService codeMasterService;
     
-    public OutboundController(OutboundScheduleService outboundScheduleService, CodeMasterService codeMasterService) {
+    public OutboundController(OutboundScheduleService outboundScheduleService, OutboundResultService outboundResultService,
+                              CodeMasterService codeMasterService) {
     	this.outboundScheduleService = outboundScheduleService;
+        this.outboundResultService = outboundResultService;
     	this.codeMasterService = codeMasterService;
+    }
+
+    /**
+     * <p>出庫実績一覧画面を表示する。</p>
+     * @return /outbounds/outbound-results.html
+     */
+    @GetMapping("/outbound-results")
+    public String showOutboundResults(@AuthenticationPrincipal UserDetailsImpl signinUser,
+                                      @ModelAttribute OutboundResultSearchForm form,
+                                      Model model) {
+        var condition = new OutboundResultSearchCondition();
+        condition.setCompanyId(signinUser.getCompanyId());
+        condition.setProductCode(form.getProductCode());
+        condition.setProductName(form.getProductName());
+        condition.setWarehouseCode(form.getWarehouseCode());
+        condition.setWarehouseName(form.getWarehouseName());
+        condition.setResultDateFrom(form.getResultDateFrom());
+        condition.setResultDateTo(form.getResultDateTo());
+
+        List<OutboundResultListDto> outboundResults = outboundResultService.search(condition);
+        model.addAttribute("outboundresults", outboundResults);
+
+        return "outbounds/outbound-results";
     }
 
     /**

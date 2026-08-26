@@ -12,10 +12,14 @@ import com.example.monos.common.Const;
 import com.example.monos.domain.CodeMaster;
 import com.example.monos.domain.UserDetailsImpl;
 import com.example.monos.domain.Warehouse;
+import com.example.monos.dto.InboundResultListDto;
+import com.example.monos.dto.InboundResultSearchCondition;
 import com.example.monos.dto.InboundScheduleListDto;
 import com.example.monos.dto.InboundScheduleSearchCondition;
+import com.example.monos.form.InboundResultSearchForm;
 import com.example.monos.form.InboundScheduleSearchForm;
 import com.example.monos.service.CodeMasterService;
+import com.example.monos.service.InboundResultService;
 import com.example.monos.service.InboundScheduleService;
 import com.example.monos.service.WarehouseService;
 
@@ -27,13 +31,39 @@ import com.example.monos.service.WarehouseService;
 @Controller
 public class InboundController {
     private final InboundScheduleService inboundScheduleService;
+    private final InboundResultService inboundResultService;
     private final WarehouseService warehouseService;
     private final CodeMasterService codeMasterService;
     
-    public InboundController(InboundScheduleService inboundScheduleService, WarehouseService warehouseService, CodeMasterService codeMasterService) {
+    public InboundController(InboundScheduleService inboundScheduleService, InboundResultService inboundResultService,
+                             WarehouseService warehouseService, CodeMasterService codeMasterService) {
         this.inboundScheduleService = inboundScheduleService;
+        this.inboundResultService = inboundResultService;
         this.warehouseService = warehouseService;
         this.codeMasterService = codeMasterService;
+    }
+
+    /**
+     * <p>入庫実績一覧画面を表示する。</p>
+     * @return /inbounds/inbound-results.html
+     */
+    @GetMapping("/inbound-results")
+    public String showInboundResults(@AuthenticationPrincipal UserDetailsImpl signinUser,
+                                     @ModelAttribute InboundResultSearchForm form,
+                                     Model model) {
+        var condition = new InboundResultSearchCondition();
+        condition.setCompanyId(signinUser.getCompanyId());
+        condition.setProductCode(form.getProductCode());
+        condition.setProductName(form.getProductName());
+        condition.setWarehouseCode(form.getWarehouseCode());
+        condition.setWarehouseName(form.getWarehouseName());
+        condition.setResultDateFrom(form.getResultDateFrom());
+        condition.setResultDateTo(form.getResultDateTo());
+
+        List<InboundResultListDto> inboundResults = inboundResultService.search(condition);
+        model.addAttribute("inboundresults", inboundResults);
+
+        return "inbounds/inbound-results";
     }
 
     /**

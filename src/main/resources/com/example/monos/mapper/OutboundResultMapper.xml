@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.monos.mapper.OutboundResultMapper">
+	<select id="selectList" resultType="com.example.monos.dto.OutboundResultListDto">
+		SELECT
+			 proc.product_code
+			, proc.name AS product_name
+			, wrhs.warehouse_code
+			, wrhs.name AS warehouse_name
+			, ores.result_qty
+			, ores.result_date
+		FROM
+			outbound_results AS ores
+			JOIN outbound_schedules AS osch
+				ON ores.company_id = osch.company_id
+				AND ores.outbound_schedule_id = osch.outbound_schedule_id
+			JOIN inventories AS invt
+				ON osch.company_id = invt.company_id
+				AND osch.inventory_id = invt.inventory_id
+			JOIN products AS proc
+				ON invt.company_id = proc.company_id
+				AND invt.product_id = proc.product_id
+			JOIN warehouses AS wrhs
+				ON invt.company_id = wrhs.company_id
+				AND invt.warehouse_id = wrhs.warehouse_id
+		WHERE
+			ores.company_id = #{companyId}
+			<if test="productCode != null and productCode != ''">
+				AND proc.product_code LIKE CONCAT('%', #{productCode}, '%')
+			</if>
+			<if test="productName != null and productName != ''">
+				AND proc.name LIKE CONCAT('%', #{productName}, '%')
+			</if>
+			<if test="warehouseCode != null and warehouseCode != ''">
+				AND wrhs.warehouse_code LIKE CONCAT('%', #{warehouseCode}, '%')
+			</if>
+			<if test="warehouseName != null and warehouseName != ''">
+				AND wrhs.name LIKE CONCAT('%', #{warehouseName}, '%')
+			</if>
+			<if test="resultDateFrom != null">
+				AND ores.result_date &gt;= #{resultDateFrom}
+			</if>
+			<if test="resultDateTo != null">
+				AND ores.result_date &lt;= #{resultDateTo}
+			</if>
+		ORDER BY
+			ores.outbound_result_id;
+	</select>
+
   	  <!-- SQL -->  
 	  <select id="selectTotalResultQty" resultType="int">
 		   	SELECT

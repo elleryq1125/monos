@@ -2,6 +2,7 @@ package com.example.monos.service;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.List;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import com.example.monos.domain.Inventory;
 import com.example.monos.domain.OutboundResult;
 import com.example.monos.domain.OutboundSchedule;
 import com.example.monos.dto.OutboundResultRegisterDto;
+import com.example.monos.dto.OutboundResultListDto;
+import com.example.monos.dto.OutboundResultSearchCondition;
 import com.example.monos.exception.BusinessException;
 import com.example.monos.exception.FatalBusinessException;
 import com.example.monos.form.OutboundResultService;
@@ -42,6 +45,11 @@ public class OutboundResultServiceImpl implements OutboundResultService {
      * @throws com.example.monos.exception.FatalBusinessException 出庫予定情報が存在しない、ステータスが不正、または更新・登録処理に失敗した場合
      */
     @Override
+	public List<OutboundResultListDto> search(OutboundResultSearchCondition condition) {
+		return outboundResultMapper.selectList(condition);
+	}
+
+	@Override
     @Transactional
     public String register(OutboundResultRegisterDto registerDto) {
         // 現在の出庫予定を取得

@@ -2,6 +2,7 @@ package com.example.monos.service;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.List;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import com.example.monos.domain.InboundResult;
 import com.example.monos.domain.InboundSchedule;
 import com.example.monos.domain.Inventory;
 import com.example.monos.dto.InboundResultRegisterDto;
+import com.example.monos.dto.InboundResultListDto;
+import com.example.monos.dto.InboundResultSearchCondition;
 import com.example.monos.exception.BusinessException;
 import com.example.monos.exception.FatalBusinessException;
 import com.example.monos.mapper.InboundResultMapper;
@@ -41,6 +44,11 @@ public class InboundResultServiceImpl implements InboundResultService {
 	 * <p>入庫実績数量に合わせて入庫予定のステータスを更新する。</p>
 	 * <p>既に在庫が存在すれば在庫数を更新、なければ在庫を新たに作成する。</p>
 	 */
+	@Override
+	public List<InboundResultListDto> search(InboundResultSearchCondition condition) {
+		return inboundResultMapper.selectList(condition);
+	}
+
 	@Override
 	@Transactional
 	public String register(InboundResultRegisterDto registerDto) {
