@@ -7,14 +7,21 @@ import org.springframework.stereotype.Service;
 import com.example.monos.dto.InventoryListDto;
 import com.example.monos.dto.InventorySearchCondition;
 import com.example.monos.dto.AvaliableInventoryDto;
+import com.example.monos.dto.InventoryDetailDto;
+import com.example.monos.domain.Inventory;
 import com.example.monos.mapper.InventoryMapper;
+import com.example.monos.exception.FatalBusinessException;
+import org.springframework.context.MessageSource;
+import java.util.Locale;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
     private final InventoryMapper inventoryMapper;
+    private final MessageSource messageSource;
 
-    public InventoryServiceImpl(InventoryMapper inventoryMapper) {
+    public InventoryServiceImpl(InventoryMapper inventoryMapper, MessageSource messageSource) {
         this.inventoryMapper = inventoryMapper;
+        this.messageSource = messageSource;
     }
 
 
@@ -27,6 +34,18 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public List<InventoryListDto> search(InventorySearchCondition condition) {
         return inventoryMapper.selectList(condition);
+    }
+
+    @Override
+    public InventoryDetailDto findById(int inventoryId, int companyId) {
+        return inventoryMapper.selectDetailById(inventoryId, companyId);
+    }
+
+    @Override
+    public void update(Inventory inventory) {
+        if (inventoryMapper.updateStockSettings(inventory) == 0) {
+            throw new FatalBusinessException(messageSource.getMessage("ExclusiveError", new String[] {"在庫情報"}, Locale.JAPAN));
+        }
     }
 
     /**

@@ -14,4 +14,5 @@ public class InventorySearchForm {
     private String warehouseName;
     private String name;
     private boolean stockOut;
+    private boolean belowReorderPoint;
 }

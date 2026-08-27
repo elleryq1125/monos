@@ -48,6 +48,7 @@ public class InventoryController {
     	condition.setWarehouseCode(form.getWarehouseCode());
     	condition.setWarehouseName(form.getWarehouseName());
     	condition.setStockOut(form.isStockOut());
+		condition.setBelowReorderPoint(form.isBelowReorderPoint());
     	
         List<InventoryListDto> inventories = inventoryService.search(condition);
         model.addAttribute("inventories", inventories);

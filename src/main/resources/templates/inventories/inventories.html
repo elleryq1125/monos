@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{common/head :: head-fragment(title = '在庫一覧', scripts = ~{}, links = ~{})}">
+	<head th:replace="~{common/head :: head-fragment(title = '在庫一覧', scripts = ~{::script}, links = ~{})}">
+		<script th:src="@{/scripts/inventories.js}"></script>
 	</head>
 	<body>
 		<!-- ヘッダー -->
@@ -32,6 +33,10 @@
 						<label for="stockOut">欠品</label>
 						<input class="w-15" type="checkbox" th:field="*{stockOut}" >
 					</div>
+					<div class="form-field">
+						<label for="belowReorderPoint">発注点未満</label>
+						<input class="w-15" type="checkbox" th:field="*{belowReorderPoint}" >
+					</div>
 					<div class="form-actions">
 						<button class="btn search-btn" type="submit">検索</button>
 					</div>
@@ -54,7 +59,10 @@
 								<th style="width: 12%;">倉庫コード</th>
 								<th style="width: 20%;">倉庫名</th>
 								<th style="width: 8%;">在庫数量</th>
-								<th style="width: 8%;">出庫予定数量</th>
+								<th style="width: 10%;">出庫予定数量</th>
+								<th style="width: 8%;">発注点</th>
+								<th style="width: 10%;">適性在庫数</th>
+								<th style="width: 8%;"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -65,9 +73,31 @@
 								<td th:text="*{warehouseName}"></td>
 								<td th:text="*{onHandQty}"></td>
 								<td th:text="*{totalScheduleQty}"></td>
+								<td th:text="*{reorderPoint}"></td>
+								<td th:text="*{appropriateStockQty}"></td>
+								<td><button class="btn main-btn" data-bs-toggle="modal" data-bs-target="#inventoryModal" th:onclick="'openInventoryUpdateModal(' + *{inventoryId} + ')'">更新</button></td>
 							</tr> 
 						</tbody>
 					</table>
+				</div>
+			</div>
+
+			<div class="modal fade" data-bs-backdrop="static" id="inventoryModal" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header"><h6 class="modal-title">在庫更新</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+						<div class="modal-body"><form id="inventoryForm">
+							<input type="hidden" id="modalInventoryId"><input type="hidden" id="modalInventoryVersion">
+							<div class="mb-3 form-field"><label>商品コード</label><input class="w-200" id="modalProductCode" disabled></div>
+							<div class="mb-3 form-field"><label>商品名</label><input class="w-200" id="modalProductName" disabled></div>
+							<div class="mb-3 form-field"><label>倉庫コード</label><input class="w-200" id="modalWarehouseCode" disabled></div>
+							<div class="mb-3 form-field"><label>倉庫名</label><input class="w-200" id="modalWarehouseName" disabled></div>
+							<div class="mb-3 form-field"><label>在庫数</label><input class="w-120" id="modalOnHandQty" disabled></div>
+							<div class="mb-3 form-field"><label>発注点</label><input type="number" min="0" class="w-120" id="modalReorderPoint"><div class="field-error" id="reorderPointError"></div></div>
+							<div class="mb-3 form-field"><label>適性在庫数</label><input type="number" min="0" class="w-120" id="modalAppropriateStockQty"><div class="field-error" id="appropriateStockQtyError"></div></div>
+						</form></div>
+						<div class="modal-footer"><button class="btn main-btn" onclick="saveInventory()">保存</button><button class="btn grey-btn" data-bs-dismiss="modal">閉じる</button></div>
+					</div>
 				</div>
 			</div>
 		</main>

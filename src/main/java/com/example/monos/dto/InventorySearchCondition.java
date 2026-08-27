@@ -10,4 +10,5 @@ public class InventorySearchCondition {
 	private String warehouseCode;
 	private String warehouseName;
 	private boolean stockOut;
+	private boolean belowReorderPoint;
 }

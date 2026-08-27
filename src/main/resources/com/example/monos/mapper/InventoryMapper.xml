@@ -10,6 +10,8 @@
    				 wrhs.warehouse_code,
    				 wrhs.name AS warehouse_name,
    				 ivtr.on_hand_qty,
+				 ivtr.reorder_point,
+				 ivtr.appropriate_stock_qty,
    				 COALESCE(osch.total_schedule_qty, 0) AS total_schedule_qty
 			FROM
 				 inventories AS ivtr
@@ -49,6 +51,19 @@
 				<if test="stockOut == true">
 					AND ivtr.on_hand_qty = 0
 				</if>
+				<if test="belowReorderPoint == true">
+					AND (ivtr.on_hand_qty - COALESCE(osch.total_schedule_qty, 0)) &lt; ivtr.reorder_point
+				</if>
+		</select>
+
+		<select id="selectDetailById" resultType="com.example.monos.dto.InventoryDetailDto">
+			SELECT ivtr.inventory_id, proc.product_code, proc.name AS product_name,
+			       wrhs.warehouse_code, wrhs.name AS warehouse_name, ivtr.on_hand_qty,
+			       ivtr.reorder_point, ivtr.appropriate_stock_qty, ivtr.version
+			FROM inventories AS ivtr
+			JOIN products AS proc ON ivtr.company_id = proc.company_id AND ivtr.product_id = proc.product_id
+			JOIN warehouses AS wrhs ON ivtr.company_id = wrhs.company_id AND ivtr.warehouse_id = wrhs.warehouse_id
+			WHERE ivtr.inventory_id = #{inventoryId} AND ivtr.company_id = #{companyId}
 		</select>
 
 		<select id="selectById" resultType="com.example.monos.domain.Inventory">
@@ -165,6 +180,17 @@
 				inventory_id = #{inventory.inventoryId}
 				AND company_id = #{inventory.companyId}
 				AND version = #{inventory.version}
+		</update>
+
+		<update id="updateStockSettings">
+			UPDATE inventories
+			SET reorder_point = #{reorderPoint},
+			    appropriate_stock_qty = #{appropriateStockQty},
+			    version = version + 1,
+			    updated_at = transaction_timestamp()
+			WHERE inventory_id = #{inventoryId}
+			  AND company_id = #{companyId}
+			  AND version = #{version}
 		</update>
 		
 		<update id="updateVersion">
