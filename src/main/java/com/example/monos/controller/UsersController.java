@@ -3,8 +3,6 @@ package com.example.monos.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +53,7 @@ public class UsersController {
         List<UserInfo> companyUsers = userService.getUserInfoInCompany(signinUser.getCompanyId());
         model.addAttribute("companyUsers", companyUsers);
         
-        return "/users/users";
+        return "users/users";
     }
     
     
@@ -66,7 +64,7 @@ public class UsersController {
     @GetMapping("/add")
     public String showUserAddForm(UserAddForm userAddForm, Model model) {
         setUserAddFormSelectionValues(model);
-        return "/users/user-add";
+        return "users/user-add";
     }
     
     /**
@@ -84,7 +82,7 @@ public class UsersController {
     	
         if (result.hasErrors()) {
             setUserAddFormSelectionValues(model);
-            return "/users/user-add";
+            return "users/user-add";
         }
         
         TempUser tempUser = new TempUser();
@@ -126,7 +124,7 @@ public class UsersController {
         userUpdateForm.setName(updateUser.getName());
         userUpdateForm.setRoleCode(updateUser.getRoleCode());
 
-        return "/users/user-update";
+        return "users/user-update";
     }
     
     

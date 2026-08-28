@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.monos.mapper.InboundResultMapper">
+	<select id="selectList" resultType="com.example.monos.dto.InboundResultListDto">
+		SELECT
+			 proc.product_code
+			, proc.name AS product_name
+			, wrhs.warehouse_code
+			, wrhs.name AS warehouse_name
+			, ires.result_qty
+			, ires.result_date
+		FROM
+			inbound_results AS ires
+			JOIN inbound_schedules AS isch
+				ON ires.company_id = isch.company_id
+				AND ires.inbound_schedule_id = isch.inbound_schedule_id
+			JOIN products AS proc
+				ON isch.company_id = proc.company_id
+				AND isch.product_id = proc.product_id
+			JOIN warehouses AS wrhs
+				ON isch.company_id = wrhs.company_id
+				AND isch.warehouse_id = wrhs.warehouse_id
+		WHERE
+			ires.company_id = #{companyId}
+			<if test="productCode != null and productCode != ''">
+				AND proc.product_code LIKE CONCAT('%', #{productCode}, '%')
+			</if>
+			<if test="productName != null and productName != ''">
+				AND proc.name LIKE CONCAT('%', #{productName}, '%')
+			</if>
+			<if test="warehouseCode != null and warehouseCode != ''">
+				AND wrhs.warehouse_code LIKE CONCAT('%', #{warehouseCode}, '%')
+			</if>
+			<if test="warehouseName != null and warehouseName != ''">
+				AND wrhs.name LIKE CONCAT('%', #{warehouseName}, '%')
+			</if>
+			<if test="resultDateFrom != null">
+				AND ires.result_date &gt;= #{resultDateFrom}
+			</if>
+			<if test="resultDateTo != null">
+				AND ires.result_date &lt;= #{resultDateTo}
+			</if>
+		ORDER BY
+			ires.inbound_result_id;
+	</select>
+
+  	  <!-- SQL -->  
+	  <select id="selectTotalResultQty" resultType="int">
+		   	SELECT
+   				 COALESCE(SUM(ires.result_qty), 0) 
+			FROM
+			    inbound_results AS ires
+			WHERE
+				ires.inbound_schedule_id = #{inboundScheduleId}
+				AND ires.company_id = #{companyId};
+		</select>
+		
+		<insert id="insert" parameterType="com.example.monos.domain.InboundResult" useGeneratedKeys="true" keyProperty="inboundResultId">
+			INSERT INTO inbound_results(
+				company_id,
+				inbound_schedule_id,
+				result_qty,
+				result_date
+			)
+			VALUES(
+				#{companyId},
+				#{inboundScheduleId},
+				#{resultQty},
+				#{resultDate}
+			)
+		</insert>
+</mapper>

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.monos.domain.Product;
 import com.example.monos.dto.ProductSearchCondition;
+import com.example.monos.dto.ProductSuggestDto;
 import com.example.monos.exception.BusinessException;
 import com.example.monos.exception.FatalBusinessException;
 import com.example.monos.mapper.ProductMapper;
@@ -62,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
 			// 商品コードの重複チェック
 			if (productMapper.existsByProductCode(product.getProductCode(), product.getCompanyId())) {
 				var errors = new HashMap<String, String>();
-				errors.put("productCode", messageSource.getMessage("existsProductCode", new String[] {}, Locale.JAPAN));
+				errors.put("productCode", messageSource.getMessage("existsProductCode", null, Locale.JAPAN));
 				throw new BusinessException(errors);
 			}
 			
@@ -83,5 +84,14 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 		return resultMaeesage;
+	}
+
+	/**
+	 * 商品情報をキーワードで検索し取得する。
+	 * @param keyword 商品コードまたは商品名のキーワード
+	 */
+	@Override
+	public List<ProductSuggestDto> suggest(String keyword, int comapnyId) {
+		return productMapper.selectActiveByKeyword(keyword, comapnyId);
 	}
 }

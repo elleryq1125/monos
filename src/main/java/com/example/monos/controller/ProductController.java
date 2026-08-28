@@ -48,6 +48,6 @@ public class ProductController {
         List<Product> products = productService.search(condition);
         model.addAttribute("products", products);
         
-        return "/products/products";
+        return "products/products";
     }
 }

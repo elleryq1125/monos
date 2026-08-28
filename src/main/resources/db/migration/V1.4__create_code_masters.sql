@@ -1,0 +1,9 @@
+CREATE TABLE code_masters (
+    code_type  VARCHAR(50)  NOT NULL, 
+    code INT NOT NULL, 
+    name VARCHAR(100) NOT NULL, 
+    display_order  INT DEFAULT 0,
+    created_at  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (code_type, code)
+);

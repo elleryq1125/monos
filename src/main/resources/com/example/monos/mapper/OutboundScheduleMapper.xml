@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.monos.mapper.OutboundScheduleMapper">
+  <!-- SQL -->  
+	  	<select id="selectList" resultType="com.example.monos.dto.OutboundScheduleListDto">
+		   	SELECT
+   				 osch.outbound_schedule_id
+   				, osch.status
+    			, stat.name AS status_name
+			    , proc.product_code
+			    , proc.name AS product_name
+			    , wrhs.warehouse_code
+			    , wrhs.name AS warehouse_name
+			    , osch.schedule_qty
+			    , osch.schedule_date 
+			    , COALESCE(ores.total_result_qty, 0) AS total_result_qty
+			FROM
+			    outbound_schedules AS osch 
+				JOIN inventories AS invt
+			        ON osch.company_id = invt.company_id 
+			        AND osch.inventory_id = invt.inventory_id
+			    JOIN products AS proc 
+			        ON invt.company_id = proc.company_id 
+			        AND invt.product_id = proc.product_id 
+			    JOIN warehouses AS wrhs 
+			        ON invt.company_id = wrhs.company_id 
+			        AND invt.warehouse_id = wrhs.warehouse_id 
+			    LEFT JOIN code_masters AS stat 
+			        ON stat.code_type = 'OUTBOUND_STATUS' 
+			        AND osch.status = stat.code
+			    LEFT JOIN (
+			    	SELECT
+			    		outbound_schedule_id,
+			    		SUM(result_qty) AS total_result_qty
+			    	FROM
+			    		outbound_results
+			    	WHERE
+			    		company_id = #{companyId}
+			    	GROUP BY
+			    		outbound_schedule_id
+			    	) AS ores
+			    	ON osch.outbound_schedule_id = ores.outbound_schedule_id
+			WHERE
+				osch.company_id = #{companyId}
+				<if test="status != null">
+					AND osch.status = #{status}
+				</if>
+				<if test="productCode != null and productCode != ''">
+					AND proc.product_code LIKE CONCAT('%', #{productCode}, '%')
+				</if>
+				<if test="productName != null and productName != ''">
+					AND proc.name LIKE CONCAT('%', #{productName}, '%')
+				</if>
+				<if test="warehouseCode != null and warehouseCode != ''">
+					AND wrhs.warehouse_code LIKE CONCAT('%', #{warehouseCode}, '%')
+				</if>
+				<if test="warehouseName != null and warehouseName != ''">
+					AND wrhs.name LIKE CONCAT('%', #{warehouseName}, '%')
+				</if>
+			ORDER BY
+				osch.outbound_schedule_id;
+		</select>
+
+		<select id="selectById" resultType="com.example.monos.domain.OutboundSchedule">
+			SELECT
+				osch.outbound_schedule_id,
+				osch.company_id,
+				osch.inventory_id,
+				osch.schedule_qty,
+				osch.schedule_date,
+				osch.status,
+				osch.version
+			FROM
+				outbound_schedules AS osch
+			WHERE
+				osch.outbound_schedule_id = #{outboundScheduleId}
+				AND osch.company_id = #{companyId};
+		</select>
+
+		<select id="selectByIdAndVersion" resultType="com.example.monos.domain.OutboundSchedule">
+			SELECT
+				osch.outbound_schedule_id,
+				osch.company_id,
+				osch.inventory_id,
+				osch.schedule_qty,
+				osch.schedule_date,
+				osch.status,
+				osch.version
+			FROM
+				outbound_schedules AS osch
+			WHERE
+				osch.outbound_schedule_id = #{outboundScheduleId}
+				AND osch.company_id = #{companyId}
+				AND osch.version = #{version};
+		</select>
+
+		<select id="selectDetailById" resultType="com.example.monos.dto.OutboundScheduleDetailDto">
+			SELECT
+				osch.outbound_schedule_id,
+				proc.product_id,
+				proc.product_code,
+				proc.name AS product_name,
+				wrhs.warehouse_code,
+				wrhs.name AS warehouse_name,
+				COALESCE(ores.total_result_qty, 0) AS total_result_qty,
+				osch.schedule_qty,
+				osch.schedule_date,
+				osch.status,
+				osch.version
+			FROM
+				outbound_schedules AS osch
+				JOIN inventories AS invt
+					ON osch.inventory_id = invt.inventory_id
+					ANd osch.company_id = invt.company_id
+				JOIN products AS proc
+					ON invt.product_id = proc.product_id
+					AND invt.company_id = proc.company_id
+				JOIN warehouses AS wrhs
+					ON invt.warehouse_id = wrhs.warehouse_id
+					AND invt.company_id = wrhs.company_id
+			    LEFT JOIN (
+			    	SELECT
+			    		outbound_schedule_id,
+			    		SUM(result_qty) AS total_result_qty
+			    	FROM
+			    		outbound_results
+			    	WHERE
+			    		company_id = #{companyId}
+			    	GROUP BY
+			    		outbound_schedule_id
+			    	) AS ores
+			    	ON osch.outbound_schedule_id = ores.outbound_schedule_id
+			WHERE
+				osch.outbound_schedule_id = #{outboundScheduleId}
+				AND osch.company_id = #{companyId};
+		</select>
+
+		<insert id="insert" useGeneratedKeys="true" keyProperty="outboundScheduleId">
+			INSERT INTO outbound_schedules(
+				company_id,
+				inventory_id,
+				schedule_qty,
+				schedule_date,
+				status
+			)
+			VALUES(
+				#{companyId},
+				#{inventoryId},
+				#{scheduleQty},
+				#{scheduleDate},
+				#{status}
+			)
+		</insert>
+
+		<update id="update">
+			UPDATE outbound_schedules
+			SET
+				inventory_id = #{inventoryId},
+				schedule_qty = #{scheduleQty},
+				schedule_date = #{scheduleDate},
+				version = version + 1,
+				updated_at = transaction_timestamp()
+			WHERE
+				outbound_schedule_id = #{outboundScheduleId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
+
+		<update id="updateStatus">
+			UPDATE outbound_schedules
+			SET
+				status = #{status},
+				version = version + 1,
+				updated_at = transaction_timestamp()
+			WHERE
+				outbound_schedule_id = #{outboundScheduleId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
+
+		<select id="selectTotalScheduleQtyByInventoryId" resultType="int">
+			SELECT
+				COALESCE(SUM(schedule_qty), 0)
+			FROM
+				outbound_schedules
+			WHERE
+				company_id = #{companyId}
+				AND inventory_id = #{inventoryId}
+				AND status IN ('0', '1')
+		</select>
+</mapper>

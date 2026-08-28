@@ -46,6 +46,21 @@
 				AND company_id = #{companyId}
 		</select>
 		
+		<select id="selectActiveByKeyword" resultType="com.example.monos.dto.ProductSuggestDto">
+			SELECT 
+				product_id
+				,product_code
+				,name
+			FROM 
+				products
+			WHERE
+			    company_id = #{companyId}
+				AND (product_code LIKE CONCAT('%', #{keyword}, '%') OR name LIKE CONCAT('%', #{keyword}, '%'))
+			ORDER BY
+				product_code
+			LIMIT 10
+		</select>
+		
 		<select id="existsByProductCode" resultType="boolean">
 			SELECT
 				COUNT(*) > 0
@@ -56,7 +71,17 @@
 				AND company_id = #{companyId}
 		</select>
 		
-		<insert id="insert" parameterType="com.example.monos.domain.Product">
+		<select id="existsByProductId" resultType="boolean">
+			SELECT
+				COUNT(*) > 0
+			FROM
+				products
+			WHERE
+				product_id = #{productId}
+				AND company_id = #{companyId}
+		</select>
+		
+		<insert id="insert" parameterType="com.example.monos.domain.Product" useGeneratedKeys="true" keyProperty="productId">
 			INSERT INTO products(
 				company_id,
 				product_code,
@@ -78,7 +103,8 @@
 			SET
 				name = #{name},
 				unit = #{unit},
-				active = #{active}
+				active = #{active},
+				updated_at = now()
 			WHERE
 				product_id = #{productId}
 				AND company_id = #{companyId}

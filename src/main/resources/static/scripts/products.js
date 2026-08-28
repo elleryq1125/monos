@@ -1,7 +1,9 @@
 // 商品登録モーダル表示
-function openProductAddModal(){  
+function openProductAddModal(){ 
+  const modal = document.getElementById("productModal");
+   
 　// フィールドエラークリア
-  clearModalFieldErros();
+  clearModalFieldErros(modal);
   
   // 初期値設定
   document.getElementById("modalTitle").innerText = "商品登録";
@@ -17,8 +19,10 @@ function openProductAddModal(){
 
 // 商品更新モーダル表示
 async function openProductUpdateModal(productId){
+	const modal = document.getElementById("productModal");
+	
 	// フィールドエラークリア
-	clearModalFieldErros();
+	clearModalFieldErros(modal);
 	
 	document.getElementById("modalTitle").innerText = "商品更新";
 	document.getElementById("modalProductId").value = productId;
@@ -51,8 +55,10 @@ async function saveProduct(){
 	const csrfToken = document.querySelector("meta[name='_csrf']").content;
 	const csrfHeader = document.querySelector("meta[name='_csrf_header']").content;
 	
+	const modal = document.getElementById("productModal");
+	
 	// フィールドエラークリア
-	clearModalFieldErros();
+	clearModalFieldErros(modal);
 	
 	// 入力データを設定
 	const form = {
@@ -82,7 +88,7 @@ async function saveProduct(){
 	}else{
 		if (result.message == null){
 			// バリデーションエラー表示
-			showModalFieldErrors(result.fieldErrors);
+			showModalFieldErrors(modal, result.fieldErrors);
 		}else{
 			// モーダルを非表示にしてエラーメッセージ表示
 			hideModal("productModal");

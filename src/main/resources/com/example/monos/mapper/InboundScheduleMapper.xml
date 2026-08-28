@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.monos.mapper.InboundScheduleMapper">
+  <!-- SQL -->  
+	  <select id="selectList" resultType="com.example.monos.dto.InboundScheduleListDto">
+		   	SELECT
+   				 isch.inbound_schedule_id
+   				, isch.status
+    			, stat.name AS status_name
+			    , proc.product_code
+			    , proc.name AS product_name
+			    , wrhs.warehouse_code
+			    , wrhs.name AS warehouse_name
+			    , isch.schedule_qty
+			    , isch.schedule_date 
+			    , COALESCE(ires.total_result_qty, 0) AS total_result_qty
+			FROM
+			    inbound_schedules AS isch 
+			    JOIN products AS proc 
+			        ON isch.company_id = proc.company_id 
+			        AND isch.product_id = proc.product_id 
+			    JOIN warehouses AS wrhs 
+			        ON isch.company_id = wrhs.company_id 
+			        AND isch.warehouse_id = wrhs.warehouse_id 
+			    LEFT JOIN code_masters AS stat 
+			        ON stat.code_type = 'INBOUND_STATUS' 
+			        AND isch.status = stat.code
+			    LEFT JOIN (
+			    	SELECT
+			    		inbound_schedule_id,
+			    		SUM(result_qty) AS total_result_qty
+			    	FROM
+			    		inbound_results
+			    	WHERE
+			    		company_id = #{companyId}
+			    	GROUP BY
+			    		inbound_schedule_id
+			    	) AS ires
+			    	ON isch.inbound_schedule_id = ires.inbound_schedule_id
+			WHERE
+				isch.company_id = #{companyId}
+				<if test="status != null">
+					AND isch.status = #{status}
+				</if>
+				<if test="productCode != null and productCode != ''">
+					AND proc.product_code LIKE CONCAT('%', #{productCode}, '%')
+				</if>
+				<if test="productName != null and productName != ''">
+					AND proc.name LIKE CONCAT('%', #{productName}, '%')
+				</if>
+				<if test="warehouseCode != null and warehouseCode != ''">
+					AND wrhs.warehouse_code LIKE CONCAT('%', #{warehouseCode}, '%')
+				</if>
+				<if test="warehouseName != null and warehouseName != ''">
+					AND wrhs.name LIKE CONCAT('%', #{warehouseName}, '%')
+				</if>
+			ORDER BY
+				isch.inbound_schedule_id;
+		</select>
+		
+		<select id="selectByIdAndVersion" resultType="com.example.monos.domain.InboundSchedule">
+			SELECT
+				isch.inbound_schedule_id,
+				isch.company_id,
+				isch.product_id,
+				isch.warehouse_id,
+				isch.schedule_qty,
+				isch.schedule_date,
+				isch.status,
+				isch.version
+			FROM
+				inbound_schedules AS isch
+			WHERE
+				isch.inbound_schedule_id = #{inboundScheduleId}
+				AND isch.company_id = #{companyId}
+				AND isch.version = #{version};
+		</select>
+		
+		<select id="selectDetailById" resultType="com.example.monos.dto.InboundScheduleDetailDto">
+			SELECT
+				isch.inbound_schedule_id,
+				proc.product_code,
+				proc.name AS product_name,
+				proc.product_id,
+				isch.warehouse_id,
+				wrhs.warehouse_code,
+				wrhs.name AS warehouse_name,
+				isch.schedule_qty,
+				isch.schedule_date,
+				isch.status,
+				isch.version,
+				ires.total_result_qty
+			FROM
+				inbound_schedules AS isch
+				JOIN products AS proc 
+			        ON isch.product_id = proc.product_id
+			        AND isch.company_id = proc.company_id 
+			    JOIN warehouses AS wrhs
+			        ON isch.warehouse_id = wrhs.warehouse_id
+			    	AND isch.company_id = wrhs.company_id
+			    LEFT JOIN 
+			    	(
+			    		SELECT
+			    			inbound_schedule_id,
+			    			company_id,
+			    			COALESCE(SUM(result_qty), 0) AS total_result_qty
+			    		FROM
+			    			inbound_results
+			    		GROUP BY
+			    			inbound_schedule_id,
+			    			company_id
+			    	) AS ires
+			    	ON isch.inbound_schedule_id = ires.inbound_schedule_id
+			    	AND isch.company_id = ires.company_id
+			WHERE
+				isch.inbound_schedule_id = #{inboundScheduleId}
+				AND isch.company_id = #{companyId};
+		</select>
+		
+		<insert id="insert" parameterType="com.example.monos.domain.InboundSchedule" useGeneratedKeys="true" keyProperty="inboundScheduleId">
+			INSERT INTO inbound_schedules(
+				company_id,
+				product_id,
+				warehouse_id,
+				schedule_qty,
+				schedule_date,
+				status
+			)
+			VALUES(
+				#{companyId},
+				#{productId},
+				#{warehouseId},
+				#{scheduleQty},
+				#{scheduleDate},
+				#{status}
+			)
+		</insert>
+		
+		<update id="update"  parameterType="com.example.monos.domain.InboundSchedule">
+			UPDATE inbound_schedules 
+			SET
+				product_id = #{productId},
+				warehouse_id = #{warehouseId},
+				schedule_qty = #{scheduleQty},
+				schedule_date = #{scheduleDate},
+				version = version + 1,
+				updated_at = transaction_timestamp()
+			WHERE
+				inbound_schedule_id = #{inboundScheduleId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
+		
+		<update id="updateStatus"  parameterType="com.example.monos.domain.InboundSchedule">
+			UPDATE inbound_schedules 
+			SET
+				version = version + 1,
+				status = #{status},
+				updated_at = transaction_timestamp()
+			WHERE
+				inbound_schedule_id = #{inboundScheduleId}
+				AND company_id = #{companyId}
+				AND version = #{version}
+		</update>
+</mapper>

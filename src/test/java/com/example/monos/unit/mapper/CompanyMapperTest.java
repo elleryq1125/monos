@@ -37,7 +37,7 @@ public class CompanyMapperTest {
         company.setName("テスト株式会社");
         
         // Act
-        int count = companyMapper.insert(company);
+        companyMapper.insert(company);
         
         // Assert
         Map<String, Object> result = jdbcTemplate.queryForMap(

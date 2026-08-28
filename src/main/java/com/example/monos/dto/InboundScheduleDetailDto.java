@@ -1,0 +1,21 @@
+package com.example.monos.dto;
+
+import java.time.LocalDate;
+
+import lombok.Data;
+
+@Data
+public class InboundScheduleDetailDto {
+	private Integer inboundScheduleId;
+	private String productCode;
+	private String productName;
+	private Integer productId;
+	private Integer warehouseId;
+	private String warehouseCode;
+	private String warehouseName;
+	private int scheduleQty;
+	private LocalDate scheduleDate;
+	private Integer status;
+	private Integer version;
+	private int totalResultQty;
+}

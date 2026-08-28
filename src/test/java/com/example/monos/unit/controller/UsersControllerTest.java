@@ -10,7 +10,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,7 +73,7 @@ public class UsersControllerTest extends AbstractControllerTest {
             )
             // Assert
             .andExpect(status().isOk())
-            .andExpect(view().name("/users/users"));
+            .andExpect(view().name("users/users"));
         }
     }
     
@@ -89,7 +88,7 @@ public class UsersControllerTest extends AbstractControllerTest {
             )
             // Assert
             .andExpect(status().isOk())
-            .andExpect(view().name("/users/user-add"));
+            .andExpect(view().name("users/user-add"));
         }
     }
     
@@ -109,7 +108,7 @@ public class UsersControllerTest extends AbstractControllerTest {
             )
             // Assert
             .andExpect(status().isOk())
-            .andExpect(view().name("/users/user-add"))
+            .andExpect(view().name("users/user-add"))
             .andExpect(model().attributeHasFieldErrors("userAddForm","name", "email", "password"));
             
             verify(tempUserService, never()).register(any());
@@ -172,7 +171,7 @@ public class UsersControllerTest extends AbstractControllerTest {
             )
             // Assert
             .andExpect(status().isOk())
-            .andExpect(view().name("/users/user-update"))
+            .andExpect(view().name("users/user-update"))
             .andExpect(model().attribute("userId", userInfo.getUserId()))
             .andExpect(model().attributeExists("userUpdateForm"));
         }
