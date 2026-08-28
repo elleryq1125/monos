@@ -24,3 +24,6 @@ jobs:
 
       - name: Build
         run: ./gradlew build
+
+      - name: Build Docker image
+        run: docker build -t monos:ci .
