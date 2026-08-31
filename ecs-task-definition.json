@@ -1,76 +1,73 @@
-{
-    "taskDefinition": {
-        "containerDefinitions": [
-            {
-                "name": "monos",
-                "image": "PLACEHOLDER",
-                "cpu": 0,
-                "portMappings": [
-                    {
-                        "containerPort": 8080,
-                        "hostPort": 8080,
-                        "protocol": "tcp",
-                        "name": "monos-8080-tcp",
-                        "appProtocol": "http"
-                    }
-                ],
-                "essential": true,
-                "environment": [
-                    {
-                        "name": "DB_URL",
-                        "value": "jdbc:postgresql://monos-db1.cb0gywyo6sog.ap-northeast-1.rds.amazonaws.com:5432/monos"
-                    }
-                ],
-                "environmentFiles": [],
-                "mountPoints": [],
-                "volumesFrom": [],
-                "secrets": [
-                    {
-                        "name": "DB_USERNAME",
-                        "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:rds!db-4a16c77e-cb90-4aa0-bb46-5d3280f70a1e-mGqWXe:username::"
-                    },
-                    {
-                        "name": "DB_PASSWORD",
-                        "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:rds!db-4a16c77e-cb90-4aa0-bb46-5d3280f70a1e-mGqWXe:password::"
-                    },
-                    {
-                        "name": "MAIL_USERNAME",
-                        "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:monos/app-2Ce3CP:MAIL_USERNAME::"
-                    },
-                    {
-                        "name": "MAIL_PASSWORD",
-                        "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:monos/app-2Ce3CP:MAIL_PASSWORD::"
-                    }
-                ],
-                "ulimits": [],
-                "logConfiguration": {
-                    "logDriver": "awslogs",
-                    "options": {
-                        "awslogs-group": "/ecs/monos-task",
-                        "awslogs-create-group": "true",
-                        "awslogs-region": "ap-northeast-1",
-                        "awslogs-stream-prefix": "ecs"
-                    },
-                    "secretOptions": []
+ {
+    "containerDefinitions": [
+        {
+            "name": "monos",
+            "image": "PLACEHOLDER",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 8080,
+                    "protocol": "tcp",
+                    "name": "monos-8080-tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DB_URL",
+                    "value": "jdbc:postgresql://monos-db1.cb0gywyo6sog.ap-northeast-1.rds.amazonaws.com:5432/monos"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "DB_USERNAME",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:rds!db-4a16c77e-cb90-4aa0-bb46-5d3280f70a1e-mGqWXe:username::"
                 },
-                "systemControls": []
-            }
-        ],
-        "family": "monos-task",
-        "executionRoleArn": "arn:aws:iam::426501511498:role/ecsTaskExecutionRole",
-        "networkMode": "awsvpc",
-        "volumes": [],
-        "placementConstraints": [],
-        "runtimePlatform": {
-            "cpuArchitecture": "X86_64",
-            "operatingSystemFamily": "LINUX"
-        },
-        "requiresCompatibilities": [
-            "FARGATE"
-        ],
-        "cpu": "512",
-        "memory": "1024",
-        "enableFaultInjection": false
+                {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:rds!db-4a16c77e-cb90-4aa0-bb46-5d3280f70a1e-mGqWXe:password::"
+                },
+                {
+                    "name": "MAIL_USERNAME",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:monos/app-2Ce3CP:MAIL_USERNAME::"
+                },
+                {
+                    "name": "MAIL_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:426501511498:secret:monos/app-2Ce3CP:MAIL_PASSWORD::"
+                }
+            ],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/monos-task",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "monos-task",
+    "executionRoleArn": "arn:aws:iam::426501511498:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
     },
-    "tags": []
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "enableFaultInjection": false
 }
