@@ -1,5 +1,7 @@
 package com.example.monos.unit.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -9,9 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.monos.controller.SigninController;
+import com.example.monos.dto.IndexSummary;
+import com.example.monos.service.IndexService;
 
 @WebMvcTest(SigninController.class)
 @AutoConfigureMockMvc
@@ -20,9 +25,17 @@ public class SigninControllerTest extends AbstractControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @MockBean
+	IndexService indexService; 
+
     @Test
     @DisplayName("【正常系】トップページが表示されることを確認")
     void testShowIndex_success() throws Exception {
+
+        when(indexService.getIndexSummary(any())).thenReturn(
+            new IndexSummary(1,1)
+        );
+
         mockMvc.perform(get("/").with(testUser()))
                 .andExpect(status().isOk())              
                 .andExpect(view().name("index"));        
